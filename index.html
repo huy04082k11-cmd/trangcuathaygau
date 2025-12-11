@@ -6,17 +6,21 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-image: url("tri an pizza.jpg"); /* Ảnh nền */
+            background-image: url("tri an pizza.jpg");
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             padding: 50px;
             text-align: center;
-            color: white; /* Chữ trắng để dễ nhìn */
+            color: white;
         }
 
         h1 {
-            color: #fff;
+            color: black;
+        }
+
+        p {
+            color: black;
         }
 
         img {
@@ -25,23 +29,33 @@
             border-radius: 10px;
         }
 
+        /* ====== HỘP SỐ ĐIỆN THOẠI ====== */
         .phone-box {
             margin-top: 20px;
             font-size: 22px;
             font-weight: bold;
-            color: black; /* ĐỔI THÀNH MÀU ĐEN */
+            color: black;
+            background: rgba(255,255,255,0.6);
+            padding: 8px 15px;
+            display: inline-block;
+            border-radius: 8px;
+
+            /* 🔥 Hiệu ứng viền đổi màu */
+            border: 5px solid red !important;
+            animation: borderGlow 1.2s infinite alternate;
         }
 
-        .phone-icon {
-            margin-right: 8px;
+        @keyframes borderGlow {
+            0% { border-color: red; }
+            100% { border-color: yellow; }
         }
     </style>
 </head>
 <body>
+
     <h1>Chào mừng đến trang web của Tráy Ghi nha ae!</h1>
     <p>Bạn có thể học saygex 4 đô la mỗi tháng trả càng cao ưu đãi càng thú vị.</p>
 
-    <!-- Ảnh ở giữa trang -->
     <img src="tri3.jpg" alt="Ảnh của Trí">
 
     <div class="phone-box">
@@ -50,6 +64,7 @@
 
 </body>
 </html>
+
 
 
 
