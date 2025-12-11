@@ -6,7 +6,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-image: url("tri an pizza.jpg");
+            background-image: url("tri-an-pizza.jpg"); /* nền */
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -15,12 +15,14 @@
             color: white;
         }
 
-        h1 {
-            color: black;
+        /* 🌿 H1 màu xanh lá */
+        body h1 {
+            color: #00ff22 !important;
         }
 
-        p {
-            color: black;
+        /* 🌿 P màu xanh lá */
+        body p {
+            color: #00ff22 !important;
         }
 
         img {
@@ -29,25 +31,24 @@
             border-radius: 10px;
         }
 
-        /* ====== HỘP SỐ ĐIỆN THOẠI ====== */
+        /* ===== SỐ ĐIỆN THOẠI — HIỆU ỨNG VIỀN ===== */
         .phone-box {
             margin-top: 20px;
             font-size: 22px;
             font-weight: bold;
             color: black;
-            background: rgba(255,255,255,0.6);
-            padding: 8px 15px;
+            background: rgba(255,255,255,0.7);
+            padding: 10px 20px;
             display: inline-block;
-            border-radius: 8px;
+            border-radius: 10px;
 
-            /* 🔥 Hiệu ứng viền đổi màu */
-            border: 5px solid red !important;
-            animation: borderGlow 1.2s infinite alternate;
+            border: 4px solid red;
+            animation: borderGlow 1s infinite alternate;
         }
 
         @keyframes borderGlow {
-            0% { border-color: red; }
-            100% { border-color: yellow; }
+            0% { border-color: red; box-shadow: 0 0 15px red; }
+            100% { border-color: yellow; box-shadow: 0 0 15px yellow; }
         }
     </style>
 </head>
@@ -64,6 +65,7 @@
 
 </body>
 </html>
+
 
 
 
