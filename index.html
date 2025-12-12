@@ -127,57 +127,56 @@ let questions = [
     },
     {
         img: "q2.jpg",
-        ask: "Câu 2: Màu này là màu gì?",
-        answers: ["A. Đỏ", "B. Xanh", "C. Vàng", "D. Hồng"],
+        ask: "Câu 2: TP yêu ai?",
+        answers: ["A. nhi", "B. trí", "C. yêu hết bọn con gái chơi cả gay", "D. không biết tôi bị ngu"],
         correct: 2   // C
     },
     {
         img: "q3.jpg",
-        ask: "Câu 3:",
-        answers: ["A", "B", "C", "D"],
-        correct: 1   // B
+        ask: "Câu 3:vì sao bạn lại ở đây?",
+        answers: ["A. tìm hiểu trí có gay không", "B. quảng cáo nước dầu tái gầu", "C.tại thích vào xem thk trí ngu", "D. tao chọn hết"],
+        correct: 1   // D
     },
     {
         img: "q4.jpg",
-        ask: "Câu 4:",
-        answers: ["A", "B", "C", "D"],
+        ask: "Câu 4:con này là con gì?",
+        answers: ["A.bình minh óc heoheo", "B.thk đao", "C.không bt tôi bị ngu", "D.chí calo và a b đếu đúng"],
         correct: 3   // D
     },
     {
         img: "q5.jpg",
-        ask: "Câu 5:",
-        answers: ["A", "B", "C", "D"],
+        ask: "Câu 5:mẹo mày bé",
+        answers: ["A.trí", "B.ko bt", "C.ko có", "D.tôi ngu quá"],
+        correct: 1   // A
+    },
+    {
+
+        ask: "Câu 6:bạn đã đọc? giờ bạn bị gay hãy chuyển lời nguyền sang người khác",
+        answers: ["A. mẹ bạn", "B.thk tái gầu tráy", "C.ông bạn", "D.bố bạn"],
         correct: 1   // B
     },
     {
-        img: "q6.jpg",
-        ask: "Câu 6:",
-        answers: ["A", "B", "C", "D"],
-        correct: 1   // B
-    },
-    {
-        img: "q7.jpg",
-        ask: "Câu 7:",
-        answers: ["A", "B", "C", "D"],
-        correct: 0   // A
+        ask: "Câu 7:tìm câu đúng",
+        answers: ["A.trí không gay", "B.trí lọ fem,gay thích chuột chị dịch", "C.trí đẹp trai", "D.yêu trí"],
+        correct: 0   // B
     },
     {
         img: "q8.jpg",
-        ask: "Câu 8:",
-        answers: ["A", "B", "C", "D"],
-        correct: 2   // C
+        ask: "Câu 8:đoán xem",
+        answers: ["A.chuẩn", "B.sai bét", "C.ko đ", "D.dott"],
+        correct: 2   // A
     },
     {
         img: "q9.jpg",
-        ask: "Câu 9:",
-        answers: ["A", "B", "C", "D"],
-        correct: 3   // D
+        ask: "Câu 9:bạn thấy trí như nào",
+        answers: ["A.bth", "B.vai gãy", "C.thẳng", "D.sigma"],
+        correct: 3   // B
     },
     {
         img: "q10.jpg",
-        ask: "Câu 10:",
-        answers: ["A", "B", "C", "D"],
-        correct: 0   // A
+        ask: "Câu 10:tao không thắng được m tao làm chó(1 trận sumo đang diễn ra)hỏi ai vừa nói?",
+        answers: ["A.TP", "B.MT", "C.NA", "D.CLCL"],
+        correct: 0   // AA
     }
 ];
 
@@ -252,16 +251,17 @@ function showResultButton() {
 function checkResult() {
     if (correctCount >= 5) {
         document.getElementById("mainContent").innerHTML =
-            "<h1 style='color:lightgreen;'>Bạn đã vượt qua bài test! ✔️</h1>";
+            "<h1 style='color:lightgreen;'>Bạn đã vượt qua bài test hãy cùng đặt phòng cùng thầy! ✔️</h1>";
     } else {
         document.getElementById("mainContent").innerHTML =
-            "<h1 style='color:red;'>Bạn bị loại! ❌</h1>";
+            "<h1 style='color:red;'>Bạn bị loại ngu quá hóa gay đi! ❌</h1>";
     }
 }
 </script>
 
 </body>
 </html>
+
 
 
 
