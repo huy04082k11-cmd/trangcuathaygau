@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Trang Web Của Trí</title>
-
 <style>
+/* Reset cơ bản */
 html, body {
     margin: 0;
     padding: 0;
@@ -12,54 +12,68 @@ html, body {
     font-family: Arial, sans-serif;
 }
 
-/* Nền full */
+/* Nền full màn hình */
 body {
     background-image: url("tri-an-pizza.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-align: center;
-    min-height: 100vh;
+    color: white;
 }
 
+/* Overlay nhẹ để chữ nổi */
 .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
+    position: absolute;
+    top: 0; left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.45);
-    z-index: -1;
+    background: rgba(0,0,0,0.25);
+    z-index: 0;
 }
 
+/* Box nội dung chính */
 .content {
+    position: relative;
+    z-index: 1;
     width: 90%;
     max-width: 600px;
     padding: 20px;
-    margin: 40px auto;
+    border-radius: 15px;
+}
+
+/* Nút đăng ký và kiểm tra */
+button {
+    margin-top: 20px;
+    padding: 12px 25px;
+    font-size: 18px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
 }
 
 .yt-btn {
-    margin-top: 20px;
     background: red;
     color: white;
-    padding: 12px 25px;
-    font-size: 20px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
     box-shadow: 0 0 10px red;
 }
 
+.next-btn, .check-btn, .reward-btn {
+    background: yellow;
+}
+
+/* Khung câu hỏi */
 .question-box {
     background: rgba(0,0,0,0.6);
     padding: 25px;
     border-radius: 15px;
-    width: 100%;
     margin: 20px auto 0 auto;
 }
 
+/* Các đáp án */
 .answer {
     display: block;
     margin: 10px 0;
@@ -76,24 +90,17 @@ body {
     background: rgba(255,255,150,0.3);
 }
 
-.next-btn, .check-btn {
-    margin-top: 20px;
-    padding: 12px 25px;
-    font-size: 18px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    background: yellow;
-}
-
+/* Ảnh câu hỏi và chính */
 .main-image {
-    max-width: 80%;
+    max-width: 100%;
+    max-height: 60vh;
     height: auto;
     border-radius: 10px;
     margin: 20px auto;
     display: block;
 }
 
+/* Box số điện thoại */
 .phone-box {
     margin-top:20px;
     font-size:22px;
@@ -112,37 +119,22 @@ body {
 }
 </style>
 </head>
-
 <body>
 
 <div class="overlay"></div>
 
-<div class="content">
-    <div id="mainContent">
-        <h1>Chào mừng đến trang web của Trí!</h1>
-        <p>Bạn có thể học saygex chỉ 4 đô mỗi tháng. Ưu đãi cao hơn khi đăng ký gói lớn!</p>
+<div class="content" id="mainContent">
+    <h1>Chào mừng đến trang web của Trí!</h1>
+    <p>Bạn có thể học saygex chỉ 4 đô mỗi tháng. Ưu đãi cao hơn khi đăng ký gói lớn!</p>
 
-        <img src="tri3.jpg" class="main-image" alt="Ảnh chính">
+    <img src="tri3.jpg" class="main-image" alt="Ảnh chính">
 
-        <div class="phone-box">
-            SĐT: ☎️ 036-670-1818
-        </div>
+    <div class="phone-box">SĐT: ☎️ 036-670-1818</div>
 
-        <button class="yt-btn" onclick="startRegister()">ĐĂNG KÍ</button>
-    </div>
+    <button class="yt-btn" onclick="startRegister()">ĐĂNG KÍ</button>
 </div>
 
 <script>
-/* NÚT ĐĂNG KÝ */
-function startRegister() {
-    document.getElementById("mainContent").innerHTML = `
-        <h1>Trước khi đăng ký bạn phải hoàn thành bài test!</h1>
-        <button class="yt-btn" onclick="startTest()">BẮT ĐẦU TEST</button>
-        <div id="questionArea"></div>
-    `;
-}
-
-/* CÂU HỎI */
 let questions = [
    { img: "giathinh.png", ask: "Câu 1: Đây là con gì?", answers: ["A. Con mèo","B. Con chó","C. Con gà","D. Con heo"], correct: 1 },
    { img: "minhtrithamquan.jpg", ask: "Câu 2: Trí thích gì nhất?", answers: ["A. Ăn cứt","B. Ngủ lọ","C. Chơi game femboy","D. Cả 3"], correct: 3 },
@@ -160,7 +152,14 @@ let index = 0;
 let correctCount = 0;
 let userAnswer = -1;
 
-/* BẮT ĐẦU TEST */
+function startRegister() {
+    document.getElementById("mainContent").innerHTML = `
+        <h1>Trước khi đăng ký bạn phải hoàn thành bài test!</h1>
+        <button class="yt-btn" onclick="startTest()">BẮT ĐẦU TEST</button>
+        <div id="questionArea"></div>
+    `;
+}
+
 function startTest() {
     index = 0;
     correctCount = 0;
@@ -169,76 +168,59 @@ function startTest() {
     loadQuestion();
 }
 
-/* HIỆN CÂU HỎI */
 function loadQuestion() {
     let q = questions[index];
-
     let html = `<div class='question-box'>
         <h2>${q.ask}</h2>
         ${q.img ? `<img src="${q.img}" class="main-image">` : ""}`;
-
     q.answers.forEach((a,i) => {
         html += `<div class='answer' id='ans${i}' onclick='selectAnswer(${i})'>${a}</div>`;
     });
-
     html += `<button class="next-btn" onclick="nextQuestion()">Tiếp theo</button></div>`;
-
     document.getElementById("questionArea").innerHTML = html;
 }
 
-/* CHỌN ĐÁP ÁN */
 function selectAnswer(i) {
     userAnswer = i;
     document.querySelectorAll(".answer").forEach(x => x.classList.remove("selected"));
     document.getElementById("ans"+i).classList.add("selected");
 }
 
-/* CÂU TIẾP THEO */
 function nextQuestion() {
-    if (userAnswer === -1) {
-        alert("Vui lòng chọn một đáp án.");
-        return;
-    }
-
+    if (userAnswer === -1) { alert("Vui lòng chọn một đáp án."); return; }
     if (userAnswer === questions[index].correct) correctCount++;
     index++;
-
+    userAnswer = -1;
     if (index >= questions.length) {
         document.getElementById("mainContent").innerHTML = `
             <h1>Đã hoàn thành 10 câu!</h1>
             <button class="check-btn" onclick="checkResult()">KIỂM TRA KẾT QUẢ</button>
         `;
     } else {
-        userAnswer = -1;
         loadQuestion();
     }
 }
 
-/* KIỂM TRA KẾT QUẢ */
 function checkResult() {
-    if (correctCount >= 10) { // phải đúng tất cả
-        document.getElementById("mainContent").innerHTML =
-            `<h1 style='color:lightgreen;'>Bạn đã vượt qua bài test! ✔️</h1>
-             <button class="yt-btn" onclick="showReward()">Nhận phần thưởng</button>
-             <div id="rewardArea"></div>`;
+    if (correctCount >= 10) {
+        document.getElementById("mainContent").innerHTML = `
+            <h1 style='color:lightgreen;'>Bạn đã vượt qua bài test! ✔️</h1>
+            <button class="reward-btn" onclick="showReward()">Nhận phần thưởng</button>
+            <div id="rewardArea"></div>
+        `;
     } else {
         document.getElementById("mainContent").innerHTML =
             "<h1 style='color:red;'>Bạn chưa đạt, hãy thử lại! ❌</h1>";
     }
 }
 
-/* HIỂN THỊ PHẦN THƯỞNG */
 function showReward() {
-    document.getElementById("rewardArea").innerHTML =
-        `<img src="spiritfruit.webp" class="main-image" alt="Phần thưởng">`;
+    document.getElementById("rewardArea").innerHTML = `<img src="tri3.jpg" class="main-image">`;
 }
 </script>
 
 </body>
 </html>
-
-
-
 
 
 
