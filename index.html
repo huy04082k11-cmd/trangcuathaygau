@@ -12,7 +12,7 @@ html, body {
     font-family: Arial, sans-serif;
 }
 
-/* NỀN FULL */
+/* Nền full */
 body {
     background-image: url("tri-an-pizza.jpg");
     background-size: cover;
@@ -23,7 +23,6 @@ body {
     min-height: 100vh;
 }
 
-/* lớp tối */
 .overlay {
     position: fixed;
     top: 0;
@@ -34,7 +33,6 @@ body {
     z-index: -1;
 }
 
-/* căn giữa nội dung */
 .content {
     width: 90%;
     max-width: 600px;
@@ -42,7 +40,6 @@ body {
     margin: 40px auto;
 }
 
-/* nút đăng ký */
 .yt-btn {
     margin-top: 20px;
     background: red;
@@ -55,7 +52,6 @@ body {
     box-shadow: 0 0 10px red;
 }
 
-/* khung câu hỏi */
 .question-box {
     background: rgba(0,0,0,0.6);
     padding: 25px;
@@ -64,7 +60,6 @@ body {
     margin: 20px auto 0 auto;
 }
 
-/* đáp án */
 .answer {
     display: block;
     margin: 10px 0;
@@ -91,7 +86,6 @@ body {
     background: yellow;
 }
 
-/* ảnh trong câu hỏi */
 .main-image {
     max-width: 80%;
     height: auto;
@@ -100,7 +94,6 @@ body {
     display: block;
 }
 
-/* box số điện thoại */
 .phone-box {
     margin-top:20px;
     font-size:22px;
@@ -140,18 +133,19 @@ body {
 </div>
 
 <script>
-/* NÚT ĐĂNG KÝ */
+/* ------------------------------
+        NÚT ĐĂNG KÝ
+--------------------------------*/
 function startRegister() {
     document.getElementById("mainContent").innerHTML = `
         <h1>Trước khi đăng ký bạn phải hoàn thành bài test!</h1>
         <button class="yt-btn" onclick="startTest()">BẮT ĐẦU TEST</button>
-        <div id="questionArea"></div>
     `;
 }
 
-/* ===========================
-      10 CÂU HỎI NGHIÊM TÚC
-=========================== */
+/* ------------------------------
+           CÂU HỎI
+--------------------------------*/
 let questions = [
     { ask: "Câu 1: 1 ngày có bao nhiêu giờ?", answers: ["A. 20", "B. 22", "C. 24", "D. 26"], correct: 2 },
     { ask: "Câu 2: Thủ đô của Việt Nam là?", answers: ["A. Hà Nội", "B. Sài Gòn", "C. Huế", "D. Đà Nẵng"], correct: 0 },
@@ -162,22 +156,32 @@ let questions = [
     { ask: "Câu 7: Việt Nam nằm ở châu lục nào?", answers: ["A. Châu Âu", "B. Châu Á", "C. Châu Phi", "D. Châu Mỹ"], correct: 1 },
     { ask: "Câu 8: 9 × 3 = ?", answers: ["A. 18", "B. 21", "C. 24", "D. 27"], correct: 1 },
     { ask: "Câu 9: Màu xanh lá là sự kết hợp của?", answers: ["A. Đỏ + Xanh dương", "B. Vàng + Xanh dương", "C. Vàng + Đỏ", "D. Đỏ + Trắng"], correct: 1 },
-    { ask: "Câu 10: Ngày có mấy tháng?", answers: ["A. 10", "B. 11", "C. 12", "D. 13"], correct: 2 }
+    { ask: "Câu 10: Một năm có bao nhiêu tháng?", answers: ["A. 10", "B. 11", "C. 12", "D. 13"], correct: 2 }
 ];
 
 let index = 0;
 let correctCount = 0;
 let userAnswer = -1;
 
-/* bắt đầu test */
+/* ------------------------------
+         BẮT ĐẦU TEST
+--------------------------------*/
 function startTest() {
     index = 0;
     correctCount = 0;
     userAnswer = -1;
+
+    // XÓA sạch mainContent và tạo vùng câu hỏi
+    document.getElementById("mainContent").innerHTML = `
+        <div id="questionArea"></div>
+    `;
+
     loadQuestion();
 }
 
-/* hiện câu hỏi */
+/* ------------------------------
+          HIỆN CÂU HỎI
+--------------------------------*/
 function loadQuestion() {
     let q = questions[index];
 
@@ -235,6 +239,7 @@ function checkResult() {
 
 </body>
 </html>
+
 
 
 
