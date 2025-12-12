@@ -6,7 +6,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-image: url("tri-an-pizza.jpg"); /* nền */
+            background-image: url("tri-an-pizza.jpg");
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -15,23 +15,38 @@
             color: white;
         }
 
-        /* 🌿 H1 màu xanh lá */
         body h1 {
             color: #00ff22 !important;
         }
 
-        /* 🌿 P màu xanh lá */
         body p {
             color: #00ff22 !important;
         }
 
         img {
-            margin-top: 30px;
             max-width: 300px;
             border-radius: 10px;
         }
 
-        /* ===== SỐ ĐIỆN THOẠI — HIỆU ỨNG VIỀN ===== */
+        /* Khung chứa ảnh và chữ nằm ngang */
+        .info-box {
+            margin-top: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px; /* khoảng cách giữa ảnh và chữ */
+            background: rgba(0,0,0,0.4);
+            padding: 20px;
+            border-radius: 15px;
+        }
+
+        .text-info {
+            font-size: 20px;
+            color: #00ff22;
+            max-width: 300px;
+            text-align: left;
+        }
+
         .phone-box {
             margin-top: 20px;
             font-size: 22px;
@@ -57,7 +72,16 @@
     <h1>Chào mừng đến trang web của Tráy Ghi nha!</h1>
     <p>Bạn có thể học saygex 4 đô la mỗi tháng trả càng cao ưu đãi càng thú vị.</p>
 
-    <img src="tri3.jpg" alt="Ảnh của Trí">
+    <!-- KHUNG MỚI: ẢNH + CHỮ BÊN CẠNH -->
+    <div class="info-box">
+        <img src="tri3.jpg" alt="Ảnh của Trí">
+
+        <div class="text-info">
+            <h2>Thông tin bên cạnh ảnh</h2>
+            <p>• Đây là nơi bạn có thể thêm mô tả, giới thiệu hoặc bất cứ thông tin nào.</p>
+            <p>• Chữ nằm ngay bên cạnh ảnh, gọn đẹp.</p>
+        </div>
+    </div>
 
     <div class="phone-box">
         SĐT:☎️ 036-670-1818
@@ -65,6 +89,8 @@
 
 </body>
 </html>
+
+
 
 
 
