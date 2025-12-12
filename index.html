@@ -12,6 +12,7 @@ html, body {
     font-family: Arial, sans-serif;
 }
 
+/* Nền luôn full màn hình, không bao giờ bị thu nhỏ */
 body {
     background-image: url("tri-an-pizza.jpg");
     background-size: cover;
@@ -19,9 +20,9 @@ body {
     background-repeat: no-repeat;
     color: white;
     text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+
+    min-height: 100vh;
+    display: block;  /* bỏ flex để không bị lỗi zoom/mảng đen */
 }
 
 /* Lớp phủ nền tối */
@@ -40,6 +41,7 @@ body {
     width: 90%;
     max-width: 600px;
     padding: 20px;
+    margin: 40px auto;  /* chống che, giữ ở giữa */
 }
 
 /* Nút đăng ký kiểu YouTube */
@@ -91,7 +93,7 @@ body {
     background: yellow;
 }
 
-/* Ảnh chính / câu hỏi */
+/* Ảnh chính / ảnh câu hỏi */
 .main-image {
     max-width: 80%;
     height: auto;
@@ -120,6 +122,7 @@ body {
 </style>
 </head>
 <body>
+
 <div class="overlay"></div>
 
 <div class="content">
@@ -138,7 +141,7 @@ body {
 </div>
 
 <script>
-// Bấm đăng ký — giữ header + tạo vùng questionArea bên trong mainContent
+/* BẤM ĐĂNG KÝ */
 function startRegister() {
     document.getElementById("mainContent").innerHTML = `
         <h1>Trước khi đăng ký bạn phải hoàn thành bài test!</h1>
@@ -148,14 +151,14 @@ function startRegister() {
 }
 
 /* ===========================
-        MẢNG CÂU HỎI (GIỮ NGUYÊN)
+      MẢNG CÂU HỎI GIỮ NGUYÊN
 =========================== */
 let questions = [
     { img: "q1.jpg", ask: "Câu 1: Đây là con gì?", answers: ["A. Con mèo","B. Con chó","C. Con gà","D. Con heo"], correct: 1 },
     { img: "q2.jpg", ask: "Câu 2: Trí thích gì nhất?", answers: ["A. Ăn cứt","B. Ngủ lọ","C. Chơi game femboy","D. Cả 3"], correct: 3 },
     { ask: "Câu 3: Bạn đến trang này để làm gì?", answers: ["A. Giải trí","B. Làm bài test","C. Xem web Trí","D. Cả 3"], correct: 3 },
     { img: "q4.jpg", ask: "Câu 4: Trong hình là gì?", answers: ["A. TP sĩ aura","B. Con vật","C. Đồ vật","D. Không biết"], correct: 0 },
-    { ask: "Câu 5: 2 + 2 = ?", answers: ["A. ko bt","B. kịch","C.ai hỏi ","D. dott"], correct: 1 },
+    { ask: "Câu 5: 2 + 2 = ?", answers: ["A. ko bt","B. kịch","C.ai hỏi","D. dott"], correct: 1 },
     { ask: "Câu 6: ai yêu nhi nhất?", answers: ["A. tôi","B. thk ảo aura hệ thống","C. ko có","D. bạn tôi"], correct: 1 },
     { ask: "Câu 7: Một tuần trí lọ fem mấy lần?", answers: ["A. 5","B. 6","C. 7 tỷ","D. 8"], correct: 2 },
     { ask: "Câu 8: TP có hình gì?", answers: ["A. Vuông","B. Tam giác","C. Tròn","D. Hình Pheo.B"], correct: 3 },
@@ -169,20 +172,19 @@ let userAnswer = -1;
 
 /* BẮT ĐẦU TEST */
 function startTest() {
-    // reset state để có thể làm lại từ đầu nếu cần
     index = 0;
     correctCount = 0;
     userAnswer = -1;
     loadQuestion();
 }
 
-/* HIỆN CÂU HỎI vào #questionArea */
+/* LOAD CÂU HỎI */
 function loadQuestion() {
     let q = questions[index];
 
     let html = `<div class='question-box'>
         <h2>${q.ask}</h2>
-        ${q.img ? `<img src="${q.img}" class="main-image" alt="Hình câu ${index+1}"><br><br>` : ""}`;
+        ${q.img ? `<img src="${q.img}" class="main-image">` : ""}`;
 
     q.answers.forEach((a,i) => {
         html += `<div class='answer' id='ans${i}' onclick='selectAnswer(${i})'>${a}</div>`;
@@ -190,35 +192,20 @@ function loadQuestion() {
 
     html += `<button class="next-btn" onclick="nextQuestion()">Tiếp theo</button></div>`;
 
-    // cập nhật chỉ vùng questionArea (khi startRegister đã tạo)
-    let area = document.getElementById("questionArea");
-    if (!area) {
-        // Nếu area không tồn tại (người dùng bấm Start Test từ trạng thái khác),
-        // tạo toàn bộ mainContent mới chứa questionArea để đảm bảo hiển thị đúng
-        document.getElementById("mainContent").innerHTML = `
-            <div id="questionArea">${html}</div>
-        `;
-    } else {
-        area.innerHTML = html;
-    }
-
-    // reset userAnswer (đảm bảo khi sang câu mới không dùng câu cũ)
-    userAnswer = -1;
+    document.getElementById("questionArea").innerHTML = html;
 }
 
 /* CHỌN ĐÁP ÁN */
 function selectAnswer(i) {
     userAnswer = i;
     document.querySelectorAll(".answer").forEach(x => x.classList.remove("selected"));
-    let el = document.getElementById("ans"+i);
-    if (el) el.classList.add("selected");
+    document.getElementById("ans"+i).classList.add("selected");
 }
 
-/* TIẾP THEO */
+/* TIẾP CÂU SAU */
 function nextQuestion() {
-    // nếu chưa chọn đáp án, không cho tiến (tùy bạn muốn hay không)
     if (userAnswer === -1) {
-        alert("Vui lòng chọn 1 đáp án trước khi tiếp tục.");
+        alert("Vui lòng chọn một đáp án.");
         return;
     }
 
@@ -226,19 +213,18 @@ function nextQuestion() {
     index++;
 
     if (index >= questions.length) {
-        // Thay toàn bộ mainContent bằng nút kiểm tra / kết quả
         document.getElementById("mainContent").innerHTML = `
             <h1>Đã hoàn thành 10 câu!</h1>
             <button class="check-btn" onclick="checkResult()">KIỂM TRA KẾT QUẢ</button>
         `;
     } else {
+        userAnswer = -1;
         loadQuestion();
     }
 }
 
-/* KIỂM TRA KẾT QUẢ */
+/* KẾT QUẢ */
 function checkResult() {
-    // Hiển thị kết quả thay toàn bộ mainContent (đảm bảo header test không còn)
     if (correctCount >= 5) {
         document.getElementById("mainContent").innerHTML =
             "<h1 style='color:lightgreen;'>Bạn đã vượt qua bài test hãy cùng đặt 1 phòng với tráy ✔️</h1>";
@@ -248,8 +234,10 @@ function checkResult() {
     }
 }
 </script>
+
 </body>
 </html>
+
 
 
 
