@@ -12,7 +12,7 @@ html, body {
     font-family: Arial, sans-serif;
 }
 
-/* Nền luôn full màn hình, không bao giờ bị thu nhỏ */
+/* NỀN FULL */
 body {
     background-image: url("tri-an-pizza.jpg");
     background-size: cover;
@@ -20,12 +20,10 @@ body {
     background-repeat: no-repeat;
     color: white;
     text-align: center;
-
     min-height: 100vh;
-    display: block;  /* bỏ flex để không bị lỗi zoom/mảng đen */
 }
 
-/* Lớp phủ nền tối */
+/* lớp tối */
 .overlay {
     position: fixed;
     top: 0;
@@ -36,15 +34,15 @@ body {
     z-index: -1;
 }
 
-/* Box chứa toàn bộ nội dung */
+/* căn giữa nội dung */
 .content {
     width: 90%;
     max-width: 600px;
     padding: 20px;
-    margin: 40px auto;  /* chống che, giữ ở giữa */
+    margin: 40px auto;
 }
 
-/* Nút đăng ký kiểu YouTube */
+/* nút đăng ký */
 .yt-btn {
     margin-top: 20px;
     background: red;
@@ -57,7 +55,7 @@ body {
     box-shadow: 0 0 10px red;
 }
 
-/* Khung câu hỏi */
+/* khung câu hỏi */
 .question-box {
     background: rgba(0,0,0,0.6);
     padding: 25px;
@@ -66,7 +64,7 @@ body {
     margin: 20px auto 0 auto;
 }
 
-/* Các đáp án */
+/* đáp án */
 .answer {
     display: block;
     margin: 10px 0;
@@ -93,7 +91,7 @@ body {
     background: yellow;
 }
 
-/* Ảnh chính / ảnh câu hỏi */
+/* ảnh trong câu hỏi */
 .main-image {
     max-width: 80%;
     height: auto;
@@ -102,7 +100,7 @@ body {
     display: block;
 }
 
-/* Box số điện thoại */
+/* box số điện thoại */
 .phone-box {
     margin-top:20px;
     font-size:22px;
@@ -121,6 +119,7 @@ body {
 }
 </style>
 </head>
+
 <body>
 
 <div class="overlay"></div>
@@ -128,7 +127,7 @@ body {
 <div class="content">
     <div id="mainContent">
         <h1>Chào mừng đến trang web của Trí!</h1>
-        <p>Bạn có thể học saygex 4 đô la mỗi tháng trả càng cao ưu đãi càng thú vị.</p>
+        <p>Bạn có thể học saygex chỉ 4 đô mỗi tháng. Ưu đãi cao hơn khi đăng ký gói lớn!</p>
 
         <img src="tri3.jpg" class="main-image" alt="Ảnh chính">
 
@@ -141,7 +140,7 @@ body {
 </div>
 
 <script>
-/* BẤM ĐĂNG KÝ */
+/* NÚT ĐĂNG KÝ */
 function startRegister() {
     document.getElementById("mainContent").innerHTML = `
         <h1>Trước khi đăng ký bạn phải hoàn thành bài test!</h1>
@@ -151,26 +150,26 @@ function startRegister() {
 }
 
 /* ===========================
-      MẢNG CÂU HỎI GIỮ NGUYÊN
+      10 CÂU HỎI NGHIÊM TÚC
 =========================== */
 let questions = [
-    { img: "q1.jpg", ask: "Câu 1: Đây là con gì?", answers: ["A. Con mèo","B. Con chó","C. Con gà","D. Con heo"], correct: 1 },
-    { img: "q2.jpg", ask: "Câu 2: Trí thích gì nhất?", answers: ["A. Ăn cứt","B. Ngủ lọ","C. Chơi game femboy","D. Cả 3"], correct: 3 },
-    { ask: "Câu 3: Bạn đến trang này để làm gì?", answers: ["A. Giải trí","B. Làm bài test","C. Xem web Trí","D. Cả 3"], correct: 3 },
-    { img: "q4.jpg", ask: "Câu 4: Trong hình là gì?", answers: ["A. TP sĩ aura","B. Con vật","C. Đồ vật","D. Không biết"], correct: 0 },
-    { ask: "Câu 5: 2 + 2 = ?", answers: ["A. ko bt","B. kịch","C.ai hỏi","D. dott"], correct: 1 },
-    { ask: "Câu 6: ai yêu nhi nhất?", answers: ["A. tôi","B. thk ảo aura hệ thống","C. ko có","D. bạn tôi"], correct: 1 },
-    { ask: "Câu 7: Một tuần trí lọ fem mấy lần?", answers: ["A. 5","B. 6","C. 7 tỷ","D. 8"], correct: 2 },
-    { ask: "Câu 8: TP có hình gì?", answers: ["A. Vuông","B. Tam giác","C. Tròn","D. Hình Pheo.B"], correct: 3 },
-    { ask: "Câu 9: Loài nào biết bay?", answers: ["A. Cá hồi","B. Chim thâm người nghệ","C. tao gay","D. yêu femboy"], correct: 1 },
-    { ask: "Câu 10: Ai nói câu 'tao không thắng được mày thì tao làm chó'?", answers: ["A. TP","B. MT","C. NA","D. TN"], correct: 0 }
+    { ask: "Câu 1: 1 ngày có bao nhiêu giờ?", answers: ["A. 20", "B. 22", "C. 24", "D. 26"], correct: 2 },
+    { ask: "Câu 2: Thủ đô của Việt Nam là?", answers: ["A. Hà Nội", "B. Sài Gòn", "C. Huế", "D. Đà Nẵng"], correct: 0 },
+    { ask: "Câu 3: 5 + 7 = ?", answers: ["A. 10", "B. 11", "C. 12", "D. 13"], correct: 2 },
+    { ask: "Câu 4: Trái Đất quay quanh điều gì?", answers: ["A. Mặt Trăng", "B. Mặt Trời", "C. Sao Hoả", "D. Sao Kim"], correct: 1 },
+    { ask: "Câu 5: Con vật nào biết bay?", answers: ["A. Cá", "B. Chó", "C. Chim", "D. Rùa"], correct: 2 },
+    { ask: "Câu 6: Nước có công thức hóa học là gì?", answers: ["A. CO2", "B. H2O", "C. O2", "D. N2"], correct: 1 },
+    { ask: "Câu 7: Việt Nam nằm ở châu lục nào?", answers: ["A. Châu Âu", "B. Châu Á", "C. Châu Phi", "D. Châu Mỹ"], correct: 1 },
+    { ask: "Câu 8: 9 × 3 = ?", answers: ["A. 18", "B. 21", "C. 24", "D. 27"], correct: 1 },
+    { ask: "Câu 9: Màu xanh lá là sự kết hợp của?", answers: ["A. Đỏ + Xanh dương", "B. Vàng + Xanh dương", "C. Vàng + Đỏ", "D. Đỏ + Trắng"], correct: 1 },
+    { ask: "Câu 10: Ngày có mấy tháng?", answers: ["A. 10", "B. 11", "C. 12", "D. 13"], correct: 2 }
 ];
 
 let index = 0;
 let correctCount = 0;
 let userAnswer = -1;
 
-/* BẮT ĐẦU TEST */
+/* bắt đầu test */
 function startTest() {
     index = 0;
     correctCount = 0;
@@ -178,13 +177,12 @@ function startTest() {
     loadQuestion();
 }
 
-/* LOAD CÂU HỎI */
+/* hiện câu hỏi */
 function loadQuestion() {
     let q = questions[index];
 
     let html = `<div class='question-box'>
-        <h2>${q.ask}</h2>
-        ${q.img ? `<img src="${q.img}" class="main-image">` : ""}`;
+        <h2>${q.ask}</h2>`;
 
     q.answers.forEach((a,i) => {
         html += `<div class='answer' id='ans${i}' onclick='selectAnswer(${i})'>${a}</div>`;
@@ -195,14 +193,14 @@ function loadQuestion() {
     document.getElementById("questionArea").innerHTML = html;
 }
 
-/* CHỌN ĐÁP ÁN */
+/* chọn đáp án */
 function selectAnswer(i) {
     userAnswer = i;
     document.querySelectorAll(".answer").forEach(x => x.classList.remove("selected"));
     document.getElementById("ans"+i).classList.add("selected");
 }
 
-/* TIẾP CÂU SAU */
+/* câu tiếp theo */
 function nextQuestion() {
     if (userAnswer === -1) {
         alert("Vui lòng chọn một đáp án.");
@@ -223,20 +221,22 @@ function nextQuestion() {
     }
 }
 
-/* KẾT QUẢ */
+/* kiểm tra kết quả */
 function checkResult() {
     if (correctCount >= 5) {
         document.getElementById("mainContent").innerHTML =
-            "<h1 style='color:lightgreen;'>Bạn đã vượt qua bài test hãy cùng đặt 1 phòng với tráy ✔️</h1>";
+            "<h1 style='color:lightgreen;'>Bạn đã vượt qua bài test! ✔️</h1>";
     } else {
         document.getElementById("mainContent").innerHTML =
-            "<h1 style='color:red;'>Bạn không đạt! Hãy thử lại nhé hoặc bị gay ❌</h1>";
+            "<h1 style='color:red;'>Bạn chưa đạt, hãy thử lại nhé! ❌</h1>";
     }
 }
 </script>
 
 </body>
 </html>
+
+
 
 
 
