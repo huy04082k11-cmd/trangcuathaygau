@@ -5,7 +5,6 @@
 <title>Trang Web Của Trí</title>
 
 <style>
-    /* Reset cơ bản */
     body {
         margin: 0;
         padding: 0;
@@ -81,36 +80,20 @@
         cursor: pointer;
         background: yellow;
     }
+</style>
 
-    /* ====================== */
-    /* CSS mới từ bạn */
-    /* ====================== */
-    .test-section {
-        display: flex;
-        flex-direction: column; /* xếp theo cột */
-        align-items: center;
-        justify-content: flex-start; /* nội dung bắt đầu từ trên */
-        min-height: 100vh; /* chiếm toàn bộ màn hình */
-        background-color: rgba(255,255,255,0.1); /* nền nhẹ để thấy ảnh nền */
-        padding-top: 40px;
-    }
+</head>
+<body>
 
-    .main-image {
-        max-width: 100%; /* ảnh co theo chiều ngang màn hình */
-        height: auto;    /* giữ tỉ lệ ảnh */
-        border-radius: 10px;
-        margin-bottom: 20px;
-    }
+<div class="overlay"></div>
 
-    .question-container {
-        margin-top: 20px; /* khoảng cách giữa ảnh và button */
-        text-align: center;
-        width: 90%;
-        max-width: 600px;
-    }
+<div class="content" id="mainContent">
+    <h1>Chào mừng đến trang web của Trí!</h1>
+    <p>Bạn có thể học saygex 4 đô la mỗi tháng trả càng cao ưu đãi càng thú vị.</p>
 
-    /* Box số điện thoại */
-    .phone-box {
+    <img src="tri3.jpg" width="300" style="border-radius:10px;">
+
+    <div class="phone-box" style="
         margin-top:20px;
         font-size:22px;
         font-weight:bold;
@@ -119,53 +102,9 @@
         padding:10px 20px;
         border-radius:10px;
         border:4px solid red;
-        animation: borderGlow 1s infinite alternate;
-    }
-
-    @keyframes borderGlow {
-        0% { box-shadow: 0 0 5px red; }
-        100% { box-shadow: 0 0 20px yellow; }
-    }
-</style>
-
-</head>
-<body>
-
-<div class="overlay"></div>
-
-<div class="content">
-
-    <h1>Chào mừng đến trang web của Trí!</h1>
-    <p>Bạn có thể học saygex 4 đô la mỗi tháng trả càng cao ưu đãi càng thú vị.</p>
-
-    <!-- Phần chính theo CSS mới -->
-    <div class="test-section">
-        <img src="tri3.jpg" class="main-image" alt="Hình minh họa">
-
-        <div class="question-container">
-            <div class="question-box">
-                <p>Câu hỏi sẽ hiển thị ở đây</p>
-                <span class="answer">Đáp án A</span>
-                <span class="answer">Đáp án B</span>
-                <span class="answer">Đáp án C</span>
-            </div>
-
-            <button class="next-btn">Tiếp theo</button>
-        </div>
-    </div>
-
-    <!-- SĐT -->
-    <div class="phone-box">
+        animation:borderGlow 1s infinite alternate;">
         SĐT: ☎️ 036-670-1818
     </div>
-
-    <!-- Nút kiểu YouTube -->
-    <button class="yt-btn">Đăng ký</button>
-
-</div>
-
-</body>
-</html>
 
 
     <!-- NÚT ĐĂNG KÍ -->
@@ -329,6 +268,7 @@ function checkResult() {
 
 </body>
 </html>
+
 
 
 
