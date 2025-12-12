@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Trang Web Của Trí</title>
+
 <style>
 html, body {
     margin: 0;
@@ -126,7 +127,7 @@ body {
         <h1>Chào mừng đến trang web của Trí!</h1>
         <p>Bạn có thể học saygex 4 đô la mỗi tháng trả càng cao ưu đãi càng thú vị.</p>
 
-        <img src="tri3.jpg" class="main-image">
+        <img src="tri3.jpg" class="main-image" alt="Ảnh chính">
 
         <div class="phone-box">
             SĐT: ☎️ 036-670-1818
@@ -137,9 +138,8 @@ body {
 </div>
 
 <script>
-// Bấm đăng ký
+// Bấm đăng ký — giữ header + tạo vùng questionArea bên trong mainContent
 function startRegister() {
-    // Thay nội dung bên trong mainContent mà không xóa .content
     document.getElementById("mainContent").innerHTML = `
         <h1>Trước khi đăng ký bạn phải hoàn thành bài test!</h1>
         <button class="yt-btn" onclick="startTest()">BẮT ĐẦU TEST</button>
@@ -147,7 +147,9 @@ function startRegister() {
     `;
 }
 
-// Mảng câu hỏi
+/* ===========================
+        MẢNG CÂU HỎI (GIỮ NGUYÊN)
+=========================== */
 let questions = [
     { img: "q1.jpg", ask: "Câu 1: Đây là con gì?", answers: ["A. Con mèo","B. Con chó","C. Con gà","D. Con heo"], correct: 1 },
     { img: "q2.jpg", ask: "Câu 2: Trí thích gì nhất?", answers: ["A. Ăn cứt","B. Ngủ lọ","C. Chơi game femboy","D. Cả 3"], correct: 3 },
@@ -165,16 +167,22 @@ let index = 0;
 let correctCount = 0;
 let userAnswer = -1;
 
-// Bắt đầu test
-function startTest() { loadQuestion(); }
+/* BẮT ĐẦU TEST */
+function startTest() {
+    // reset state để có thể làm lại từ đầu nếu cần
+    index = 0;
+    correctCount = 0;
+    userAnswer = -1;
+    loadQuestion();
+}
 
-// Hiện câu hỏi
+/* HIỆN CÂU HỎI vào #questionArea */
 function loadQuestion() {
     let q = questions[index];
 
     let html = `<div class='question-box'>
         <h2>${q.ask}</h2>
-        ${q.img ? `<img src="${q.img}" class="main-image"><br><br>` : ""}`;
+        ${q.img ? `<img src="${q.img}" class="main-image" alt="Hình câu ${index+1}"><br><br>` : ""}`;
 
     q.answers.forEach((a,i) => {
         html += `<div class='answer' id='ans${i}' onclick='selectAnswer(${i})'>${a}</div>`;
@@ -182,48 +190,68 @@ function loadQuestion() {
 
     html += `<button class="next-btn" onclick="nextQuestion()">Tiếp theo</button></div>`;
 
-    // Chỉ cập nhật questionArea, không thay đổi toàn bộ .content
+    // cập nhật chỉ vùng questionArea (khi startRegister đã tạo)
     let area = document.getElementById("questionArea");
-    if (area) area.innerHTML = html;
+    if (!area) {
+        // Nếu area không tồn tại (người dùng bấm Start Test từ trạng thái khác),
+        // tạo toàn bộ mainContent mới chứa questionArea để đảm bảo hiển thị đúng
+        document.getElementById("mainContent").innerHTML = `
+            <div id="questionArea">${html}</div>
+        `;
+    } else {
+        area.innerHTML = html;
+    }
+
+    // reset userAnswer (đảm bảo khi sang câu mới không dùng câu cũ)
+    userAnswer = -1;
 }
 
-// Chọn đáp án
+/* CHỌN ĐÁP ÁN */
 function selectAnswer(i) {
     userAnswer = i;
     document.querySelectorAll(".answer").forEach(x => x.classList.remove("selected"));
-    document.getElementById("ans"+i).classList.add("selected");
+    let el = document.getElementById("ans"+i);
+    if (el) el.classList.add("selected");
 }
 
-// Tiếp theo
+/* TIẾP THEO */
 function nextQuestion() {
+    // nếu chưa chọn đáp án, không cho tiến (tùy bạn muốn hay không)
+    if (userAnswer === -1) {
+        alert("Vui lòng chọn 1 đáp án trước khi tiếp tục.");
+        return;
+    }
+
     if (userAnswer === questions[index].correct) correctCount++;
-    userAnswer = -1;
     index++;
-    if (index >= questions.length) showResultButton();
-    else loadQuestion();
-}
 
-// Hiện nút kiểm tra kết quả
-function showResultButton() {
-    let area = document.getElementById("questionArea");
-    if (area) area.innerHTML = `
-        <h1>Đã hoàn thành 10 câu!</h1>
-        <button class="check-btn" onclick="checkResult()">KIỂM TRA KẾT QUẢ</button>
-    `;
-}
-
-// Kiểm tra kết quả
-function checkResult() {
-    let area = document.getElementById("questionArea");
-    if (correctCount >= 5) {
-        if (area) area.innerHTML = "<h1 style='color:lightgreen;'>Bạn đã vượt qua bài test ✔️</h1>";
+    if (index >= questions.length) {
+        // Thay toàn bộ mainContent bằng nút kiểm tra / kết quả
+        document.getElementById("mainContent").innerHTML = `
+            <h1>Đã hoàn thành 10 câu!</h1>
+            <button class="check-btn" onclick="checkResult()">KIỂM TRA KẾT QUẢ</button>
+        `;
     } else {
-        if (area) area.innerHTML = "<h1 style='color:red;'>Bạn không đạt! Hãy thử lại nhé ❌</h1>";
+        loadQuestion();
+    }
+}
+
+/* KIỂM TRA KẾT QUẢ */
+function checkResult() {
+    // Hiển thị kết quả thay toàn bộ mainContent (đảm bảo header test không còn)
+    if (correctCount >= 5) {
+        document.getElementById("mainContent").innerHTML =
+            "<h1 style='color:lightgreen;'>Bạn đã vượt qua bài test hãy cùng đặt 1 phòng với tráy ✔️</h1>";
+    } else {
+        document.getElementById("mainContent").innerHTML =
+            "<h1 style='color:red;'>Bạn không đạt! Hãy thử lại nhé hoặc bị gay ❌</h1>";
     }
 }
 </script>
 </body>
 </html>
+
+
 
 
 
