@@ -105,7 +105,7 @@
 
 <script>
 /* ===========================
-    PHẦN 1 — BẤM ĐĂNG KÍ
+    BẤM ĐĂNG KÍ
 =========================== */
 function startRegister() {
     document.getElementById("mainContent").innerHTML = `
@@ -115,45 +115,85 @@ function startRegister() {
 }
 
 /* ===========================
-    DANH SÁCH CÂU HỎI
+    10 CÂU HỎI + ĐÁP ÁN ĐÚNG
 =========================== */
+
 let questions = [
     {
         img: "q1.jpg",
         ask: "Câu 1: Đây là con gì?",
         answers: ["A. Con mèo", "B. Con chó", "C. Con gà", "D. Con heo"],
-        correct: 0
+        correct: 1   // B
     },
     {
         img: "q2.jpg",
         ask: "Câu 2: Màu này là màu gì?",
         answers: ["A. Đỏ", "B. Xanh", "C. Vàng", "D. Hồng"],
-        correct: 1
+        correct: 2   // C
+    },
+    {
+        img: "q3.jpg",
+        ask: "Câu 3:",
+        answers: ["A", "B", "C", "D"],
+        correct: 1   // B
+    },
+    {
+        img: "q4.jpg",
+        ask: "Câu 4:",
+        answers: ["A", "B", "C", "D"],
+        correct: 3   // D
+    },
+    {
+        img: "q5.jpg",
+        ask: "Câu 5:",
+        answers: ["A", "B", "C", "D"],
+        correct: 1   // B
+    },
+    {
+        img: "q6.jpg",
+        ask: "Câu 6:",
+        answers: ["A", "B", "C", "D"],
+        correct: 1   // B
+    },
+    {
+        img: "q7.jpg",
+        ask: "Câu 7:",
+        answers: ["A", "B", "C", "D"],
+        correct: 0   // A
+    },
+    {
+        img: "q8.jpg",
+        ask: "Câu 8:",
+        answers: ["A", "B", "C", "D"],
+        correct: 2   // C
+    },
+    {
+        img: "q9.jpg",
+        ask: "Câu 9:",
+        answers: ["A", "B", "C", "D"],
+        correct: 3   // D
+    },
+    {
+        img: "q10.jpg",
+        ask: "Câu 10:",
+        answers: ["A", "B", "C", "D"],
+        correct: 0   // A
     }
 ];
 
-// THÊM cho đến 10 câu
-while (questions.length < 10) {
-    questions.push({
-        img: "q" + (questions.length+1) + ".jpg",
-        ask: "Câu hỏi số " + (questions.length+1),
-        answers: ["A", "B", "C", "D"],
-        correct: 0
-    });
-}
-
 let index = 0;
 let correctCount = 0;
+let userAnswer = -1;
 
 /* ===========================
-    PHẦN 2 — BẮT ĐẦU TEST
+    BẮT ĐẦU TEST
 =========================== */
 function startTest() {
     loadQuestion();
 }
 
 /* ===========================
-    PHẦN 3 — HIỆN CÂU HỎI
+    HIỆN CÂU HỎI
 =========================== */
 function loadQuestion() {
     let q = questions[index];
@@ -174,8 +214,6 @@ function loadQuestion() {
 
     document.getElementById("mainContent").innerHTML = html;
 }
-
-let userAnswer = -1;
 
 /* CHỌN ĐÁP ÁN */
 function selectAnswer(i) {
@@ -199,7 +237,7 @@ function nextQuestion() {
 }
 
 /* ===========================
-    HIỆN NÚT KIỂM TRA KẾT QUẢ
+    NÚT KIỂM TRA KẾT QUẢ
 =========================== */
 function showResultButton() {
     document.getElementById("mainContent").innerHTML = `
@@ -209,7 +247,7 @@ function showResultButton() {
 }
 
 /* ===========================
-    KẾT QUẢ CUỐI
+    KẾT QUẢ
 =========================== */
 function checkResult() {
     if (correctCount >= 5) {
@@ -224,6 +262,7 @@ function checkResult() {
 
 </body>
 </html>
+
 
 
 
