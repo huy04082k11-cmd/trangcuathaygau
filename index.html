@@ -17,7 +17,7 @@
         text-align: center;
     }
 
-    /* Lớp phủ làm tối nền */
+    /* Lớp phủ nền tối */
     .overlay {
         position: fixed;
         top: 0;
@@ -32,7 +32,7 @@
         padding: 40px;
     }
 
-    /* Nút đăng kí kiểu YouTube */
+    /* Nút đăng ký kiểu YouTube */
     .yt-btn {
         margin-top: 20px;
         background: red;
@@ -58,10 +58,17 @@
     .answer {
         display: block;
         margin: 10px 0;
-        padding: 10px;
+        padding: 12px;
         background: rgba(255,255,255,0.2);
         border-radius: 8px;
         cursor: pointer;
+        border: 2px solid transparent;
+        transition: 0.2s;
+    }
+
+    .answer.selected {
+        border: 2px solid yellow;
+        background: rgba(255,255,150,0.3);
     }
 
     .next-btn, .check-btn {
@@ -81,7 +88,7 @@
 <div class="overlay"></div>
 
 <div class="content" id="mainContent">
-    <h1>Chào mừng đến trang web của Tráy Ghi nha!</h1>
+    <h1>Chào mừng đến trang web của Trí!</h1>
     <p>Bạn có thể học saygex 4 đô la mỗi tháng trả càng cao ưu đãi càng thú vị.</p>
 
     <img src="tri3.jpg" width="300" style="border-radius:10px;">
@@ -105,7 +112,7 @@
 
 <script>
 /* ===========================
-    BẤM ĐĂNG KÍ
+        BẤM ĐĂNG KÍ
 =========================== */
 function startRegister() {
     document.getElementById("mainContent").innerHTML = `
@@ -115,7 +122,7 @@ function startRegister() {
 }
 
 /* ===========================
-    10 CÂU HỎI + ĐÁP ÁN ĐÚNG
+        MẢNG CÂU HỎI
 =========================== */
 
 let questions = [
@@ -123,60 +130,54 @@ let questions = [
         img: "q1.jpg",
         ask: "Câu 1: Đây là con gì?",
         answers: ["A. Con mèo", "B. Con chó", "C. Con gà", "D. Con heo"],
-        correct: 1   // B
+        correct: 1
     },
     {
         img: "q2.jpg",
-        ask: "Câu 2: TP yêu ai?",
-        answers: ["A. nhi", "B. trí", "C. yêu hết bọn con gái chơi cả gay", "D. không biết tôi bị ngu"],
-        correct: 2   // C
+        ask: "Câu 2: Trí thích gì nhất?",
+        answers: ["A. Ăn cứt", "B. Ngủ lọ", "C. Chơi game femboyfemboy", "D. Cả 3"],
+        correct: 3
     },
     {
-        img: "q3.jpg",
-        ask: "Câu 3:vì sao bạn lại ở đây?",
-        answers: ["A. tìm hiểu trí có gay không", "B. quảng cáo nước dầu tái gầu", "C.tại thích vào xem thk trí ngu", "D. tao chọn hết"],
-        correct: 1   // D
+        ask: "Câu 3: Bạn đến trang này để làm gì?",
+        answers: ["A. Giải trí", "B. Làm bài test", "C. Xem web Trí", "D. Cả 3"],
+        correct: 3
     },
     {
         img: "q4.jpg",
-        ask: "Câu 4:con này là con gì?",
-        answers: ["A.bình minh óc heoheo", "B.thk đao", "C.không bt tôi bị ngu", "D.chí calo và a b đếu đúng"],
-        correct: 3   // D
+        ask: "Câu 4: Trong hình là gì?",
+        answers: ["A. TP sĩ aura", "B. Con vật", "C. Đồ vật", "D. Không biết"],
+        correct: 0
     },
     {
-        img: "q5.jpg",
-        ask: "Câu 5:mẹo mày bé",
-        answers: ["A.trí", "B.ko bt", "C.ko có", "D.tôi ngu quá"],
-        correct: 1   // A
+        ask: "Câu 5: 2 + 2 = ?",
+        answers: ["A. ko bt", "B. kịch", "C.ai hỏi ", "D. dott"],
+        correct: 1
     },
     {
-
-        ask: "Câu 6:bạn đã đọc? giờ bạn bị gay hãy chuyển lời nguyền sang người khác",
-        answers: ["A. mẹ bạn", "B.thk tái gầu tráy", "C.ông bạn", "D.bố bạn"],
-        correct: 1   // B
+        ask: "Câu 6: Màu nào sau đây là màu nóng?",
+        answers: ["A. Xanh lá", "B. Đỏ", "C. Xanh dương", "D. Đen"],
+        correct: 1
     },
     {
-        ask: "Câu 7:tìm câu đúng",
-        answers: ["A.trí không gay", "B.trí lọ fem,gay thích chuột chị dịch", "C.trí đẹp trai", "D.yêu trí"],
-        correct: 0   // B
+        ask: "Câu 7: Một tuần có bao nhiêu ngày?",
+        answers: ["A. 5", "B. 6", "C. 7", "D. 8"],
+        correct: 2
     },
     {
-        img: "q8.jpg",
-        ask: "Câu 8:đoán xem",
-        answers: ["A.chuẩn", "B.sai bét", "C.ko đ", "D.dott"],
-        correct: 2   // A
+        ask: "Câu 8: TP có hình gì?",
+        answers: ["A. Vuông", "B. Tam giác", "C. Tròn", "D. Hình Pheo.B"],
+        correct: 3
     },
     {
-        img: "q9.jpg",
-        ask: "Câu 9:bạn thấy trí như nào",
-        answers: ["A.bth", "B.vai gãy", "C.thẳng", "D.sigma"],
-        correct: 3   // B
+        ask: "Câu 9: Loài nào biết bay?",
+        answers: ["A. Cá hồi", "B. Chim thâm người nghệ", "C. tao gay", "D. yêu femboy"],
+        correct: 1
     },
     {
-        img: "q10.jpg",
-        ask: "Câu 10:tao không thắng được m tao làm chó(1 trận sumo đang diễn ra)hỏi ai vừa nói?",
-        answers: ["A.TP", "B.MT", "C.NA", "D.CLCL"],
-        correct: 0   // AA
+        ask: "Câu 10: tao không thắng được mày thì tao làm chó (một trận sumo đang diễn ra) hỏi ai đang nói?",
+        answers: ["A. TP", "B. MT", "C. NA", "D. TN"],
+        correct: 0
     }
 ];
 
@@ -185,25 +186,26 @@ let correctCount = 0;
 let userAnswer = -1;
 
 /* ===========================
-    BẮT ĐẦU TEST
+        BẮT ĐẦU TEST
 =========================== */
 function startTest() {
     loadQuestion();
 }
 
 /* ===========================
-    HIỆN CÂU HỎI
+        HIỆN CÂU HỎI
 =========================== */
 function loadQuestion() {
     let q = questions[index];
+
     let html = `
         <div class='question-box'>
             <h2>${q.ask}</h2>
-            <img src="${q.img}" width="250" style="border-radius:10px;"><br><br>
+            ${q.img ? `<img src="${q.img}" width="250" style="border-radius:10px;"><br><br>` : ""}
     `;
 
     q.answers.forEach((a, i) => {
-        html += `<div class='answer' onclick='selectAnswer(${i})'>${a}</div>`;
+        html += `<div class='answer' id='ans${i}' onclick='selectAnswer(${i})'>${a}</div>`;
     });
 
     html += `
@@ -214,12 +216,19 @@ function loadQuestion() {
     document.getElementById("mainContent").innerHTML = html;
 }
 
-/* CHỌN ĐÁP ÁN */
+/* ===========================
+        CHỌN ĐÁP ÁN
+=========================== */
 function selectAnswer(i) {
     userAnswer = i;
+
+    document.querySelectorAll(".answer").forEach(x => x.classList.remove("selected"));
+    document.getElementById("ans" + i).classList.add("selected");
 }
 
-/* NÚT TIẾP THEO */
+/* ===========================
+        TIẾP THEO
+=========================== */
 function nextQuestion() {
     if (userAnswer === questions[index].correct) {
         correctCount++;
@@ -236,7 +245,7 @@ function nextQuestion() {
 }
 
 /* ===========================
-    NÚT KIỂM TRA KẾT QUẢ
+        KIỂM TRA KẾT QUẢ
 =========================== */
 function showResultButton() {
     document.getElementById("mainContent").innerHTML = `
@@ -245,22 +254,20 @@ function showResultButton() {
     `;
 }
 
-/* ===========================
-    KẾT QUẢ
-=========================== */
 function checkResult() {
     if (correctCount >= 5) {
         document.getElementById("mainContent").innerHTML =
-            "<h1 style='color:lightgreen;'>Bạn đã vượt qua bài test hãy cùng đặt phòng cùng thầy! ✔️</h1>";
+            "<h1 style='color:lightgreen;'>Bạn đã vượt qua bài test hayx cungf ddatwj 1 phongf voiws tris ddeer hocj! ✔️</h1>";
     } else {
         document.getElementById("mainContent").innerHTML =
-            "<h1 style='color:red;'>Bạn bị loại ngu quá hóa gay đi! ❌</h1>";
+            "<h1 style='color:red;'>Bạn không đạt! Hãy thử lại nhé! hoacwj bij gay ❌</h1>";
     }
 }
 </script>
 
 </body>
 </html>
+
 
 
 
