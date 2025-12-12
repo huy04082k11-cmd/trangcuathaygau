@@ -147,16 +147,16 @@ function startRegister() {
            CÂU HỎI
 --------------------------------*/
 let questions = [
-    { ask: "Câu 1: 1 ngày có bao nhiêu giờ?", answers: ["A. 20", "B. 22", "C. 24", "D. 26"], correct: 2 },
-    { ask: "Câu 2: Thủ đô của Việt Nam là?", answers: ["A. Hà Nội", "B. Sài Gòn", "C. Huế", "D. Đà Nẵng"], correct: 0 },
-    { ask: "Câu 3: 5 + 7 = ?", answers: ["A. 10", "B. 11", "C. 12", "D. 13"], correct: 2 },
-    { ask: "Câu 4: Trái Đất quay quanh điều gì?", answers: ["A. Mặt Trăng", "B. Mặt Trời", "C. Sao Hoả", "D. Sao Kim"], correct: 1 },
-    { ask: "Câu 5: Con vật nào biết bay?", answers: ["A. Cá", "B. Chó", "C. Chim", "D. Rùa"], correct: 2 },
-    { ask: "Câu 6: Nước có công thức hóa học là gì?", answers: ["A. CO2", "B. H2O", "C. O2", "D. N2"], correct: 1 },
-    { ask: "Câu 7: Việt Nam nằm ở châu lục nào?", answers: ["A. Châu Âu", "B. Châu Á", "C. Châu Phi", "D. Châu Mỹ"], correct: 1 },
-    { ask: "Câu 8: 9 × 3 = ?", answers: ["A. 18", "B. 21", "C. 24", "D. 27"], correct: 1 },
-    { ask: "Câu 9: Màu xanh lá là sự kết hợp của?", answers: ["A. Đỏ + Xanh dương", "B. Vàng + Xanh dương", "C. Vàng + Đỏ", "D. Đỏ + Trắng"], correct: 1 },
-    { ask: "Câu 10: Một năm có bao nhiêu tháng?", answers: ["A. 10", "B. 11", "C. 12", "D. 13"], correct: 2 }
+   { img: "q1.jpg", ask: "Câu 1: Đây là con gì?", answers: ["A. Con mèo","B. Con chó","C. Con gà","D. Con heo"], correct: 1 },
+    { img: "q2.jpg", ask: "Câu 2: Trí thích gì nhất?", answers: ["A. Ăn cứt","B. Ngủ lọ","C. Chơi game femboy","D. Cả 3"], correct: 3 },
+    { ask: "Câu 3: Bạn đến trang này để làm gì?", answers: ["A. Giải trí","B. Làm bài test","C. Xem web Trí","D. Cả 3"], correct: 3 },
+    { img: "q4.jpg", ask: "Câu 4: Trong hình là gì?", answers: ["A. TP sĩ aura","B. Con vật","C. Đồ vật","D. Không biết"], correct: 0 },
+    { ask: "Câu 5: 2 + 2 = ?", answers: ["A. ko bt","B. kịch","C.ai hỏi","D. dott"], correct: 1 },
+    { ask: "Câu 6: ai yêu nhi nhất?", answers: ["A. tôi","B. thk ảo aura hệ thống","C. ko có","D. bạn tôi"], correct: 1 },
+    { ask: "Câu 7: Một tuần trí lọ fem mấy lần?", answers: ["A. 5","B. 6","C. 7 tỷ","D. 8"], correct: 2 },
+    { ask: "Câu 8: TP có hình gì?", answers: ["A. Vuông","B. Tam giác","C. Tròn","D. Hình Pheo.B"], correct: 3 },
+    { ask: "Câu 9: Loài nào biết bay?", answers: ["A. Cá hồi","B. Chim thâm người nghệ","C. tao gay","D. yêu femboy"], correct: 1 },
+    { ask: "Câu 10: Ai nói câu 'tao không thắng được mày thì tao làm chó'?", answers: ["A. TP","B. MT","C. NA","D. TN"], correct: 0 }
 ];
 
 let index = 0;
@@ -229,16 +229,17 @@ function nextQuestion() {
 function checkResult() {
     if (correctCount >= 5) {
         document.getElementById("mainContent").innerHTML =
-            "<h1 style='color:lightgreen;'>Bạn đã vượt qua bài test! ✔️</h1>";
+            "<h1 style='color:lightgreen;'>Bạn đã vượt qua bài testhãy cùng đặt 1 phòng với tráy ✔️</h1>";
     } else {
         document.getElementById("mainContent").innerHTML =
-            "<h1 style='color:red;'>Bạn chưa đạt, hãy thử lại nhé! ❌</h1>";
+            "<h1 style='color:red;'>Bạn chưa đạt, hãy nhường cho người khác đc chọn làm gay ❌</h1>";
     }
 }
 </script>
 
 </body>
 </html>
+
 
 
 
