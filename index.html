@@ -5,83 +5,110 @@
 <title>Trang Web Của Trí</title>
 
 <style>
-    body {
-        margin: 0;
-        padding: 0;
-        font-family: Arial, sans-serif;
-        background-image: url("tri-an-pizza.jpg");
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        color: white;
-        text-align: center;
-    }
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-image: url("tri-an-pizza.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: white;
+    text-align: center;
+}
 
-    /* Lớp phủ nền tối */
-    .overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.45);
-        z-index: -1;
-    }
+/* Lớp phủ nền tối */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.45);
+    z-index: -1;
+}
 
-    .content {
-        padding: 40px;
-    }
+.content {
+    padding: 40px;
+}
 
-    /* Nút đăng ký kiểu YouTube */
-    .yt-btn {
-        margin-top: 20px;
-        background: red;
-        color: white;
-        padding: 12px 25px;
-        font-size: 20px;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        box-shadow: 0 0 10px red;
-    }
+/* Nút đăng ký kiểu YouTube */
+.yt-btn {
+    margin-top: 20px;
+    background: red;
+    color: white;
+    padding: 12px 25px;
+    font-size: 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 0 10px red;
+}
 
-    /* Khung câu hỏi */
-    .question-box {
-        background: rgba(0,0,0,0.6);
-        padding: 25px;
-        border-radius: 15px;
-        width: 80%;
-        margin: auto;
-        margin-top: 20px;
-    }
+/* Khung câu hỏi */
+.question-box {
+    background: rgba(0,0,0,0.6);
+    padding: 25px;
+    border-radius: 15px;
+    width: 80%;
+    margin: auto;
+    margin-top: 20px;
+}
 
-    .answer {
-        display: block;
-        margin: 10px 0;
-        padding: 12px;
-        background: rgba(255,255,255,0.2);
-        border-radius: 8px;
-        cursor: pointer;
-        border: 2px solid transparent;
-        transition: 0.2s;
-    }
+/* Các đáp án */
+.answer {
+    display: block;
+    margin: 10px 0;
+    padding: 12px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 8px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: 0.2s;
+}
 
-    .answer.selected {
-        border: 2px solid yellow;
-        background: rgba(255,255,150,0.3);
-    }
+.answer.selected {
+    border: 2px solid yellow;
+    background: rgba(255,255,150,0.3);
+}
 
-    .next-btn, .check-btn {
-        margin-top: 20px;
-        padding: 12px 25px;
-        font-size: 18px;
-        border: none;
-        border-radius: 10px;
-        cursor: pointer;
-        background: yellow;
-    }
+.next-btn, .check-btn {
+    margin-top: 20px;
+    padding: 12px 25px;
+    font-size: 18px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    background: yellow;
+}
+
+/* Ảnh chính / câu hỏi */
+.main-image {
+    max-width: 80%;
+    height: auto;
+    border-radius: 10px;
+    margin: 20px auto;
+    display: block;
+}
+
+/* Box số điện thoại */
+.phone-box {
+    margin-top:20px;
+    font-size:22px;
+    font-weight:bold;
+    color:black;
+    background:rgba(255,255,255,0.8);
+    padding:10px 20px;
+    border-radius:10px;
+    border:4px solid red;
+    animation: borderGlow 1s infinite alternate;
+}
+
+@keyframes borderGlow {
+    0% { box-shadow: 0 0 5px red; }
+    100% { box-shadow: 0 0 20px yellow; }
+}
 </style>
-
 </head>
 <body>
 
@@ -91,30 +118,17 @@
     <h1>Chào mừng đến trang web của Trí!</h1>
     <p>Bạn có thể học saygex 4 đô la mỗi tháng trả càng cao ưu đãi càng thú vị.</p>
 
-    <img src="tri3.jpg" width="300" style="border-radius:10px;">
+    <img src="tri3.jpg" class="main-image">
 
-    <div class="phone-box" style="
-        margin-top:20px;
-        font-size:22px;
-        font-weight:bold;
-        color:black;
-        background:rgba(255,255,255,0.8);
-        padding:10px 20px;
-        border-radius:10px;
-        border:4px solid red;
-        animation:borderGlow 1s infinite alternate;">
+    <div class="phone-box">
         SĐT: ☎️ 036-670-1818
     </div>
 
-
-    <!-- NÚT ĐĂNG KÍ -->
     <button class="yt-btn" onclick="startRegister()">ĐĂNG KÍ</button>
 </div>
 
 <script>
-/* ===========================
-        BẤM ĐĂNG KÍ
-=========================== */
+// Bấm đăng ký
 function startRegister() {
     document.getElementById("mainContent").innerHTML = `
         <h1>Trước khi đăng ký bạn phải hoàn thành bài test!</h1>
@@ -122,132 +136,61 @@ function startRegister() {
     `;
 }
 
-/* ===========================
-        MẢNG CÂU HỎI
-=========================== */
-
+// Mảng câu hỏi
 let questions = [
-    {
-        img: "q1.jpg",
-        ask: "Câu 1: Đây là con gì?",
-        answers: ["A. Con mèo", "B. Con chó", "C. Con gà", "D. Con heo"],
-        correct: 1
-    },
-    {
-        img: "q2.jpg",
-        ask: "Câu 2: Trí thích gì nhất?",
-        answers: ["A. Ăn cứt", "B. Ngủ lọ", "C. Chơi game femboy", "D. Cả 3"],
-        correct: 3
-    },
-    {
-        ask: "Câu 3: Bạn đến trang này để làm gì?",
-        answers: ["A. Giải trí", "B. Làm bài test", "C. Xem web Trí", "D. Cả 3"],
-        correct: 3
-    },
-    {
-        img: "q4.jpg",
-        ask: "Câu 4: Trong hình là gì?",
-        answers: ["A. TP sĩ aura", "B. Con vật", "C. Đồ vật", "D. Không biết"],
-        correct: 0
-    },
-    {
-        ask: "Câu 5: 2 + 2 = ?",
-        answers: ["A. ko bt", "B. kịch", "C.ai hỏi ", "D. dott"],
-        correct: 1
-    },
-    {
-        ask: "Câu 6: ai yêu nhi nhất?",
-        answers: ["A. tôi", "B. thk ảo aura hệ thống", "C. ko có", "D. bạn tôitôi"],
-        correct: 1
-    },
-    {
-        ask: "Câu 7: Một tuần trí lọ fem mấy lần?",
-        answers: ["A. 5", "B. 6", "C. 7 tỷ", "D. 8"],
-        correct: 2
-    },
-    {
-        ask: "Câu 8: TP có hình gì?",
-        answers: ["A. Vuông", "B. Tam giác", "C. Tròn", "D. Hình Pheo.B"],
-        correct: 3
-    },
-    {
-        ask: "Câu 9: Loài nào biết bay?",
-        answers: ["A. Cá hồi", "B. Chim thâm người nghệ", "C. tao gay", "D. yêu femboy"],
-        correct: 1
-    },
-    {
-        ask: "Câu 10: tao không thắng được mày thì tao làm chó (một trận sumo đang diễn ra) hỏi ai đang nói?",
-        answers: ["A. TP", "B. MT", "C. NA", "D. TN"],
-        correct: 0
-    }
+    { img: "q1.jpg", ask: "Câu 1: Đây là con gì?", answers: ["A. Con mèo","B. Con chó","C. Con gà","D. Con heo"], correct: 1 },
+    { img: "q2.jpg", ask: "Câu 2: Trí thích gì nhất?", answers: ["A. Ăn cứt","B. Ngủ lọ","C. Chơi game femboy","D. Cả 3"], correct: 3 },
+    { ask: "Câu 3: Bạn đến trang này để làm gì?", answers: ["A. Giải trí","B. Làm bài test","C. Xem web Trí","D. Cả 3"], correct: 3 },
+    { img: "q4.jpg", ask: "Câu 4: Trong hình là gì?", answers: ["A. TP sĩ aura","B. Con vật","C. Đồ vật","D. Không biết"], correct: 0 },
+    { ask: "Câu 5: 2 + 2 = ?", answers: ["A. ko bt","B. kịch","C.ai hỏi ","D. dott"], correct: 1 },
+    { ask: "Câu 6: ai yêu nhi nhất?", answers: ["A. tôi","B. thk ảo aura hệ thống","C. ko có","D. bạn tôi"], correct: 1 },
+    { ask: "Câu 7: Một tuần trí lọ fem mấy lần?", answers: ["A. 5","B. 6","C. 7 tỷ","D. 8"], correct: 2 },
+    { ask: "Câu 8: TP có hình gì?", answers: ["A. Vuông","B. Tam giác","C. Tròn","D. Hình Pheo.B"], correct: 3 },
+    { ask: "Câu 9: Loài nào biết bay?", answers: ["A. Cá hồi","B. Chim thâm người nghệ","C. tao gay","D. yêu femboy"], correct: 1 },
+    { ask: "Câu 10: Ai nói câu 'tao không thắng được mày thì tao làm chó'?", answers: ["A. TP","B. MT","C. NA","D. TN"], correct: 0 }
 ];
 
 let index = 0;
 let correctCount = 0;
 let userAnswer = -1;
 
-/* ===========================
-        BẮT ĐẦU TEST
-=========================== */
-function startTest() {
-    loadQuestion();
-}
+// Bắt đầu test
+function startTest() { loadQuestion(); }
 
-/* ===========================
-        HIỆN CÂU HỎI
-=========================== */
+// Hiện câu hỏi
 function loadQuestion() {
     let q = questions[index];
 
-    let html = `
-        <div class='question-box'>
-            <h2>${q.ask}</h2>
-            ${q.img ? `<img src="${q.img}" width="250" style="border-radius:10px;"><br><br>` : ""}
-    `;
+    let html = `<div class='question-box'>
+        <h2>${q.ask}</h2>
+        ${q.img ? `<img src="${q.img}" class="main-image"><br><br>` : ""}`;
 
-    q.answers.forEach((a, i) => {
+    q.answers.forEach((a,i) => {
         html += `<div class='answer' id='ans${i}' onclick='selectAnswer(${i})'>${a}</div>`;
     });
 
-    html += `
-        <button class="next-btn" onclick="nextQuestion()">Tiếp theo</button>
-        </div>
-    `;
+    html += `<button class="next-btn" onclick="nextQuestion()">Tiếp theo</button></div>`;
 
     document.getElementById("mainContent").innerHTML = html;
 }
 
-/* ===========================
-        CHỌN ĐÁP ÁN
-=========================== */
+// Chọn đáp án
 function selectAnswer(i) {
     userAnswer = i;
-
     document.querySelectorAll(".answer").forEach(x => x.classList.remove("selected"));
-    document.getElementById("ans" + i).classList.add("selected");
+    document.getElementById("ans"+i).classList.add("selected");
 }
 
-/* ===========================
-        TIẾP THEO
-=========================== */
+// Tiếp theo
 function nextQuestion() {
-    if (userAnswer === questions[index].correct) {
-        correctCount++;
-    }
-
+    if (userAnswer === questions[index].correct) correctCount++;
     userAnswer = -1;
     index++;
-
-    if (index >= questions.length) {
-        showResultButton();
-    } else {
-        loadQuestion();
-    }
+    if (index >= questions.length) showResultButton();
+    else loadQuestion();
 }
 
-/* ===========================
-        KIỂM TRA KẾT QUẢ
-=========================== */
+// Hiện nút kiểm tra kết quả
 function showResultButton() {
     document.getElementById("mainContent").innerHTML = `
         <h1>Đã hoàn thành 10 câu!</h1>
@@ -255,19 +198,20 @@ function showResultButton() {
     `;
 }
 
+// Kiểm tra kết quả
 function checkResult() {
     if (correctCount >= 5) {
         document.getElementById("mainContent").innerHTML =
-            "<h1 style='color:lightgreen;'>Bạn đã vượt qua bài test hãy cùng trí đặt 1 phòng để học! ✔️</h1>";
+            "<h1 style='color:lightgreen;'>Bạn đã vượt qua bài test ✔️</h1>";
     } else {
         document.getElementById("mainContent").innerHTML =
-            "<h1 style='color:red;'>Bạn không đạt! Hãy thử lại nhé! hoặc bị gay ❌</h1>";
+            "<h1 style='color:red;'>Bạn không đạt! Hãy thử lại nhé ❌</h1>";
     }
 }
 </script>
-
 </body>
 </html>
+
 
 
 
