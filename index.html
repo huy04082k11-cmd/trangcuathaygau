@@ -133,21 +133,18 @@ body {
 </div>
 
 <script>
-/* ------------------------------
-        NÚT ĐĂNG KÝ
---------------------------------*/
+/* NÚT ĐĂNG KÝ */
 function startRegister() {
     document.getElementById("mainContent").innerHTML = `
         <h1>Trước khi đăng ký bạn phải hoàn thành bài test!</h1>
         <button class="yt-btn" onclick="startTest()">BẮT ĐẦU TEST</button>
+        <div id="questionArea"></div>
     `;
 }
 
-/* ------------------------------
-           CÂU HỎI
---------------------------------*/
+/* CÂU HỎI */
 let questions = [
-   { img: "giathinh.png", ask: "Câu 1: Đây là con gì?", answers: ["A. Con mèo","B. Con chó","C. Con gà","D. Con heo"], correct: 1 },
+    { img: "giathinh.png", ask: "Câu 1: Đây là con gì?", answers: ["A. Con mèo","B. Con chó","C. Con gà","D. Con heo"], correct: 1 },
     { img: "q2.jpg", ask: "Câu 2: Trí thích gì nhất?", answers: ["A. Ăn cứt","B. Ngủ lọ","C. Chơi game femboy","D. Cả 3"], correct: 3 },
     { ask: "Câu 3: Bạn đến trang này để làm gì?", answers: ["A. Giải trí","B. Làm bài test","C. Xem web Trí","D. Cả 3"], correct: 3 },
     { img: "phong2.jpg", ask: "Câu 4: Trong hình là gì?", answers: ["A. TP sĩ aura","B. Con vật","C. Đồ vật","D. Không biết"], correct: 0 },
@@ -163,30 +160,22 @@ let index = 0;
 let correctCount = 0;
 let userAnswer = -1;
 
-/* ------------------------------
-         BẮT ĐẦU TEST
---------------------------------*/
+/* BẮT ĐẦU TEST */
 function startTest() {
     index = 0;
     correctCount = 0;
     userAnswer = -1;
-
-    // XÓA sạch mainContent và tạo vùng câu hỏi
-    document.getElementById("mainContent").innerHTML = `
-        <div id="questionArea"></div>
-    `;
-
+    document.getElementById("mainContent").innerHTML = `<div id="questionArea"></div>`;
     loadQuestion();
 }
 
-/* ------------------------------
-          HIỆN CÂU HỎI
---------------------------------*/
+/* HIỆN CÂU HỎI */
 function loadQuestion() {
     let q = questions[index];
 
     let html = `<div class='question-box'>
-        <h2>${q.ask}</h2>`;
+        <h2>${q.ask}</h2>
+        ${q.img ? `<img src="${q.img}" class="main-image">` : ""}`; // hiển thị ảnh nếu có
 
     q.answers.forEach((a,i) => {
         html += `<div class='answer' id='ans${i}' onclick='selectAnswer(${i})'>${a}</div>`;
@@ -197,14 +186,14 @@ function loadQuestion() {
     document.getElementById("questionArea").innerHTML = html;
 }
 
-/* chọn đáp án */
+/* CHỌN ĐÁP ÁN */
 function selectAnswer(i) {
     userAnswer = i;
     document.querySelectorAll(".answer").forEach(x => x.classList.remove("selected"));
     document.getElementById("ans"+i).classList.add("selected");
 }
 
-/* câu tiếp theo */
+/* CÂU TIẾP THEO */
 function nextQuestion() {
     if (userAnswer === -1) {
         alert("Vui lòng chọn một đáp án.");
@@ -225,20 +214,21 @@ function nextQuestion() {
     }
 }
 
-/* kiểm tra kết quả */
+/* KIỂM TRA KẾT QUẢ */
 function checkResult() {
     if (correctCount >= 5) {
         document.getElementById("mainContent").innerHTML =
-            "<h1 style='color:lightgreen;'>Bạn đã vượt qua bài test hãy cùng đặt 1 phòng với tráy ✔️</h1>";
+            "<h1 style='color:lightgreen;'>Bạn đã vượt qua bài test! ✔️</h1>";
     } else {
         document.getElementById("mainContent").innerHTML =
-            "<h1 style='color:red;'>Bạn chưa đạt, hãy nhường cho người khác đc chọn làm gay ❌</h1>";
+            "<h1 style='color:red;'>Bạn chưa đạt, hãy thử lại! ❌</h1>";
     }
 }
 </script>
 
 </body>
 </html>
+
 
 
 
