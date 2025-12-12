@@ -3,18 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <title>Trang Web Của Trí</title>
-
 <style>
-body {
+html, body {
     margin: 0;
     padding: 0;
+    height: 100%;
     font-family: Arial, sans-serif;
+}
+
+body {
     background-image: url("tri-an-pizza.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     color: white;
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* Lớp phủ nền tối */
@@ -28,8 +34,11 @@ body {
     z-index: -1;
 }
 
+/* Box chứa toàn bộ nội dung */
 .content {
-    padding: 40px;
+    width: 90%;
+    max-width: 600px;
+    padding: 20px;
 }
 
 /* Nút đăng ký kiểu YouTube */
@@ -50,9 +59,8 @@ body {
     background: rgba(0,0,0,0.6);
     padding: 25px;
     border-radius: 15px;
-    width: 80%;
-    margin: auto;
-    margin-top: 20px;
+    width: 100%;
+    margin: 20px auto 0 auto;
 }
 
 /* Các đáp án */
@@ -111,28 +119,31 @@ body {
 </style>
 </head>
 <body>
-
 <div class="overlay"></div>
 
-<div class="content" id="mainContent">
-    <h1>Chào mừng đến trang web của Trí!</h1>
-    <p>Bạn có thể học saygex 4 đô la mỗi tháng trả càng cao ưu đãi càng thú vị.</p>
+<div class="content">
+    <div id="mainContent">
+        <h1>Chào mừng đến trang web của Trí!</h1>
+        <p>Bạn có thể học saygex 4 đô la mỗi tháng trả càng cao ưu đãi càng thú vị.</p>
 
-    <img src="tri3.jpg" class="main-image">
+        <img src="tri3.jpg" class="main-image">
 
-    <div class="phone-box">
-        SĐT: ☎️ 036-670-1818
+        <div class="phone-box">
+            SĐT: ☎️ 036-670-1818
+        </div>
+
+        <button class="yt-btn" onclick="startRegister()">ĐĂNG KÍ</button>
     </div>
-
-    <button class="yt-btn" onclick="startRegister()">ĐĂNG KÍ</button>
 </div>
 
 <script>
 // Bấm đăng ký
 function startRegister() {
+    // Thay nội dung bên trong mainContent mà không xóa .content
     document.getElementById("mainContent").innerHTML = `
         <h1>Trước khi đăng ký bạn phải hoàn thành bài test!</h1>
         <button class="yt-btn" onclick="startTest()">BẮT ĐẦU TEST</button>
+        <div id="questionArea"></div>
     `;
 }
 
@@ -171,7 +182,9 @@ function loadQuestion() {
 
     html += `<button class="next-btn" onclick="nextQuestion()">Tiếp theo</button></div>`;
 
-    document.getElementById("mainContent").innerHTML = html;
+    // Chỉ cập nhật questionArea, không thay đổi toàn bộ .content
+    let area = document.getElementById("questionArea");
+    if (area) area.innerHTML = html;
 }
 
 // Chọn đáp án
@@ -192,7 +205,8 @@ function nextQuestion() {
 
 // Hiện nút kiểm tra kết quả
 function showResultButton() {
-    document.getElementById("mainContent").innerHTML = `
+    let area = document.getElementById("questionArea");
+    if (area) area.innerHTML = `
         <h1>Đã hoàn thành 10 câu!</h1>
         <button class="check-btn" onclick="checkResult()">KIỂM TRA KẾT QUẢ</button>
     `;
@@ -200,17 +214,17 @@ function showResultButton() {
 
 // Kiểm tra kết quả
 function checkResult() {
+    let area = document.getElementById("questionArea");
     if (correctCount >= 5) {
-        document.getElementById("mainContent").innerHTML =
-            "<h1 style='color:lightgreen;'>Bạn đã vượt qua bài test ✔️</h1>";
+        if (area) area.innerHTML = "<h1 style='color:lightgreen;'>Bạn đã vượt qua bài test ✔️</h1>";
     } else {
-        document.getElementById("mainContent").innerHTML =
-            "<h1 style='color:red;'>Bạn không đạt! Hãy thử lại nhé ❌</h1>";
+        if (area) area.innerHTML = "<h1 style='color:red;'>Bạn không đạt! Hãy thử lại nhé ❌</h1>";
     }
 }
 </script>
 </body>
 </html>
+
 
 
 
