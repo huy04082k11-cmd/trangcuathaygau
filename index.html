@@ -145,7 +145,7 @@ function startRegister() {
 /* CÂU HỎI */
 let questions = [
     { img: "giathinh.png", ask: "Câu 1: Đây là con gì?", answers: ["A. Con mèo","B. Con chó","C. Con gà","D. Con heo"], correct: 1 },
-    { img: "q2.jpg", ask: "Câu 2: Trí thích gì nhất?", answers: ["A. Ăn cứt","B. Ngủ lọ","C. Chơi game femboy","D. Cả 3"], correct: 3 },
+    { img: "minhtrithamquan.jpg", ask: "Câu 2: Trí thích gì nhất?", answers: ["A. Ăn cứt","B. Ngủ lọ","C. Chơi game femboy","D. Cả 3"], correct: 3 },
     { ask: "Câu 3: Bạn đến trang này để làm gì?", answers: ["A. Giải trí","B. Làm bài test","C. Xem web Trí","D. Cả 3"], correct: 3 },
     { img: "phong2.jpg", ask: "Câu 4: Trong hình là gì?", answers: ["A. TP sĩ aura","B. Con vật","C. Đồ vật","D. Không biết"], correct: 0 },
     { ask: "Câu 5: 2 + 2 = ?", answers: ["A. ko bt","B. kịch","C.ai hỏi","D. dott"], correct: 1 },
@@ -218,16 +218,17 @@ function nextQuestion() {
 function checkResult() {
     if (correctCount >= 5) {
         document.getElementById("mainContent").innerHTML =
-            "<h1 style='color:lightgreen;'>Bạn đã vượt qua bài test! ✔️</h1>";
+            "<h1 style='color:lightgreen;'>Bạn đã vượt qua bài test ư vậy hãy đặt 1 phòng cùng tráy nhé ! ✔️</h1>";
     } else {
         document.getElementById("mainContent").innerHTML =
-            "<h1 style='color:red;'>Bạn chưa đạt, hãy thử lại! ❌</h1>";
+            "<h1 style='color:red;'>Bạn chưa đạt, sao ngu thế hả! ❌</h1>";
     }
 }
 </script>
 
 </body>
 </html>
+
 
 
 
