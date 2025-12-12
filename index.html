@@ -1,113 +1,230 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <title>Trang Web Của Trí</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-image: url("tri-an-pizza.jpg");
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            margin: 0;
-            padding: 0;
-        }
+<meta charset="UTF-8">
+<title>Trang Web Của Trí</title>
 
-        /* LỚP PHỦ NỀN LÀM TỐI ẢNH */
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.45); /* chỉnh mức tối tại đây */
-            z-index: -1;
-        }
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background-image: url("tri-an-pizza.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        color: white;
+        text-align: center;
+    }
 
-        /* Nội dung site */
-        .content {
-            padding: 50px;
-            text-align: center;
-            color: white;
-        }
+    /* Lớp phủ làm tối nền */
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.45);
+        z-index: -1;
+    }
 
-        h1 {
-            color: #00ff22 !important;
-        }
+    .content {
+        padding: 40px;
+    }
 
-        p {
-            color: #00ff22 !important;
-        }
+    /* Nút đăng kí kiểu YouTube */
+    .yt-btn {
+        margin-top: 20px;
+        background: red;
+        color: white;
+        padding: 12px 25px;
+        font-size: 20px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        box-shadow: 0 0 10px red;
+    }
 
-        img {
-            max-width: 300px;
-            border-radius: 10px;
-        }
+    /* Khung câu hỏi */
+    .question-box {
+        background: rgba(0,0,0,0.6);
+        padding: 25px;
+        border-radius: 15px;
+        width: 80%;
+        margin: auto;
+        margin-top: 20px;
+    }
 
-        .info-box {
-            margin-top: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 30px;
-            background: rgba(0,0,0,0.4);
-            padding: 20px;
-            border-radius: 15px;
-        }
+    .answer {
+        display: block;
+        margin: 10px 0;
+        padding: 10px;
+        background: rgba(255,255,255,0.2);
+        border-radius: 8px;
+        cursor: pointer;
+    }
 
-        .text-info {
-            font-size: 20px;
-            color: #00ff22;
-            max-width: 320px;
-            text-align: left;
-        }
+    .next-btn, .check-btn {
+        margin-top: 20px;
+        padding: 12px 25px;
+        font-size: 18px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        background: yellow;
+    }
+</style>
 
-        .phone-box {
-            margin-top: 20px;
-            font-size: 22px;
-            font-weight: bold;
-            color: black;
-            background: rgba(255,255,255,0.7);
-            padding: 10px 20px;
-            display: inline-block;
-            border-radius: 10px;
-            border: 4px solid red;
-            animation: borderGlow 1s infinite alternate;
-        }
-
-        @keyframes borderGlow {
-            0% { border-color: red; box-shadow: 0 0 15px red; }
-            100% { border-color: yellow; box-shadow: 0 0 15px yellow; }
-        }
-    </style>
 </head>
 <body>
 
-    <!-- lớp phủ làm tối hình nền -->
-    <div class="overlay"></div>
+<div class="overlay"></div>
 
-    <div class="content">
-        <h1>Chào mừng đến trang web của Tráy Ghi nha!</h1>
-        <p>Bạn có thể học saygex 4 đô la mỗi tháng trả càng cao ưu đãi càng thú vị.</p>
+<div class="content" id="mainContent">
+    <h1>Chào mừng đến trang web của Tráy Ghi nha!</h1>
+    <p>Bạn có thể học saygex 4 đô la mỗi tháng trả càng cao ưu đãi càng thú vị.</p>
 
-        <div class="info-box">
-            <img src="tri3.jpg" alt="Ảnh của Trí">
-            
-            <div class="text-info">
-                <h2>Thông tin hiển thị bên phải ảnh</h2>
-                <p>• Đây là đoạn mô tả nằm bên phải ảnh.</p>
-                <p>• Bạn có thể thay bằng nội dung bạn muốn.</p>
-            </div>
-        </div>
+    <img src="tri3.jpg" width="300" style="border-radius:10px;">
 
-        <div class="phone-box">
-            SĐT: ☎️ 036-670-1818
-        </div>
+    <div class="phone-box" style="
+        margin-top:20px;
+        font-size:22px;
+        font-weight:bold;
+        color:black;
+        background:rgba(255,255,255,0.8);
+        padding:10px 20px;
+        border-radius:10px;
+        border:4px solid red;
+        animation:borderGlow 1s infinite alternate;">
+        SĐT: ☎️ 036-670-1818
     </div>
+
+    <!-- NÚT ĐĂNG KÍ -->
+    <button class="yt-btn" onclick="startRegister()">ĐĂNG KÍ</button>
+</div>
+
+<script>
+/* ===========================
+    PHẦN 1 — BẤM ĐĂNG KÍ
+=========================== */
+function startRegister() {
+    document.getElementById("mainContent").innerHTML = `
+        <h1>Trước khi đăng ký bạn phải hoàn thành bài test!</h1>
+        <button class="yt-btn" onclick="startTest()">BẮT ĐẦU TEST</button>
+    `;
+}
+
+/* ===========================
+    DANH SÁCH CÂU HỎI
+=========================== */
+let questions = [
+    {
+        img: "q1.jpg",
+        ask: "Câu 1: Đây là con gì?",
+        answers: ["A. Con mèo", "B. Con chó", "C. Con gà", "D. Con heo"],
+        correct: 0
+    },
+    {
+        img: "q2.jpg",
+        ask: "Câu 2: Màu này là màu gì?",
+        answers: ["A. Đỏ", "B. Xanh", "C. Vàng", "D. Hồng"],
+        correct: 1
+    }
+];
+
+// THÊM cho đến 10 câu
+while (questions.length < 10) {
+    questions.push({
+        img: "q" + (questions.length+1) + ".jpg",
+        ask: "Câu hỏi số " + (questions.length+1),
+        answers: ["A", "B", "C", "D"],
+        correct: 0
+    });
+}
+
+let index = 0;
+let correctCount = 0;
+
+/* ===========================
+    PHẦN 2 — BẮT ĐẦU TEST
+=========================== */
+function startTest() {
+    loadQuestion();
+}
+
+/* ===========================
+    PHẦN 3 — HIỆN CÂU HỎI
+=========================== */
+function loadQuestion() {
+    let q = questions[index];
+    let html = `
+        <div class='question-box'>
+            <h2>${q.ask}</h2>
+            <img src="${q.img}" width="250" style="border-radius:10px;"><br><br>
+    `;
+
+    q.answers.forEach((a, i) => {
+        html += `<div class='answer' onclick='selectAnswer(${i})'>${a}</div>`;
+    });
+
+    html += `
+        <button class="next-btn" onclick="nextQuestion()">Tiếp theo</button>
+        </div>
+    `;
+
+    document.getElementById("mainContent").innerHTML = html;
+}
+
+let userAnswer = -1;
+
+/* CHỌN ĐÁP ÁN */
+function selectAnswer(i) {
+    userAnswer = i;
+}
+
+/* NÚT TIẾP THEO */
+function nextQuestion() {
+    if (userAnswer === questions[index].correct) {
+        correctCount++;
+    }
+
+    userAnswer = -1;
+    index++;
+
+    if (index >= questions.length) {
+        showResultButton();
+    } else {
+        loadQuestion();
+    }
+}
+
+/* ===========================
+    HIỆN NÚT KIỂM TRA KẾT QUẢ
+=========================== */
+function showResultButton() {
+    document.getElementById("mainContent").innerHTML = `
+        <h1>Đã hoàn thành 10 câu!</h1>
+        <button class="check-btn" onclick="checkResult()">KIỂM TRA KẾT QUẢ</button>
+    `;
+}
+
+/* ===========================
+    KẾT QUẢ CUỐI
+=========================== */
+function checkResult() {
+    if (correctCount >= 5) {
+        document.getElementById("mainContent").innerHTML =
+            "<h1 style='color:lightgreen;'>Bạn đã vượt qua bài test! ✔️</h1>";
+    } else {
+        document.getElementById("mainContent").innerHTML =
+            "<h1 style='color:red;'>Bạn bị loại! ❌</h1>";
+    }
+}
+</script>
 
 </body>
 </html>
+
 
 
 
