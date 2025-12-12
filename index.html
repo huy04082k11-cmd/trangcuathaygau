@@ -45,7 +45,7 @@ body {
     border-radius: 15px;
 }
 
-/* Nút đăng ký và kiểm tra */
+/* Nút bấm */
 button {
     margin-top: 20px;
     padding: 12px 25px;
@@ -55,15 +55,8 @@ button {
     cursor: pointer;
 }
 
-.yt-btn {
-    background: red;
-    color: white;
-    box-shadow: 0 0 10px red;
-}
-
-.next-btn, .check-btn, .reward-btn {
-    background: yellow;
-}
+.yt-btn { background: red; color: white; box-shadow: 0 0 10px red; }
+.next-btn, .check-btn, .reward-btn { background: yellow; }
 
 /* Khung câu hỏi */
 .question-box {
@@ -73,7 +66,7 @@ button {
     margin: 20px auto 0 auto;
 }
 
-/* Các đáp án */
+/* Đáp án */
 .answer {
     display: block;
     margin: 10px 0;
@@ -90,7 +83,7 @@ button {
     background: rgba(255,255,150,0.3);
 }
 
-/* Ảnh câu hỏi và chính */
+/* Ảnh câu hỏi & phần thưởng */
 .main-image {
     max-width: 100%;
     max-height: 60vh;
@@ -126,11 +119,8 @@ button {
 <div class="content" id="mainContent">
     <h1>Chào mừng đến trang web của Trí!</h1>
     <p>Bạn có thể học saygex chỉ 4 đô mỗi tháng. Ưu đãi cao hơn khi đăng ký gói lớn!</p>
-
     <img src="tri3.jpg" class="main-image" alt="Ảnh chính">
-
     <div class="phone-box">SĐT: ☎️ 036-670-1818</div>
-
     <button class="yt-btn" onclick="startRegister()">ĐĂNG KÍ</button>
 </div>
 
@@ -196,31 +186,38 @@ function nextQuestion() {
             <h1>Đã hoàn thành 10 câu!</h1>
             <button class="check-btn" onclick="checkResult()">KIỂM TRA KẾT QUẢ</button>
         `;
-    } else {
-        loadQuestion();
-    }
+    } else { loadQuestion(); }
 }
 
 function checkResult() {
     if (correctCount >= 10) {
         document.getElementById("mainContent").innerHTML = `
             <h1 style='color:lightgreen;'>Bạn đã vượt qua bài test! ✔️</h1>
-            <button class="reward-btn" onclick="showReward()">Nhận phần thưởng</button>
+            <button class="reward-btn" onclick="showReward('win')">Nhận phần thưởng</button>
             <div id="rewardArea"></div>
         `;
     } else {
-        document.getElementById("mainContent").innerHTML =
-            "<h1 style='color:red;'>Bạn chưa đạt, hãy thử lại! ❌</h1>";
+        document.getElementById("mainContent").innerHTML = `
+            <h1 style='color:red;'>Bạn chưa đạt, hãy thử lại! ❌</h1>
+            <button class="reward-btn" onclick="showReward('lose')">Nhận quà an ủi</button>
+            <div id="rewardArea"></div>
+        `;
     }
 }
 
-function showReward() {
-    document.getElementById("rewardArea").innerHTML = `<img src="spiritfruit.webp" class="main-image">`;
+function showReward(result) {
+    if(result === 'win'){
+        document.getElementById("rewardArea").innerHTML = `<img src="spiritfruit.webp" class="main-image">`;
+    } else {
+        document.getElementById("rewardArea").innerHTML = `<img src="trijumscare.jpg" class="main-image">`;
+    }
 }
 </script>
 
 </body>
 </html>
+
+
 
 
 
