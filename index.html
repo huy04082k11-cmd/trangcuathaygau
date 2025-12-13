@@ -2,122 +2,31 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>Trang Web Của Trí</title>
+<title>Trang Web Của Trí - Gacha Game</title>
 <style>
-/* RESET */
-html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    font-family: Arial, sans-serif;
-    overflow: hidden;
-}
-/* BACKGROUND */
-body {
-    background: url("tri-an-pizza.jpg") no-repeat center center fixed;
-    background-size: cover;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-}
-/* OVERLAY */
-.overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.25);
-    z-index: 0;
-}
-/* CONTENT */
-.content {
-    position: relative;
-    z-index: 2;
-    width: 90%;
-    max-width: 600px;
-    max-height: 95vh;
-    overflow-y: auto;
-    padding: 20px;
-    text-align: center;
-}
-/* BUTTON */
-button {
-    margin-top: 20px;
-    padding: 12px 25px;
-    font-size: 18px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-}
-.yt-btn { background: red; color: white; box-shadow: 0 0 10px red; }
-.next-btn, .check-btn, .reward-btn { background: yellow; }
-/* QUESTION BOX */
-.question-box {
-    background: rgba(0,0,0,0.6);
-    padding: 25px;
-    border-radius: 15px;
-    margin-top: 20px;
-}
-/* ANSWERS */
-.answer {
-    margin: 10px 0;
-    padding: 12px;
-    background: rgba(255,255,255,0.2);
-    border-radius: 8px;
-    cursor: pointer;
-    border: 2px solid transparent;
-}
-.answer.selected {
-    border: 2px solid yellow;
-    background: rgba(255,255,150,0.3);
-}
-/* IMAGES */
-.main-image {
-    max-width: 100%;
-    max-height: 55vh;
-    border-radius: 10px;
-    margin: 15px auto;
-    display: block;
-}
-/* PHONE BOX */
-.phone-box {
-    margin-top: 15px;
-    font-size: 22px;
-    font-weight: bold;
-    color: black;
-    background: rgba(255,255,255,0.85);
-    padding: 10px 20px;
-    border-radius: 10px;
-    border: 4px solid red;
-    animation: glow 1s infinite alternate;
-}
-@keyframes glow {
-    from { box-shadow: 0 0 5px red; }
-    to { box-shadow: 0 0 20px yellow; }
-}
-/* UPDATE BOX */
-.update-box {
-    margin-top: 25px;
-    background: rgba(0,0,0,0.6);
-    padding: 15px;
-    border-radius: 15px;
-    text-align: left;
-}
-.update-box h2 {
-    text-align: center;
-    color: #ffd700;
-}
-.update-box li {
-    margin: 6px 0;
-    font-size: 15px;
-}
-/* SNOW */
-#snow {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 1;
-}
+html, body { margin:0; padding:0; width:100%; height:100%; font-family:Arial,sans-serif; overflow:hidden;}
+body { background:url("tri-an-pizza.jpg") no-repeat center center fixed; background-size:cover; display:flex; justify-content:center; align-items:center; color:white;}
+.overlay {position:fixed; inset:0; background:rgba(0,0,0,0.25); z-index:0;}
+.content {position:relative; z-index:2; width:90%; max-width:600px; max-height:95vh; overflow-y:auto; padding:20px; text-align:center;}
+button {margin-top:20px; padding:12px 25px; font-size:18px; border:none; border-radius:10px; cursor:pointer;}
+.yt-btn { background:red; color:white; box-shadow:0 0 10px red;}
+.next-btn, .check-btn, .reward-btn { background:yellow;}
+.question-box {background:rgba(0,0,0,0.6); padding:25px; border-radius:15px; margin-top:20px;}
+.answer {margin:10px 0; padding:12px; background:rgba(255,255,255,0.2); border-radius:8px; cursor:pointer; border:2px solid transparent;}
+.answer.selected {border:2px solid yellow; background:rgba(255,255,150,0.3);}
+.main-image {max-width:100%; max-height:55vh; border-radius:10px; margin:15px auto; display:block;}
+.phone-box {margin-top:15px; font-size:22px; font-weight:bold; color:black; background:rgba(255,255,255,0.85); padding:10px 20px; border-radius:10px; border:4px solid red; animation:glow 1s infinite alternate;}
+@keyframes glow { from { box-shadow:0 0 5px red;} to { box-shadow:0 0 20px yellow; } }
+.update-box { margin-top:25px; background:rgba(0,0,0,0.6); padding:15px; border-radius:15px; text-align:left; }
+.update-box h2 { text-align:center; color:#ffd700; }
+.update-box li { margin:6px 0; font-size:15px; }
+#gameArea {display:none; position:relative; z-index:2; width:600px; height:500px; margin:auto; text-align:center; background:rgba(0,0,0,0.6); border-radius:15px; padding:15px;}
+#gameArea button { margin:5px; font-size:16px; }
+#log { height:120px; overflow-y:auto; text-align:left; margin-top:10px; background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;}
+.stats { margin-top:10px; }
+.hp-bar { width:100%; height:20px; background:#555; border-radius:10px; margin:5px 0; }
+.hp-fill { height:100%; background:lime; border-radius:10px; text-align:center; color:black; font-weight:bold; }
+#snow {position:fixed; inset:0; pointer-events:none; z-index:1;}
 </style>
 </head>
 <body>
@@ -125,29 +34,35 @@ button {
 <div class="overlay"></div>
 <canvas id="snow"></canvas>
 
+<!-- MENU CHÍNH -->
 <div class="content" id="mainContent">
     <h1>Chào mừng đến trang web của Trí!</h1>
     <p>Bạn có thể học saygex chỉ 4 đô mỗi tháng.</p>
-
     <img src="tritangquafemboy.jpg" class="main-image">
-
     <div class="phone-box">☎️ 036-670-1818</div>
-
     <button class="yt-btn" onclick="startRegister()">ĐĂNG KÍ</button>
-
     <div class="update-box">
         <h2>📌 Cập nhật website</h2>
         <ul>
             <li>🎄 Hiệu ứng tuyết rơi Giáng Sinh</li>
             <li>🧠 Test 10 câu hỏi có hình ảnh</li>
             <li>🎁 Phần thưởng thắng / thua</li>
-            <li>📱 Fix lỗi zoom 90–100%</li>
+            <li>🎮 Gacha nhiều nhân vật + phó bản</li>
         </ul>
     </div>
 </div>
 
+<!-- GAME AREA -->
+<div id="gameArea">
+    <h2>Phó bản đánh quái</h2>
+    <div id="playerStats" class="stats"></div>
+    <div id="monsterStats" class="stats"></div>
+    <div id="actions"></div>
+    <div id="log"></div>
+</div>
+
 <script>
-/* ===== TEST + PHẦN THƯỞNG ===== */
+// ===== TEST + PHẦN THƯỞNG =====
 let questions = [
  { img:"giathinh.png", ask:"Câu 1: Đây là con gì?", answers:["A. Con mèo","B. Con chó","C. Con gà","D. Con heo"], correct:1 },
  { img:"minhtrithamquan.jpg", ask:"Câu 2: Trí thích gì nhất?", answers:["A. Ăn cứt","B. Ngủ lọ","C. Chơi game femboy","D. Cả 3"], correct:3 },
@@ -160,7 +75,6 @@ let questions = [
  { ask:"Câu 9: Loài nào biết bay?", answers:["A. Cá hồi","B. Chim thâm người nghệ","C. tao gay","D. yêu femboy"], correct:1 },
  { ask:"Câu 10: Ai nói câu 'tao không giết được mày thì tao làm chó'?", answers:["A. TP","B. MT","C. NA","D. TN"], correct:0 }
 ];
-
 let i=0, score=0, pick=-1;
 
 function startRegister(){
@@ -182,19 +96,19 @@ function load(){
 }
 
 function next(){
- if(pick==-1) return alert("Chọn đáp án");
- if(pick==questions[i].correct) score++;
+ if(pick==-1)return alert("Chọn đáp án");
+ if(pick==questions[i].correct)score++;
  pick=-1; i++;
  if(i>=10) result(); else load();
 }
 
-/* ===== PHẦN THƯỞNG ===== */
 function result(){
  document.getElementById("mainContent").innerHTML=
  score==10?
  `<h1 style="color:lightgreen">✔️ Bạn đã vượt qua!</h1>
  <button class="reward-btn" onclick="reward(1)">Nhận phần thưởng</button>
- <div id="r"></div>` 
+ <div id="r"></div>
+ <button class="yt-btn" onclick="goMenu()" style="margin-top:10px">Mở khóa tính năng</button>`
  :
  `<h1 style="color:red">❌ Bạn chưa đạt!</h1>
  <button class="reward-btn" onclick="reward(0)">Nhận quà an ủi</button>
@@ -203,10 +117,8 @@ function result(){
 
 function reward(w){
  document.getElementById("r").innerHTML=
- w?`<img src="spiritfruit.webp" class="main-image">
- <button class="yt-btn" onclick="goMenu()" style="margin-top:10px">Mở khóa tính năng</button>`
+ w?`<img src="spiritfruit.webp" class="main-image">`
  :`<img src="trijumscare.jpg" class="main-image">`;
-
  if(w) localStorage.setItem("testCompleted","true");
 }
 
@@ -215,53 +127,118 @@ function goMenu(){
  location.reload();
 }
 
-/* ===== NÚT CHƠI GAME LOCK / UNLOCK ===== */
-window.onload = function(){
+function showGameButton(){
+ if(localStorage.getItem("featureUnlocked")=="true"){
+     let btn = document.createElement("button");
+     btn.innerText="🎮 Chơi Game";
+     btn.style.position="fixed";
+     btn.style.left="10px";
+     btn.style.top="10px";
+     btn.style.zIndex="999";
+     btn.className="yt-btn";
+     btn.onclick = startGameFeature;
+     document.body.appendChild(btn);
+ }
+}
+window.onload = function(){ showGameButton(); }
 
-    // Tạo nút chơi game (luôn hiển thị)
-    let btn = document.createElement("button");
-    btn.innerText="🎮 Chơi Game";
-    btn.style.position="fixed";
-    btn.style.left="10px";
-    btn.style.top="10px";
-    btn.style.zIndex="999";
-    btn.className="yt-btn";
+/* ===== MINI GAME GACHA + PHÓ BẢN ===== */
+let player, monster, turn;
+let monsters = [
+  {name:"Quái A", hp:50, skills:[{name:"Cào", dmg:5},{name:"Cắn", dmg:12}]},
+  {name:"Quái B", hp:80, skills:[{name:"Đấm độc", dmg:8},{name:"Rồng lửa", dmg:15}]},
+  {name:"Quái C", hp:100, skills:[{name:"Đấm mạnh", dmg:12},{name:"Hít thở", dmg:10}]}
+];
+let characters = [
+  {name:"Trí", hp:100, skills:[{name:"Đấm", dmg:10},{name:"Kick", dmg:15}], exp:0, gold:0},
+  {name:"Minh", hp:120, skills:[{name:"Ném dao", dmg:12},{name:"Chém", dmg:10}], exp:0, gold:0},
+  {name:"Aura", hp:80, skills:[{name:"Cắn", dmg:8},{name:"Hút máu", dmg:15}], exp:0, gold:0}
+];
 
-    if(localStorage.getItem("featureUnlocked")=="true"){
-        btn.disabled = false;
-        btn.style.background = "red";
-        btn.onclick = startGameFeature;
-    } else {
-        btn.disabled = true;
-        btn.style.background = "gray";
-        btn.onclick = function(){ alert("Bạn phải hoàn thành test và mở khóa trước!"); };
-    }
+function startGameFeature(){
+ document.getElementById("mainContent").style.display="none";
+ document.getElementById("gameArea").style.display="block";
 
-    document.body.appendChild(btn);
+ if(!loadGame()){
+    player = characters[Math.floor(Math.random()*characters.length)];
+    monster = monsters[Math.floor(Math.random()*monsters.length)];
+    turn="player";
+ }
+ updateStats();
+ createActions();
 
-    // Nếu đã hoàn thành test nhưng chưa unlock, hiển thị menu chính + nút mở khóa
-    if(localStorage.getItem("testCompleted")=="true" && localStorage.getItem("featureUnlocked")!="true"){
-        document.getElementById("mainContent").innerHTML=`
-        <h1>Chào mừng đến trang web của Trí!</h1>
-        <p>Bạn đã hoàn thành test! Nhấn "Mở khóa tính năng" để chơi game.</p>
-        <img src="tritangquafemboy.jpg" class="main-image">
-        <div class="phone-box">☎️ 036-670-1818</div>
-        <button class="yt-btn" onclick="goMenu()">Mở khóa tính năng</button>
-        <div class="update-box">
-            <h2>📌 Cập nhật website</h2>
-            <ul>
-                <li>🎄 Hiệu ứng tuyết rơi Giáng Sinh</li>
-                <li>🧠 Test 10 câu hỏi có hình ảnh</li>
-                <li>🎁 Phần thưởng thắng / thua</li>
-                <li>📱 Fix lỗi zoom 90–100%</li>
-            </ul>
-        </div>`;
-    }
+ let exitBtn = document.createElement("button");
+ exitBtn.innerText="Thoát về menu";
+ exitBtn.onclick = ()=>{
+     document.getElementById("gameArea").style.display="none";
+     document.getElementById("mainContent").style.display="block";
+ };
+ document.getElementById("gameArea").appendChild(exitBtn);
 }
 
-/* Placeholder cho game */
-function startGameFeature(){
- alert("Sắp ra mắt!");
+function updateStats(){
+ document.getElementById("playerStats").innerHTML = `${player.name} HP: <div class="hp-bar"><div class="hp-fill" style="width:${player.hp}%">${player.hp}</div></div> EXP: ${player.exp} Gold: ${player.gold}`;
+ document.getElementById("monsterStats").innerHTML = `${monster.name} HP: <div class="hp-bar"><div class="hp-fill" style="width:${monster.hp}%">${monster.hp}</div></div>`;
+}
+
+function createActions(){
+ let actionsDiv=document.getElementById("actions");
+ actionsDiv.innerHTML="";
+ let logDiv=document.getElementById("log");
+ player.skills.forEach((s,i)=>{
+   let btn=document.createElement("button");
+   btn.innerText=s.name;
+   btn.onclick=()=>{
+     if(turn!="player") return;
+     monster.hp -= s.dmg;
+     logDiv.innerHTML+=`<p>Bạn dùng ${s.name}, gây ${s.dmg} dmg!</p>`;
+     if(monster.hp<=0){
+       logDiv.innerHTML+=`<p>🎉 Bạn thắng!</p>`;
+       player.exp +=10; player.gold +=5;
+       actionsDiv.innerHTML="";
+       saveGame();
+       return;
+     }
+     turn="monster";
+     saveGame();
+     setTimeout(monsterTurn,500);
+     updateStats();
+   };
+   actionsDiv.appendChild(btn);
+ });
+ saveGame();
+}
+
+function monsterTurn(){
+ let logDiv=document.getElementById("log");
+ let actionsDiv=document.getElementById("actions");
+ let skill = monster.skills[Math.floor(Math.random()*monster.skills.length)];
+ player.hp -= skill.dmg;
+ logDiv.innerHTML+=`<p>Quái dùng ${skill.name}, gây ${skill.dmg} dmg!</p>`;
+ if(player.hp<=0){
+   logDiv.innerHTML+=`<p>💀 Bạn thua!</p>`;
+   actionsDiv.innerHTML="";
+ }
+ turn="player";
+ updateStats();
+ saveGame();
+}
+
+function saveGame(){
+ let gameState={player:player, monster:monster, turn:turn};
+ localStorage.setItem("currentGame", JSON.stringify(gameState));
+}
+
+function loadGame(){
+ let saved=localStorage.getItem("currentGame");
+ if(saved){
+   let gameState=JSON.parse(saved);
+   player=gameState.player;
+   monster=gameState.monster;
+   turn=gameState.turn;
+   return true;
+ }
+ return false;
 }
 
 /* ===== HIỆU ỨNG TUYẾT ===== */
@@ -284,6 +261,7 @@ setInterval(()=>{
 
 </body>
 </html>
+
 
 
 
