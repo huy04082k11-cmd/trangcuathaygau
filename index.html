@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>Trang Web Của Trí - Gacha Game Nâng Cấp 2</title>
+<title>Trang Web Của Trí - Gacha Game Fix</title>
 <style>
 html, body { margin:0; padding:0; width:100%; height:100%; font-family:Arial,sans-serif; overflow:hidden;}
 body { background:url("tri-an-pizza.jpg") no-repeat center center fixed; background-size:cover; display:flex; justify-content:center; align-items:center; color:white;}
@@ -34,7 +34,6 @@ button {margin-top:20px; padding:12px 25px; font-size:18px; border:none; border-
 <div class="overlay"></div>
 <canvas id="snow"></canvas>
 
-<!-- MENU CHÍNH -->
 <div class="content" id="mainContent">
     <h1>Chào mừng đến trang web của Trí!</h1>
     <p>Bạn có thể học saygex chỉ 4 đô mỗi tháng.</p>
@@ -52,7 +51,6 @@ button {margin-top:20px; padding:12px 25px; font-size:18px; border:none; border-
     </div>
 </div>
 
-<!-- GAME AREA -->
 <div id="gameArea">
     <h2>Phó bản đánh quái</h2>
     <div id="playerStats" class="stats"></div>
@@ -145,7 +143,7 @@ function showGameButton(){
 }
 window.onload = function(){ showGameButton(); }
 
-// ===== MINI GAME GACHA + PHÓ BẢN NÂNG CẤP 2 =====
+// ===== MINI GAME GACHA + PHÓ BẢN =====
 let player, monster, turn;
 let monsters = [
   {name:"Quái A", hp:50, skills:[{name:"Cào", dmg:5},{name:"Cắn", dmg:12}]},
@@ -154,11 +152,9 @@ let monsters = [
   {name:"Quái D", hp:150, skills:[{name:"Hít độc", dmg:15},{name:"Rồng lửa", dmg:20}]},
   {name:"Boss", hp:250, skills:[{name:"Bão lửa", dmg:25},{name:"Đấm tử thần", dmg:30}]} 
 ];
-
 let characters = [
   {name:"Thầy giáo Tráy", hp:120, skills:[{name:"Cắn", dmg:8},{name:"Hút máu", dmg:15},{name:"Đấm mạnh", dmg:12}], exp:0, gold:0}
 ];
-
 function clone(obj){ return JSON.parse(JSON.stringify(obj)); }
 
 function startGameFeature(){
@@ -167,25 +163,27 @@ function startGameFeature(){
  document.getElementById("log").innerHTML="";
  document.getElementById("actions").innerHTML="";
 
- if(!loadGame()){
-    player = clone(characters[0]);
-    monster = clone(monsters[Math.floor(Math.random()*monsters.length)]);
-    turn="player";
+ let gameLoaded = loadGame();
+ if(!gameLoaded || player.hp<=0 || monster.hp<=0){
+        player = clone(characters[0]);
+        monster = clone(monsters[Math.floor(Math.random()*monsters.length)]);
+        turn="player";
+        saveGame();
  }
 
  updateStats();
  createActions();
 
-let existingBtn = document.querySelector("#gameArea button.exitBtn");
-if(existingBtn) existingBtn.remove();
-let exitBtn = document.createElement("button");
-exitBtn.innerText="Thoát về menu";
-exitBtn.className="exitBtn";
-exitBtn.onclick = ()=>{
-     document.getElementById("gameArea").style.display="none";
-     document.getElementById("mainContent").style.display="block";
-};
-document.getElementById("gameArea").appendChild(exitBtn);
+ let existingBtn = document.querySelector("#gameArea button.exitBtn");
+ if(existingBtn) existingBtn.remove();
+ let exitBtn = document.createElement("button");
+ exitBtn.innerText="Thoát về menu";
+ exitBtn.className="exitBtn";
+ exitBtn.onclick = ()=>{
+        document.getElementById("gameArea").style.display="none";
+        document.getElementById("mainContent").style.display="block";
+ };
+ document.getElementById("gameArea").appendChild(exitBtn);
 }
 
 function updateStats(){
@@ -194,28 +192,32 @@ function updateStats(){
 }
 
 function createActions(){
- let actionsDiv=document.getElementById("actions");
+ let actionsDiv = document.getElementById("actions");
+ let logDiv = document.getElementById("log");
  actionsDiv.innerHTML="";
- let logDiv=document.getElementById("log");
- if(player.hp<=0 || monster.hp<=0) return;
+
+ if(player.hp <= 0 || monster.hp <=0){
+     actionsDiv.innerHTML = '<button onclick="resetBattle()">Chơi lại</button>';
+     return;
+ }
+
  player.skills.forEach((s,i)=>{
-   let btn=document.createElement("button");
-   btn.innerText=s.name;
-   btn.onclick=()=>{
-     if(turn!="player") return;
+   let btn = document.createElement("button");
+   btn.innerText = s.name;
+   btn.onclick = ()=>{
+     if(turn != "player") return;
      monster.hp = Math.max(0, monster.hp - s.dmg);
-     logDiv.innerHTML+=`<p>Bạn dùng ${s.name}, gây ${s.dmg} dmg!</p>`;
-     if(monster.hp<=0){
-       logDiv.innerHTML+=`<p>🎉 Bạn thắng!</p>`;
-       player.exp +=10; player.gold +=5;
-       actionsDiv.innerHTML="";
-       saveGame();
-       return;
+     logDiv.innerHTML += `<p>Bạn dùng ${s.name}, gây ${s.dmg} dmg!</p>`;
+     if(monster.hp <=0){
+         logDiv.innerHTML += `<p>🎉 Bạn thắng!</p>`;
+         player.exp +=10; player.gold +=5;
+         actionsDiv.innerHTML='<button onclick="resetBattle()">Tiếp tục</button>';
+         saveGame(); updateStats();
+         return;
      }
      turn="monster";
-     saveGame();
-     updateStats();
-     setTimeout(monsterTurn,500);
+     saveGame(); updateStats();
+     setTimeout(monsterTurn, 500);
    };
    actionsDiv.appendChild(btn);
  });
@@ -223,17 +225,26 @@ function createActions(){
 }
 
 function monsterTurn(){
- let logDiv=document.getElementById("log");
- let actionsDiv=document.getElementById("actions");
+ let logDiv = document.getElementById("log");
+ let actionsDiv = document.getElementById("actions");
  let skill = monster.skills[Math.floor(Math.random()*monster.skills.length)];
  player.hp = Math.max(0, player.hp - skill.dmg);
- logDiv.innerHTML+=`<p>Quái dùng ${skill.name}, gây ${skill.dmg} dmg!</p>`;
+ logDiv.innerHTML += `<p>Quái dùng ${skill.name}, gây ${skill.dmg} dmg!</p>`;
  if(player.hp<=0){
-   logDiv.innerHTML+=`<p>💀 Bạn thua!</p>`;
-   actionsDiv.innerHTML="";
+   logDiv.innerHTML += `<p>💀 Bạn thua!</p>`;
+   actionsDiv.innerHTML = '<button onclick="resetBattle()">Chơi lại</button>';
  }
  turn="player";
  updateStats();
+ saveGame();
+}
+
+function resetBattle(){
+ player = clone(characters[0]);
+ monster = clone(monsters[Math.floor(Math.random()*monsters.length)]);
+ turn="player";
+ updateStats();
+ createActions();
  saveGame();
 }
 
@@ -244,12 +255,12 @@ function saveGame(){
 }
 
 function loadGame(){
- let saved=localStorage.getItem("currentGame");
+ let saved = localStorage.getItem("currentGame");
  if(saved){
-   let gameState=JSON.parse(saved);
-   player=gameState.player;
-   monster=gameState.monster;
-   turn=gameState.turn;
+   let gameState = JSON.parse(saved);
+   player = gameState.player;
+   monster = gameState.monster;
+   turn = gameState.turn;
    return true;
  }
  return false;
@@ -275,6 +286,8 @@ setInterval(()=>{
 
 </body>
 </html>
+
+
 
 
 
