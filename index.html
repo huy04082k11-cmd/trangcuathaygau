@@ -118,7 +118,7 @@ function startRegister(){
     <button class="yt-btn" id="startTestBtn">BẮT ĐẦU TEST</button>
     <div id="q"></div>
   `;
-  document.getElementById("startTestBtn").onclick = startTest;
+  document.getElementById("startTestBtn").addEventListener("click", startTest, { once: true });
 }
 
 function startTest(){ i=0; score=0; load(); }
@@ -343,6 +343,7 @@ window.onload = ()=>{ initSnow(); showGameButton(); }
 </script>
 </body>
 </html>
+
 
 
 
