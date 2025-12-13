@@ -2,17 +2,8 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>Trang Web Của Trí + Game</title>
+<title>Trang Web Của Trí</title>
 <style>
-/* ==== RESET + BODY ==== */
-html, body { margin:0; padding:0; width:100%; height:100%; font-family:Arial, sans-serif; overflow:hidden; background:url('tri-an-pizza.jpg') no-repeat center center fixed; background-size:cover; color:white; }
-.overlay { position:fixed; inset:0; background:rgba(0,0,0,0.25); z-index:0; }
-.content { position:relative; z-index:2; width:90%; max-width:600px; max-height:95vh; overflow-y:auto; padding:20px; text-align:center; }
-button { margin-top:20px; padding:12px 25px; font-size:18px; border:none; border-radius:10px; cursor:pointer; }
-.yt-btn { background:red; color:white; box-shadow:0 0 10px red; }
-.next-btn, .check-btn, .reward-btn { background:yellow; }
-.question-box { background:rgba(0,0,0,0.6); padding:25px; border-radius:15px; margin-top:20px; }
-.answer { margin:10px 0; padding:12px; background:rgba(255,255,255,0.2); border-radius:8px; cursor:pointer; border:2px solid transparent; }
 .answer.selected { border:2px solid yellow; background:rgba(255,255,150,0.3); }
 .main-image { max-width:100%; max-height:55vh; border-radius:10px; margin:15px auto; display:block; }
 .phone-box { margin-top:15px; font-size:22px; font-weight:bold; color:black; background:rgba(255,255,255,0.85); padding:10px 20px; border-radius:10px; border:4px solid red; animation:glow 1s infinite alternate; }
@@ -22,7 +13,8 @@ button { margin-top:20px; padding:12px 25px; font-size:18px; border:none; border
 .update-box li { margin:6px 0; font-size:15px; }
 #snow { position:fixed; inset:0; pointer-events:none; z-index:1; }
 #gameCanvas { position:fixed; left:0; top:0; z-index:5; display:none; background:rgba(0,0,0,0.8); }
-#gameUI { position:fixed; left:10px; top:10px; z-index:6; display:none; }
+#startGameBtn { position:fixed; left:10px; top:10px; z-index:6; display:block; opacity:0.5; cursor:not-allowed; }
+.yt-btn, .reward-btn, .next-btn { padding:10px 15px; border:none; border-radius:8px; background:#ff9800; color:white; font-weight:bold; cursor:pointer; margin:5px 0; }
 </style>
 </head>
 <body>
@@ -41,59 +33,165 @@ button { margin-top:20px; padding:12px 25px; font-size:18px; border:none; border
             <li>🧠 Test 10 câu hỏi có hình ảnh</li>
             <li>🎁 Phần thưởng thắng / thua</li>
             <li>📱 Fix lỗi zoom 90–100%</li>
+            <li>🔓 Mở khóa trò chơi mới khi hoàn thành 10 câu hỏi</li>
         </ul>
     </div>
 </div>
-<button id="startGameBtn" class="yt-btn" style="display:none;">🎮 Chơi Game</button>
+<button id="startGameBtn">🎮 Chơi Game</button>
 <canvas id="gameCanvas" width="800" height="500"></canvas>
+
 <script>
 /* ==== QUIZ + PHẦN THƯỞNG ==== */
 let questions = [
- { img:"giathinh.png", ask:"Câu 1: Đây là con gì?", answers:["A. Con mèo","B. Con chó","C. Con gà","D. Con heo"], correct:1 },
- { img:"minhtrithamquan.jpg", ask:"Câu 2: Trí thích gì nhất?", answers:["A. Ăn cứt","B. Ngủ lọ","C. Chơi game femboy","D. Cả 3"], correct:3 },
- { ask:"Câu 3: Bạn đến trang này để làm gì?", answers:["A. Giải trí","B. Làm bài test","C. Xem web Trí","D. Cả 3"], correct:3 },
- { img:"phong2.jpg", ask:"Câu 4: Trong hình là gì?", answers:["A. TP sĩ aura","B. Con vật","C. Đồ vật","D. Không biết"], correct:0 },
- { ask:"Câu 5: 2 + 2 = ?", answers:["A. ko bt","B. kịch","C.ai hỏi","D. dott"], correct:1 },
- { ask:"Câu 6: ai yêu nhi nhất?", answers:["A. tôi","B. thk ảo aura hệ thống","C. ko có","D. bạn tôi"], correct:1 },
- { ask:"Câu 7: Một tuần trí lọ fem mấy lần?", answers:["A. 5","B. 6","C. 7 tỷ","D. 8"], correct:2 },
- { ask:"Câu 8: TP có hình gì?", answers:["A. Vuông","B. Tam giác","C. Tròn","D. Hình Pheo.B"], correct:3 },
- { ask:"Câu 9: Loài nào biết bay?", answers:["A. Cá hồi","B. Chim thâm người nghệ","C. tao gay","D. yêu femboy"], correct:1 },
- { ask:"Câu 10: Ai nói câu 'tao không giết được mày thì tao làm chó'?", answers:["A. TP","B. MT","C. NA","D. TN"], correct:0 }
+{ img:"giathinh.png", ask:"Câu 1: Đây là con gì?", answers:["A. Con mèo","B. Con chó","C. Con gà","D. Con heo"], correct:1 },
+{ img:"minhtrithamquan.jpg", ask:"Câu 2: Trí thích gì nhất?", answers:["A. Ăn cứt","B. Ngủ lọ","C. Chơi game femboy","D. Cả 3"], correct:3 },
+{ ask:"Câu 3: Bạn đến trang này để làm gì?", answers:["A. Giải trí","B. Làm bài test","C. Xem web Trí","D. Cả 3"], correct:3 },
+{ img:"phong2.jpg", ask:"Câu 4: Trong hình là gì?", answers:["A. TP sĩ aura","B. Con vật","C. Đồ vật","D. Không biết"], correct:0 },
+{ ask:"Câu 5: 2 + 2 = ?", answers:["A. ko bt","B. kịch","C.ai hỏi","D. dott"], correct:1 },
+{ ask:"Câu 6: ai yêu nhi nhất?", answers:["A. tôi","B. thk ảo aura hệ thống","C. ko có","D. bạn tôi"], correct:1 },
+{ ask:"Câu 7: Một tuần trí lọ fem mấy lần?", answers:["A. 5","B. 6","C. 7 tỷ","D. 8"], correct:2 },
+{ ask:"Câu 8: TP có hình gì?", answers:["A. Vuông","B. Tam giác","C. Tròn","D. Hình Pheo.B"], correct:3 },
+{ ask:"Câu 9: Loài nào biết bay?", answers:["A. Cá hồi","B. Chim thâm người nghệ","C. tao gay","D. yêu femboy"], correct:1 },
+{ ask:"Câu 10: Ai nói câu 'tao không giết được mày thì tao làm chó'?", answers:["A. TP","B. MT","C. NA","D. TN"], correct:0 }
 ];
+
 let i=0, score=0, pick=-1;
-function startRegister(){ document.getElementById("mainContent").innerHTML=`<h1>Trước khi đăng ký bạn phải hoàn thành bài test!</h1><button class="yt-btn" onclick="startTest()">BẮT ĐẦU TEST</button><div id="q"></div>`;}
-function startTest(){ i=0; score=0; load();}
-function load(){ let q=questions[i]; let h=`<div class="question-box"><h2>${q.ask}</h2>`;
- if(q.img) h+=`<img src="${q.img}" class="main-image">`;
- q.answers.forEach((a,n)=>h+=`<div class="answer" onclick="pick=${n};document.querySelectorAll('.answer').forEach(x=>x.classList.remove('selected'));event.target.classList.add('selected')">${a}</div>`);
- h+=`<button class="next-btn" onclick="next()">Tiếp theo</button></div>`;
- document.getElementById("q").innerHTML=h;}
-function next(){ if(pick==-1)return alert("Chọn đáp án"); if(pick==questions[i].correct)score++; pick=-1; i++; if(i>=10) result(); else load();}
-function result(){ document.getElementById("mainContent").innerHTML= score==10? `<h1 style="color:lightgreen">✔️ Bạn đã vượt qua!</h1><button class="reward-btn" onclick="reward(1)">Nhận phần thưởng</button><div id="r"></div><button class="yt-btn" onclick="unlockGame()" style="margin-top:10px">Mở khóa tính năng</button>` : `<h1 style="color:red">❌ Bạn chưa đạt!</h1><button class="reward-btn" onclick="reward(0)">Nhận quà an ủi</button><div id="r"></div>`;}
-function reward(w){ document.getElementById("r").innerHTML= w?`<img src="spiritfruit.webp" class="main-image">` :`<img src="trijumscare.jpg" class="main-image">`;}
-function unlockGame(){ localStorage.setItem("featureUnlocked","true"); alert('Bạn đã mở khóa tính năng chơi game!'); document.getElementById('startGameBtn').style.display='block';}
+let quizCompleted = false;
+
+/* ==== START QUIZ ==== */
+function startRegister(){
+    document.getElementById("mainContent").innerHTML = `
+        <h1>Trước khi đăng ký bạn phải hoàn thành bài test!</h1>
+        <button class="yt-btn" onclick="startTest()">BẮT ĐẦU TEST</button>
+        <div id="q"></div>
+    `;
+    updateStartButtonState();
+}
+
+function startTest(){ i=0; score=0; load(); }
+
+function load(){
+    let q = questions[i];
+    let h = `<div class="question-box"><h2>${q.ask}</h2>`;
+    if(q.img) h+=`<img src="${q.img}" class="main-image">`;
+    q.answers.forEach((a,n)=>{
+        h+=`<div class="answer" onclick="pick=${n};document.querySelectorAll('.answer').forEach(x=>x.classList.remove('selected'));event.target.classList.add('selected')">${a}</div>`;
+    });
+    h+=`<button class="next-btn" onclick="next()">Tiếp theo</button></div>`;
+    document.getElementById("q").innerHTML = h;
+}
+
+function next(){
+    if(pick==-1) return alert("Chọn đáp án");
+    if(pick==questions[i].correct) score++;
+    pick=-1; i++;
+    if(i>=10) result(); else load();
+}
+
+function result(){
+    quizCompleted = true;
+    document.getElementById("mainContent").innerHTML = score==10 ?
+    `<h1 style="color:lightgreen">✔️ Bạn đã vượt qua!</h1>
+     <button class="reward-btn" onclick="reward(1)">Nhận phần thưởng</button>
+     <div id="r"></div>
+     <button class="yt-btn" onclick="unlockGame()" style="margin-top:10px">Mở khóa tính năng</button>` :
+    `<h1 style="color:red">❌ Bạn chưa đạt!</h1>
+     <button class="reward-btn" onclick="reward(0)">Nhận quà an ủi</button>
+     <div id="r"></div>`;
+    updateStartButtonState();
+}
+
+function reward(w){
+    document.getElementById("r").innerHTML = w ? 
+    `<img src="spiritfruit.webp" class="main-image">` :
+    `<img src="trijumscare.jpg" class="main-image">`;
+}
+
+/* ==== UNLOCK GAME ==== */
+function unlockGame(){
+    if(!quizCompleted){
+        alert("Bạn phải hoàn thành bài test trước khi mở khóa!");
+        return;
+    }
+    localStorage.setItem("featureUnlocked","true");
+    alert('Bạn đã mở khóa tính năng chơi game!');
+    updateStartButtonState();
+}
+
+function updateStartButtonState(){
+    let btn = document.getElementById('startGameBtn');
+    if(localStorage.getItem("featureUnlocked")=='true' && quizCompleted){
+        btn.style.opacity = "1";
+        btn.style.cursor = "pointer";
+        btn.onclick = startGameFeature;
+    } else {
+        btn.style.opacity = "0.5";
+        btn.style.cursor = "not-allowed";
+        btn.onclick = function(){ alert("Bạn phải hoàn thành 10 câu hỏi và mở khóa mới chơi được!"); };
+    }
+}
+
 /* ==== KIỂM TRA UNLOCK KHI LOAD ==== */
-window.onload=function(){ if(localStorage.getItem("featureUnlocked")=='true'){ document.getElementById('startGameBtn').style.display='block';}}
-document.getElementById('startGameBtn').onclick=startGameFeature;
+window.onload = function(){ updateStartButtonState(); };
+
 /* ==== GAME CANVAS ==== */
-let canvas=document.getElementById('gameCanvas');
-let ctx=canvas.getContext('2d');
+let canvas = document.getElementById('gameCanvas');
+let ctx = canvas.getContext('2d');
 let gameRunning=false;
 let player={x:100,y:350,w:50,h:50,color:'#4FC3F7',hp:100};
 let bot={x:600,y:350,w:50,h:50,color:'#F44336',hp:100};
-document.addEventListener('keydown',function(e){ if(!gameRunning)return; if(e.key==='z' || e.key==='Z'){bot.hp-=10; checkEnd();} if(e.key==='x' || e.key==='X'){bot.hp-=15; checkEnd();} });
-function startGameFeature(){ document.getElementById('gameCanvas').style.display='block';
- gameRunning=true; player.hp=100; bot.hp=100; drawGame();}
-function checkEnd(){ if(bot.hp<=0){alert('Bạn thắng!'); endGame();} else if(player.hp<=0){alert('Bạn thua!'); endGame();}}
-function endGame(){gameRunning=false;document.getElementById('gameCanvas').style.display='none';}
-function drawGame(){ if(!gameRunning)return; ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle=player.color; ctx.fillRect(player.x,player.y,player.w,player.h); ctx.fillStyle=bot.color; ctx.fillRect(bot.x,bot.y,bot.w,bot.h); ctx.fillStyle='white'; ctx.fillRect(50,30,player.hp*2,20); ctx.fillRect(550,30,bot.hp*2,20); requestAnimationFrame(drawGame);}
+
+document.addEventListener('keydown', function(e){
+    if(!gameRunning) return;
+    if(e.key==='z' || e.key==='Z'){ bot.hp-=10; checkEnd(); }
+    if(e.key==='x' || e.key==='X'){ bot.hp-=15; checkEnd(); }
+});
+
+function startGameFeature(){
+    document.getElementById('gameCanvas').style.display='block';
+    gameRunning=true; player.hp=100; bot.hp=100;
+    drawGame();
+}
+
+function checkEnd(){
+    if(bot.hp<=0){ alert('Bạn thắng!'); endGame(); }
+    else if(player.hp<=0){ alert('Bạn thua!'); endGame(); }
+}
+
+function endGame(){
+    gameRunning=false;
+    document.getElementById('gameCanvas').style.display='none';
+}
+
+function drawGame(){
+    if(!gameRunning) return;
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle = player.color; ctx.fillRect(player.x,player.y,player.w,player.h);
+    ctx.fillStyle = bot.color; ctx.fillRect(bot.x,bot.y,bot.w,bot.h);
+    ctx.fillStyle='white'; ctx.fillRect(50,30,player.hp*2,20); ctx.fillRect(550,30,bot.hp*2,20);
+    requestAnimationFrame(drawGame);
+}
+
 /* ==== TUYẾT ==== */
-const c=document.getElementById("snow"),x=c.getContext("2d"); function rs(){c.width=innerWidth;c.height=innerHeight} rs();window.onresize=rs;
-let s=Array.from({length:120},()=>({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*3+1,d:Math.random()+1}));
-setInterval(()=>{ x.clearRect(0,0,c.width,c.height); x.fillStyle='white'; s.forEach(f=>{x.beginPath();x.arc(f.x,f.y,f.r,0,Math.PI*2);x.fill();f.y+=f.d+1;if(f.y>c.height){f.y=0;f.x=Math.random()*c.width;}});},33);
+const c=document.getElementById("snow"), x=c.getContext("2d");
+function rs(){ c.width=innerWidth; c.height=innerHeight; }
+rs(); window.onresize=rs;
+let s = Array.from({length:120},()=>({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*3+1,d:Math.random()+1}));
+setInterval(()=>{
+    x.clearRect(0,0,c.width,c.height);
+    x.fillStyle='white';
+    s.forEach(f=>{
+        x.beginPath();
+        x.arc(f.x,f.y,f.r,0,Math.PI*2); x.fill();
+        f.y += f.d+1;
+        if(f.y>c.height){ f.y=0; f.x=Math.random()*c.width; }
+    });
+},33);
 </script>
 </body>
 </html>
+
+
 
 
 
