@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Trang Web Của Trí</title>
-
 <style>
 /* RESET */
 html, body {
@@ -14,7 +13,6 @@ html, body {
     font-family: Arial, sans-serif;
     overflow: hidden;
 }
-
 /* BACKGROUND */
 body {
     background: url("tri-an-pizza.jpg") no-repeat center center fixed;
@@ -24,7 +22,6 @@ body {
     align-items: center;
     color: white;
 }
-
 /* OVERLAY */
 .overlay {
     position: fixed;
@@ -32,7 +29,6 @@ body {
     background: rgba(0,0,0,0.25);
     z-index: 0;
 }
-
 /* CONTENT */
 .content {
     position: relative;
@@ -44,7 +40,6 @@ body {
     padding: 20px;
     text-align: center;
 }
-
 /* BUTTON */
 button {
     margin-top: 20px;
@@ -56,7 +51,6 @@ button {
 }
 .yt-btn { background: red; color: white; box-shadow: 0 0 10px red; }
 .next-btn, .check-btn, .reward-btn { background: yellow; }
-
 /* QUESTION BOX */
 .question-box {
     background: rgba(0,0,0,0.6);
@@ -64,7 +58,6 @@ button {
     border-radius: 15px;
     margin-top: 20px;
 }
-
 /* ANSWERS */
 .answer {
     margin: 10px 0;
@@ -78,7 +71,6 @@ button {
     border: 2px solid yellow;
     background: rgba(255,255,150,0.3);
 }
-
 /* IMAGES */
 .main-image {
     max-width: 100%;
@@ -87,7 +79,6 @@ button {
     margin: 15px auto;
     display: block;
 }
-
 /* PHONE BOX */
 .phone-box {
     margin-top: 15px;
@@ -104,7 +95,6 @@ button {
     from { box-shadow: 0 0 5px red; }
     to { box-shadow: 0 0 20px yellow; }
 }
-
 /* UPDATE BOX */
 .update-box {
     margin-top: 25px;
@@ -121,7 +111,6 @@ button {
     margin: 6px 0;
     font-size: 15px;
 }
-
 /* SNOW */
 #snow {
     position: fixed;
@@ -131,7 +120,6 @@ button {
 }
 </style>
 </head>
-
 <body>
 
 <div class="overlay"></div>
@@ -194,8 +182,8 @@ function load(){
 }
 
 function next(){
- if(pick==-1)return alert("Chọn đáp án");
- if(pick==questions[i].correct)score++;
+ if(pick==-1) return alert("Chọn đáp án");
+ if(pick==questions[i].correct) score++;
  pick=-1; i++;
  if(i>=10) result(); else load();
 }
@@ -206,8 +194,7 @@ function result(){
  score==10?
  `<h1 style="color:lightgreen">✔️ Bạn đã vượt qua!</h1>
  <button class="reward-btn" onclick="reward(1)">Nhận phần thưởng</button>
- <div id="r"></div>
- <button class="yt-btn" onclick="goMenu()" style="margin-top:10px">Mở khóa tính năng</button>`
+ <div id="r"></div>` 
  :
  `<h1 style="color:red">❌ Bạn chưa đạt!</h1>
  <button class="reward-btn" onclick="reward(0)">Nhận quà an ủi</button>
@@ -216,8 +203,12 @@ function result(){
 
 function reward(w){
  document.getElementById("r").innerHTML=
- w?`<img src="spiritfruit.webp" class="main-image">`
+ w?`<img src="spiritfruit.webp" class="main-image">
+ <button class="yt-btn" onclick="goMenu()" style="margin-top:10px">Mở khóa tính năng</button>`
  :`<img src="trijumscare.jpg" class="main-image">`;
+
+ // Nếu thắng, lưu trạng thái test hoàn thành
+ if(w) localStorage.setItem("testCompleted","true");
 }
 
 function goMenu(){
@@ -237,6 +228,25 @@ window.onload = function(){
      btn.className="yt-btn";
      btn.onclick = startGameFeature;
      document.body.appendChild(btn);
+ }
+
+ // Nếu đã hoàn thành test nhưng chưa unlock, vẫn giữ menu chính
+ if(localStorage.getItem("testCompleted")=="true" && localStorage.getItem("featureUnlocked")!="true"){
+     document.getElementById("mainContent").innerHTML=`
+     <h1>Chào mừng đến trang web của Trí!</h1>
+     <p>Bạn đã hoàn thành test! Nhấn "Mở khóa tính năng" để chơi game.</p>
+     <img src="tritangquafemboy.jpg" class="main-image">
+     <div class="phone-box">☎️ 036-670-1818</div>
+     <button class="yt-btn" onclick="goMenu()">Mở khóa tính năng</button>
+     <div class="update-box">
+         <h2>📌 Cập nhật website</h2>
+         <ul>
+             <li>🎄 Hiệu ứng tuyết rơi Giáng Sinh</li>
+             <li>🧠 Test 10 câu hỏi có hình ảnh</li>
+             <li>🎁 Phần thưởng thắng / thua</li>
+             <li>📱 Fix lỗi zoom 90–100%</li>
+         </ul>
+     </div>`;
  }
 }
 
@@ -265,6 +275,7 @@ setInterval(()=>{
 
 </body>
 </html>
+
 
 
 
