@@ -92,7 +92,7 @@ button {margin-top:20px; padding:12px 25px; font-size:18px; border:none; border-
 </div>
 
 <script>
-// ===== TEST + PHẦN THƯỞNG =====
+// ===== TEST =====
 let questions = [
 {img:"giathinh.png",ask:"Câu 1: Đây là con gì?",answers:["A. Con mèo","B. Con chó","C. Con gà","D. Con heo"],correct:1},
 {img:"minhtrithamquan.jpg",ask:"Câu 2: Trí thích gì nhất?",answers:["A. Ăn gì","B. Ngủ","C. Chơi game","D. Cả 3"],correct:3},
@@ -106,6 +106,7 @@ let questions = [
 {ask:"Câu 10: Ai nói câu 'tao không giết được mày thì tao làm chó'?",answers:["A. TP","B. MT","C. NA","D. TN"],correct:0}
 ];
 let i=0, score=0, pick=-1;
+
 function startRegister(){
  document.getElementById("mainContent").innerHTML=`<h1>Trước khi đăng ký bạn phải hoàn thành bài test!</h1>
  <button class="yt-btn" onclick="startTest()">BẮT ĐẦU TEST</button>
@@ -143,44 +144,33 @@ function reward(w){
  if(w) localStorage.setItem("testCompleted","true");
 }
 function goMenu(){ localStorage.setItem("featureUnlocked","true"); location.reload(); }
+
+// ===== GAME BUTTON =====
 function showGameButton(){
  if(localStorage.getItem("featureUnlocked")=="true"){
      if(!document.querySelector("#gameButton")){
          let btn = document.createElement("button");
-         btn.id="gameButton"; btn.innerText="🎮 Chơi Game";
-         btn.style.position="fixed"; btn.style.left="10px"; btn.style.top="10px";
-         btn.style.zIndex="999"; btn.className="yt-btn"; btn.onclick=openGameMenu;
+         btn.id="gameButton";
+         btn.innerText="🎮 Chơi Game";
+         btn.style.position="fixed";
+         btn.style.left="10px";
+         btn.style.top="10px";
+         btn.style.zIndex="999";
+         btn.className="yt-btn";
+         btn.onclick=openGameMenu;
          document.body.appendChild(btn);
      }
  }
 }
-window.onload = function(){ showGameButton(); }
+window.onload = showGameButton;
 
-// ===== GAME =====
-let player=null, monster=null, turn="player", currentWorld=0, currentStage=0;
-let worlds=[], totalWorlds=3, stagesPerWorld=5;
-let completedStages=JSON.parse(localStorage.getItem("completedStages")||"{}");
-
-// Khởi tạo world/stage
-for(let w=0; w<totalWorlds; w++){
- let stages=[];
- for(let s=0; s<stagesPerWorld; s++){
-  stages.push({name:`Quái ${w+1}-${s+1}`, hp:30+10*w+10*s, maxHp:30+10*w+10*s, skills:[{name:"Đấm", dmg:5+2*s},{name:"Rồng lửa", dmg:6+2*s}], reward:{exp:10*s*(w+1), gold:5*s*(w+1)}});
- }
- worlds.push({world:w+1, stages:stages});
-}
-
-// Mở menu game
+// MENU GAME
 function openGameMenu(){
  document.getElementById("gameMenu").style.display="block";
 }
-
-// Thoát menu game
 function exitGameMenu(){
  document.getElementById("gameMenu").style.display="none";
 }
-
-// Vào gameplay từ menu
 function enterGame(){
  document.getElementById("gameMenu").style.display="none";
  document.getElementById("mainContent").style.display="none";
@@ -190,7 +180,20 @@ function enterGame(){
  showWorlds();
 }
 
-// Load Player
+// --- GAMEPLAY ---
+let player=null, monster=null, turn="player", currentWorld=0, currentStage=0;
+let worlds=[], totalWorlds=3, stagesPerWorld=5;
+let completedStages=JSON.parse(localStorage.getItem("completedStages")||"{}");
+
+for(let w=0; w<totalWorlds; w++){
+ let stages=[];
+ for(let s=0; s<stagesPerWorld; s++){
+  stages.push({name:`Quái ${w+1}-${s+1}`, hp:30+10*w+10*s, maxHp:30+10*w+10*s, skills:[{name:"Đấm", dmg:5+2*s},{name:"Rồng lửa", dmg:6+2*s}], reward:{exp:10*s*(w+1), gold:5*s*(w+1)}})
+ }
+ worlds.push({world:w+1, stages:stages});
+}
+
+// --- LOAD PLAYER ---
 function loadPlayer(){
  let saved = JSON.parse(localStorage.getItem("playerStats"));
  if(saved) player=saved; else player={name:"Thầy giáo Tráy", hp:120, maxHp:120, exp:0, gold:0, level:1, points:0, skills:[{name:"Cắn", dmg:8},{name:"Hút máu", dmg:12}]};
@@ -198,7 +201,7 @@ function loadPlayer(){
 }
 function savePlayer(){ localStorage.setItem("playerStats", JSON.stringify(player)); }
 
-// Hiển thị profile trong gameplay
+// --- PROFILE ---
 function showProfile(){
  let profile=document.getElementById("playerProfile");
  profile.innerHTML=`<h2>Profile: ${player.name}</h2>
@@ -206,7 +209,7 @@ function showProfile(){
  EXP: ${player.exp} Gold: ${player.gold} Level: ${player.level}`;
 }
 
-// SHOW WORLDS
+// --- WORLDS ---
 function showWorlds(){
  let container=document.getElementById("worldList");
  container.innerHTML="<h3>Worlds</h3>";
@@ -220,7 +223,7 @@ function showWorlds(){
  }
 }
 
-// SHOW STAGES
+// --- STAGES ---
 function showStages(worldIdx){
  currentWorld=worldIdx;
  let container=document.getElementById("stageList"); 
@@ -234,18 +237,18 @@ function showStages(worldIdx){
  });
 }
 
-// START BATTLE
+// --- START BATTLE ---
 function startBattle(stageIdx){
  currentStage=stageIdx;
  monster=JSON.parse(JSON.stringify(worlds[currentWorld].stages[stageIdx]));
  turn="player";
- player.hp=player.maxHp; // reset HP khi vào stage
+ player.hp=player.maxHp;
  updateBattle();
  createActions();
  addExitButton();
 }
 
-// EXIT BUTTON STAGE
+// --- EXIT BUTTON ---
 function addExitButton(){
  let exitBtn = document.querySelector("#gameArea button.exitBtn");
  if(exitBtn) exitBtn.remove();
@@ -256,12 +259,12 @@ function addExitButton(){
    document.getElementById("gameArea").style.display="none"; 
    document.getElementById("mainContent").style.display="block"; 
    showGameButton();
-   player.hp=player.maxHp; // reset HP khi thoát stage
+   player.hp=player.maxHp;
  };
  document.getElementById("gameArea").appendChild(exitBtn2);
 }
 
-// UPDATE BATTLE
+// --- BATTLE UPDATE ---
 function updateBattle(){
  document.getElementById("battlePlayer").innerText=player.name;
  document.getElementById("battlePlayerHP").style.width=player.hp/player.maxHp*100+"%";
@@ -272,7 +275,7 @@ function updateBattle(){
  showProfile();
 }
 
-// CREATE ACTIONS
+// --- ACTIONS ---
 function createActions(){
  let actionsDiv=document.getElementById("actions"); actionsDiv.innerHTML="";
  if(player.hp<=0 || monster.hp<=0){
@@ -291,7 +294,6 @@ function createActions(){
       player.exp+=monster.reward.exp; player.gold+=monster.reward.gold;
       levelUpCheck();
       completedStages[`W${currentWorld}S${currentStage}`]=true; 
-      // Nếu hết stage của world => mở khóa world tiếp theo
       if(currentStage===worlds[currentWorld].stages.length-1) completedStages[`world${currentWorld}`]=true;
       localStorage.setItem("completedStages", JSON.stringify(completedStages));
       savePlayer(); updateBattle();
@@ -305,7 +307,7 @@ function createActions(){
  });
 }
 
-// NEXT STAGE BUTTON
+// --- NEXT STAGE BUTTON ---
 function addNextStageButton(){
  if(currentStage<worlds[currentWorld].stages.length-1){
    let btn=document.createElement("button"); 
@@ -315,7 +317,7 @@ function addNextStageButton(){
  }
 }
 
-// MONSTER TURN
+// --- MONSTER TURN ---
 function monsterTurn(){
  let skill=monster.skills[Math.floor(Math.random()*monster.skills.length)];
  player.hp=Math.max(0,player.hp-skill.dmg);
@@ -325,7 +327,7 @@ function monsterTurn(){
  turn="player"; createActions(); savePlayer();
 }
 
-// LEVEL UP
+// --- LEVEL UP ---
 function levelUpCheck(){
  let needed=player.level*50;
  if(player.exp>=needed){
@@ -333,7 +335,6 @@ function levelUpCheck(){
   showLevelUpOptions();
  }
 }
-
 function showLevelUpOptions(){
  let log=document.getElementById("log");
  let box=document.createElement("div"); box.className="levelup-box";
@@ -343,7 +344,7 @@ function showLevelUpOptions(){
    btn.onclick=()=>{
      if(attr=="Health") { player.maxHp+=10; player.hp=player.maxHp; }
      if(attr=="Damage") { player.skills.forEach(s=>s.dmg+=2); }
-     if(attr=="Speed"){} // placeholder
+     if(attr=="Speed"){} 
      player.points=0; box.remove(); updateBattle(); savePlayer();
    };
    box.appendChild(btn);
@@ -352,7 +353,7 @@ function showLevelUpOptions(){
  log.appendChild(box);
 }
 
-// PROFILE MENU
+// --- PROFILE MENU ---
 function openProfileMenu(){
  document.getElementById("gameArea").style.display="none";
  document.getElementById("profileMenu").style.display="block";
@@ -365,7 +366,7 @@ function backToGame(){
  showProfile();
 }
 
-// ===== HIỆU ỨNG TUYẾT =====
+// --- SNOW ---
 const c=document.getElementById("snow"),x=c.getContext("2d");
 function rs(){c.width=innerWidth;c.height=innerHeight}
 rs();window.onresize=rs;
@@ -375,6 +376,7 @@ setInterval(()=>{x.clearRect(0,0,c.width,c.height);x.fillStyle="white";s.forEach
 
 </body>
 </html>
+
 
 
 
