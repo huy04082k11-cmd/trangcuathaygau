@@ -92,233 +92,170 @@ button {margin-top:20px; padding:12px 25px; font-size:18px; border:none; border-
 <script>
 // ===== TEST =====
 let questions = [
-{img:"giathinh.png",ask:"Câu 1: Đây là con gì?",answers:["A. Con mèo","B. Con chó","C. Con gà","D. Con heo"],correct:1},
-{img:"minhtrithamquan.jpg",ask:"Câu 2: Trí thích gì nhất?",answers:["A. Ăn gì","B. Ngủ","C. Chơi game","D. Cả 3"],correct:3},
-{ask:"Câu 3: Bạn đến trang này để làm gì?",answers:["A. Giải trí","B. Làm bài test","C. Xem web","D. Cả 3"],correct:3},
-{img:"phong2.jpg",ask:"Câu 4: Trong hình là gì?",answers:["A. TP sĩ aura","B. Con vật","C. Đồ vật","D. Không biết"],correct:0},
-{ask:"Câu 5: 2 + 2 = ?",answers:["A. 3","B. 4","C. 5","D. 6"],correct:1},
-{ask:"Câu 6: Ai yêu nhi nhất?",answers:["A. tôi","B. thk ảo aura","C. ko có","D. bạn tôi"],correct:1},
-{ask:"Câu 7: Một tuần Trí chơi game mấy lần?",answers:["A. 5","B. 6","C. 7","D. 8"],correct:2},
-{ask:"Câu 8: TP có hình gì?",answers:["A. Vuông","B. Tam giác","C. Tròn","D. Hình Pheo.B"],correct:3},
-{ask:"Câu 9: Loài nào biết bay?",answers:["A. Cá hồi","B. Chim","C. Khác","D. Yêu femboy"],correct:1},
-{ask:"Câu 10: Ai nói câu 'tao không giết được mày thì tao làm chó'?",answers:["A. TP","B. MT","C. NA","D. TN"],correct:0}
+  {img:"giathinh.png",ask:"Câu 1: Đây là con gì?",answers:["A. Con mèo","B. Con chó","C. Con gà","D. Con heo"],correct:1},
+  {img:"minhtrithamquan.jpg",ask:"Câu 2: Trí thích gì nhất?",answers:["A. Ăn gì","B. Ngủ","C. Chơi game","D. Cả 3"],correct:3},
+  {ask:"Câu 3: Bạn đến trang này để làm gì?",answers:["A. Giải trí","B. Làm bài test","C. Xem web","D. Cả 3"],correct:3},
+  {img:"phong2.jpg",ask:"Câu 4: Trong hình là gì?",answers:["A. TP sĩ aura","B. Con vật","C. Đồ vật","D. Không biết"],correct:0},
+  {ask:"Câu 5: 2 + 2 = ?",answers:["A. 3","B. 4","C. 5","D. 6"],correct:1},
+  {ask:"Câu 6: Ai yêu nhi nhất?",answers:["A. tôi","B. thk ảo aura","C. ko có","D. bạn tôi"],correct:1},
+  {ask:"Câu 7: Một tuần Trí chơi game mấy lần?",answers:["A. 5","B. 6","C. 7","D. 8"],correct:2},
+  {ask:"Câu 8: TP có hình gì?",answers:["A. Vuông","B. Tam giác","C. Tròn","D. Hình Pheo.B"],correct:3},
+  {ask:"Câu 9: Loài nào biết bay?",answers:["A. Cá hồi","B. Chim","C. Khác","D. Yêu femboy"],correct:1},
+  {ask:"Câu 10: Ai nói câu 'tao không giết được mày thì tao làm chó'?",answers:["A. TP","B. MT","C. NA","D. TN"],correct:0}
 ];
 
 let i=0, score=0, pick=-1;
 
 function startRegister(){
-    const main=document.getElementById("mainContent");
-    main.innerHTML=`<h1>Trước khi đăng ký bạn phải hoàn thành bài test!</h1>
-    <button class="yt-btn" onclick="startTest()">BẮT ĐẦU TEST</button>
-    <div id="q"></div>`;
+  const main = document.getElementById("mainContent");
+  main.innerHTML = ""; 
+
+  const h1 = document.createElement("h1");
+  h1.innerText = "Trước khi đăng ký bạn phải hoàn thành bài test!";
+  const btn = document.createElement("button");
+  btn.className = "yt-btn";
+  btn.innerText = "BẮT ĐẦU TEST";
+  btn.onclick = startTest;
+  const qDiv = document.createElement("div");
+  qDiv.id = "q";
+
+  main.appendChild(h1);
+  main.appendChild(btn);
+  main.appendChild(qDiv);
 }
 
 function startTest(){
-    i=0; score=0; pick=-1;
-    const qDiv=document.getElementById("q");
-    qDiv.innerHTML=""; 
-    load();
+  i=0; score=0; pick=-1;
+  const qDiv = document.getElementById("q");
+  while(qDiv.firstChild) qDiv.remove(); 
+  load();
 }
 
 function load(){
-    const q=questions[i];
-    const h=document.createElement("div");
-    h.className="question-box";
-    let innerHTML=`<h2>${q.ask}</h2>`;
-    if(q.img) innerHTML+=`<img src="${q.img}" class="main-image">`;
-    q.answers.forEach((a,n)=>{
-        innerHTML+=`<div class="answer" onclick="pickAnswer(this, ${n})">${a}</div>`;
-    });
-    innerHTML+=`<button class="next-btn" onclick="next()">Tiếp theo</button>`;
-    h.innerHTML=innerHTML;
-    const qDiv=document.getElementById("q");
-    qDiv.innerHTML=""; // xóa hẳn câu trước
-    qDiv.appendChild(h);
-    pick=-1;
+  const q=questions[i];
+  const h=document.createElement("div");
+  h.className="question-box";
+  let innerHTML=`<h2>${q.ask}</h2>`;
+  if(q.img) innerHTML+=`<img src="${q.img}" class="main-image">`;
+  q.answers.forEach((a,n)=>{
+    innerHTML+=`<div class="answer" onclick="pickAnswer(this, ${n})">${a}</div>`;
+  });
+  innerHTML+=`<button class="next-btn" onclick="next()">Tiếp theo</button>`;
+  h.innerHTML=innerHTML;
+  const qDiv=document.getElementById("q");
+  qDiv.innerHTML=""; 
+  qDiv.appendChild(h);
+  pick=-1;
 }
 
 function pickAnswer(el, n){
-    pick=n;
-    document.querySelectorAll('.answer').forEach(x=>x.classList.remove('selected'));
-    el.classList.add('selected');
+  pick=n;
+  document.querySelectorAll('.answer').forEach(x=>x.classList.remove('selected'));
+  el.classList.add('selected');
 }
 
 function next(){
-    if(pick==-1) return alert("Chọn đáp án");
-    if(pick==questions[i].correct) score++;
-    pick=-1; i++;
-    if(i>=questions.length) result(); else load();
+  if(pick==-1) return alert("Chọn đáp án");
+  if(pick==questions[i].correct) score++;
+  pick=-1; i++;
+  if(i>=questions.length) result(); else load();
 }
 
 function result(){
-    const main=document.getElementById("mainContent");
-    if(score==questions.length){
-        main.innerHTML=`<h1 style="color:lightgreen">✔️ Bạn đã vượt qua!</h1>
-        <button class="reward-btn" onclick="reward(1)">Nhận phần thưởng</button>
-        <div id="r"></div>
-        <button class="yt-btn" onclick="goMenu()" style="margin-top:10px">Mở khóa tính năng</button>`;
-    } else {
-        main.innerHTML=`<h1 style="color:red">❌ Bạn chưa đạt!</h1>
-        <button class="reward-btn" onclick="reward(0)">Nhận quà an ủi</button>
-        <div id="r"></div>`;
-    }
+  const main=document.getElementById("mainContent");
+  if(score==questions.length){
+    main.innerHTML=`<h1 style="color:lightgreen">✔️ Bạn đã vượt qua!</h1>
+    <button class="reward-btn" onclick="reward(1)">Nhận phần thưởng</button>
+    <div id="r"></div>
+    <button class="yt-btn" onclick="goMenu()" style="margin-top:10px">Mở khóa tính năng</button>`;
+  } else {
+    main.innerHTML=`<h1 style="color:red">❌ Bạn chưa đạt!</h1>
+    <button class="reward-btn" onclick="reward(0)">Nhận quà an ủi</button>
+    <div id="r"></div>`;
+  }
 }
 
 function reward(w){
-    document.getElementById("r").innerHTML= w? `<img src="spiritfruit.webp" class="main-image">`:`<img src="trijumscare.jpg" class="main-image">`;
-    if(w) localStorage.setItem("testCompleted","true");
+  document.getElementById("r").innerHTML= w? `<img src="spiritfruit.webp" class="main-image">`:`<img src="trijumscare.jpg" class="main-image">`;
+  if(w) localStorage.setItem("testCompleted","true");
 }
 
 function goMenu(){ localStorage.setItem("featureUnlocked","true"); location.reload(); }
 
 // ===== GAME BUTTON & MENU =====
+window.onload = function() {
+  if(localStorage.getItem("featureUnlocked") === "true") {
+    showGameButton();
+  }
+  startSnow();
+}
+
 function showGameButton(){
-    if(localStorage.getItem("featureUnlocked")=="true"){
-        if(!document.querySelector("#gameButton")){
-            let btn=document.createElement("button");
-            btn.id="gameButton"; btn.innerText="🎮 Chơi Game";
-            btn.style.position="fixed"; btn.style.left="10px"; btn.style.top="10px"; btn.style.zIndex="999";
-            btn.className="yt-btn"; btn.onclick=openGameMenu;
-            document.body.appendChild(btn);
-        }
-    }
-}
-window.onload=showGameButton;
-
-function openGameMenu(){ document.getElementById("gameMenu").style.display="block"; document.getElementById("mainContent").style.display="none"; }
-function exitGameMenu(){ document.getElementById("gameMenu").style.display="none"; document.getElementById("mainContent").style.display="block"; }
-function enterGame(){ document.getElementById("gameMenu").style.display="none"; document.getElementById("mainContent").style.display="none"; document.getElementById("gameArea").style.display="block"; loadPlayer(); showProfile(); showWorlds(); }
-
-// ===== GAMEPLAY FULL =====
-let player=null, monster=null, turn="player", currentWorld=0, currentStage=0;
-let worlds=[], totalWorlds=3, stagesPerWorld=5;
-let completedStages=JSON.parse(localStorage.getItem("completedStages")||"{}");
-
-for(let w=0; w<totalWorlds; w++){
-    let stages=[];
-    for(let s=0; s<stagesPerWorld; s++){
-        stages.push({name:`Quái ${w+1}-${s+1}`, hp:30+10*w+10*s, maxHp:30+10*w+10*s, skills:[{name:"Đấm", dmg:5+2*s},{name:"Rồng lửa", dmg:6+2*s}], reward:{exp:10*s*(w+1), gold:5*s*(w+1)}});
-    }
-    worlds.push({world:w+1, stages:stages});
+  const main=document.getElementById("mainContent");
+  const btn=document.createElement("button");
+  btn.className="yt-btn";
+  btn.innerText="🎮 Chơi Game Mini";
+  btn.onclick=()=>{document.getElementById("gameMenu").style.display="block";}
+  main.appendChild(btn);
 }
 
-function loadPlayer(){ let saved=JSON.parse(localStorage.getItem("playerStats")); if(saved) player=saved; else player={name:"Thầy giáo Tráy", hp:120, maxHp:120, exp:0, gold:0, level:1, points:0, skills:[{name:"Cắn", dmg:8},{name:"Hút máu", dmg:12}]}; savePlayer(); }
-function savePlayer(){ localStorage.setItem("playerStats", JSON.stringify(player)); }
-
-function showProfile(){ let profile=document.getElementById("playerProfile"); profile.innerHTML=`<h2>Profile: ${player.name}</h2>HP: <div class="hp-bar"><div class="hp-fill" style="width:${player.hp/player.maxHp*100}%">${player.hp}/${player.maxHp}</div></div>EXP: ${player.exp} Gold: ${player.gold} Level: ${player.level}`; }
-
-function showWorlds(){
-    let container=document.getElementById("worldList"); container.innerHTML="<h3>Worlds</h3>";
-    for(let w=0; w<worlds.length; w++){
-        let btn=document.createElement("button"); btn.className="yt-btn"; btn.innerText="World "+(w+1);
-        if(w>0 && !completedStages[`world${w-1}`]) btn.classList.add("locked");
-        btn.onclick=()=>{if(!btn.classList.contains("locked")) showStages(w);}
-        container.appendChild(btn);
-    }
+function enterGame(){
+  document.getElementById("gameMenu").style.display="none";
+  document.getElementById("mainContent").style.display="none";
+  document.getElementById("gameArea").style.display="block";
 }
 
-function showStages(worldIdx){
-    currentWorld=worldIdx;
-    let container=document.getElementById("stageList"); container.innerHTML=`<h3>Stages - World ${worldIdx+1}</h3>`;
-    worlds[worldIdx].stages.forEach((stage,sIdx)=>{
-        let btn=document.createElement("button"); btn.innerText=stage.name;
-        if(!completedStages[`W${worldIdx}S${sIdx-1}`] && sIdx>0) btn.disabled=true;
-        btn.onclick=()=>startBattle(sIdx);
-        container.appendChild(btn);
-    });
+function exitGameMenu(){
+  document.getElementById("gameMenu").style.display="none";
 }
 
-function startBattle(stageIdx){
-    currentStage=stageIdx;
-    monster=JSON.parse(JSON.stringify(worlds[currentWorld].stages[stageIdx]));
-    turn="player"; player.hp=player.maxHp; updateBattle(); createActions(); addExitButton();
+function backToGame(){
+  document.getElementById("profileMenu").style.display="none";
+  document.getElementById("gameArea").style.display="block";
 }
-
-function addExitButton(){
-    let exitBtn=document.querySelector("#gameArea button.exitBtn");
-    if(exitBtn) exitBtn.remove();
-    let exitBtn2=document.createElement("button");
-    exitBtn2.className="exitBtn"; exitBtn2.innerText="Thoát về menu";
-    exitBtn2.onclick=()=>{
-        document.getElementById("gameArea").style.display="none";
-        document.getElementById("mainContent").style.display="block";
-        showGameButton(); player.hp=player.maxHp;
-    };
-    document.getElementById("gameArea").appendChild(exitBtn2);
-}
-
-function updateBattle(){
-    document.getElementById("battlePlayer").innerText=player.name;
-    document.getElementById("battlePlayerHP").style.width=player.hp/player.maxHp*100+"%";
-    document.getElementById("battlePlayerHP").innerText=`${player.hp}/${player.maxHp}`;
-    document.getElementById("battleMonster").innerText=monster.name;
-    document.getElementById("battleMonsterHP").style.width=monster.hp/monster.maxHp*100+"%";
-    document.getElementById("battleMonsterHP").innerText=`${monster.hp}/${monster.maxHp}`;
-    showProfile();
-}
-
-function createActions(){
-    let actionsDiv=document.getElementById("actions"); actionsDiv.innerHTML="";
-    if(player.hp<=0 || monster.hp<=0){ let btn=document.createElement("button"); btn.innerText="Chơi lại Stage"; btn.onclick=()=>startBattle(currentStage); actionsDiv.appendChild(btn); return; }
-    player.skills.forEach(s=>{
-        let btn=document.createElement("button"); btn.innerText=s.name;
-        btn.onclick=()=>{
-            if(turn!="player") return;
-            monster.hp=Math.max(0,monster.hp-s.dmg);
-            document.getElementById("log").innerHTML+=`<p>Bạn dùng ${s.name}, gây ${s.dmg} dmg!</p>`;
-            updateBattle();
-            if(monster.hp<=0){
-                document.getElementById("log").innerHTML+=`<p>🎉 Bạn thắng Stage!</p>`;
-                player.exp+=monster.reward.exp; player.gold+=monster.reward.gold;
-                levelUpCheck(); completedStages[`W${currentWorld}S${currentStage}`]=true;
-                if(currentStage===worlds[currentWorld].stages.length-1) completedStages[`world${currentWorld}`]=true;
-                localStorage.setItem("completedStages", JSON.stringify(completedStages));
-                savePlayer(); updateBattle(); createActions(); addNextStageButton(); return;
-            }
-            turn="monster"; setTimeout(monsterTurn,500);
-        };
-        actionsDiv.appendChild(btn);
-    });
-}
-
-function addNextStageButton(){
-    if(currentStage<worlds[currentWorld].stages.length-1){
-        let btn=document.createElement("button"); btn.innerText="→ Stage tiếp theo";
-        btn.onclick=()=>startBattle(currentStage+1);
-        document.getElementById("actions").appendChild(btn);
-    }
-}
-
-function monsterTurn(){
-    if(monster.hp<=0 || player.hp<=0) return;
-    let s=monster.skills[Math.floor(Math.random()*monster.skills.length)];
-    player.hp=Math.max(0,player.hp-s.dmg);
-    document.getElementById("log").innerHTML+=`<p>${monster.name} dùng ${s.name}, gây ${s.dmg} dmg!</p>`;
-    updateBattle(); turn="player"; createActions();
-    if(player.hp<=0) document.getElementById("log").innerHTML+=`<p>❌ Bạn thua!</p>`;
-}
-
-function levelUpCheck(){
-    if(player.exp>=player.level*20){
-        player.level++; player.maxHp+=10; player.hp=player.maxHp; player.points+=2; player.exp=0;
-        document.getElementById("actions").innerHTML+=`<div class="levelup-box">🎉 Level Up! Bạn lên Level ${player.level}. Điểm kỹ năng: ${player.points}</div>`;
-        savePlayer();
-    }
-}
-
-function backToGame(){ document.getElementById("profileMenu").style.display="none"; document.getElementById("gameArea").style.display="block"; }
 
 // ===== SNOW EFFECT =====
-let canvas=document.getElementById("snow"), ctx=canvas.getContext("2d");
-canvas.width=window.innerWidth; canvas.height=window.innerHeight;
-let flakes=[]; for(let i=0;i<200;i++) flakes.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*4+1,d:Math.random()*1});
-function drawSnow(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle="white";ctx.beginPath();for(let i=0;i<flakes.length;i++){let f=flakes[i];ctx.moveTo(f.x,f.y);ctx.arc(f.x,f.y,f.r,0,Math.PI*2,true);}ctx.fill();moveSnow();requestAnimationFrame(drawSnow);}
-function moveSnow(){for(let i=0;i<flakes.length;i++){let f=flakes[i];f.y+=Math.pow(f.d,2)+1;if(f.y>canvas.height){f.x=Math.random()*canvas.width;f.y=0;}}}
-drawSnow();
+function startSnow(){
+  const canvas=document.getElementById("snow");
+  const ctx=canvas.getContext("2d");
+  canvas.width=window.innerWidth;
+  canvas.height=window.innerHeight;
+
+  const flakes=[];
+  for(let i=0;i<200;i++){
+    flakes.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, r:Math.random()*4+1, d:Math.random()*1});
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle="white";
+    ctx.beginPath();
+    for(let i=0;i<flakes.length;i++){
+      let f=flakes[i];
+      ctx.moveTo(f.x,f.y);
+      ctx.arc(f.x,f.y,f.r,0,Math.PI*2,true);
+    }
+    ctx.fill();
+    update();
+  }
+
+  function update(){
+    for(let i=0;i<flakes.length;i++){
+      let f=flakes[i];
+      f.y+=Math.pow(f.d,2)+1;
+      f.x+=Math.sin(f.d);
+      if(f.y>canvas.height){f.y=0; f.x=Math.random()*canvas.width;}
+    }
+  }
+
+  setInterval(draw,33);
+  window.onresize=()=>{canvas.width=window.innerWidth; canvas.height=window.innerHeight;}
+}
 </script>
 
 </body>
 </html>
+
 
 
 
