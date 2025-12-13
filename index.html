@@ -188,7 +188,7 @@ function next(){
  if(i>=10) result(); else load();
 }
 
-/* ===== PHẦN THƯỞNG VÀ MỞ KHÓA GAME ===== */
+/* ===== PHẦN THƯỞNG ===== */
 function result(){
  document.getElementById("mainContent").innerHTML=
  score==10?
@@ -207,7 +207,6 @@ function reward(w){
  <button class="yt-btn" onclick="goMenu()" style="margin-top:10px">Mở khóa tính năng</button>`
  :`<img src="trijumscare.jpg" class="main-image">`;
 
- // Nếu thắng, lưu trạng thái test hoàn thành
  if(w) localStorage.setItem("testCompleted","true");
 }
 
@@ -216,38 +215,48 @@ function goMenu(){
  location.reload();
 }
 
-// Khi load web kiểm tra xem có mở khóa chưa
+/* ===== NÚT CHƠI GAME LOCK / UNLOCK ===== */
 window.onload = function(){
- if(localStorage.getItem("featureUnlocked")=="true"){
-     let btn = document.createElement("button");
-     btn.innerText="🎮 Chơi Game";
-     btn.style.position="fixed";
-     btn.style.left="10px";
-     btn.style.top="10px";
-     btn.style.zIndex="999";
-     btn.className="yt-btn";
-     btn.onclick = startGameFeature;
-     document.body.appendChild(btn);
- }
 
- // Nếu đã hoàn thành test nhưng chưa unlock, vẫn giữ menu chính
- if(localStorage.getItem("testCompleted")=="true" && localStorage.getItem("featureUnlocked")!="true"){
-     document.getElementById("mainContent").innerHTML=`
-     <h1>Chào mừng đến trang web của Trí!</h1>
-     <p>Bạn đã hoàn thành test! Nhấn "Mở khóa tính năng" để chơi game.</p>
-     <img src="tritangquafemboy.jpg" class="main-image">
-     <div class="phone-box">☎️ 036-670-1818</div>
-     <button class="yt-btn" onclick="goMenu()">Mở khóa tính năng</button>
-     <div class="update-box">
-         <h2>📌 Cập nhật website</h2>
-         <ul>
-             <li>🎄 Hiệu ứng tuyết rơi Giáng Sinh</li>
-             <li>🧠 Test 10 câu hỏi có hình ảnh</li>
-             <li>🎁 Phần thưởng thắng / thua</li>
-             <li>📱 Fix lỗi zoom 90–100%</li>
-         </ul>
-     </div>`;
- }
+    // Tạo nút chơi game (luôn hiển thị)
+    let btn = document.createElement("button");
+    btn.innerText="🎮 Chơi Game";
+    btn.style.position="fixed";
+    btn.style.left="10px";
+    btn.style.top="10px";
+    btn.style.zIndex="999";
+    btn.className="yt-btn";
+
+    if(localStorage.getItem("featureUnlocked")=="true"){
+        btn.disabled = false;
+        btn.style.background = "red";
+        btn.onclick = startGameFeature;
+    } else {
+        btn.disabled = true;
+        btn.style.background = "gray";
+        btn.onclick = function(){ alert("Bạn phải hoàn thành test và mở khóa trước!"); };
+    }
+
+    document.body.appendChild(btn);
+
+    // Nếu đã hoàn thành test nhưng chưa unlock, hiển thị menu chính + nút mở khóa
+    if(localStorage.getItem("testCompleted")=="true" && localStorage.getItem("featureUnlocked")!="true"){
+        document.getElementById("mainContent").innerHTML=`
+        <h1>Chào mừng đến trang web của Trí!</h1>
+        <p>Bạn đã hoàn thành test! Nhấn "Mở khóa tính năng" để chơi game.</p>
+        <img src="tritangquafemboy.jpg" class="main-image">
+        <div class="phone-box">☎️ 036-670-1818</div>
+        <button class="yt-btn" onclick="goMenu()">Mở khóa tính năng</button>
+        <div class="update-box">
+            <h2>📌 Cập nhật website</h2>
+            <ul>
+                <li>🎄 Hiệu ứng tuyết rơi Giáng Sinh</li>
+                <li>🧠 Test 10 câu hỏi có hình ảnh</li>
+                <li>🎁 Phần thưởng thắng / thua</li>
+                <li>📱 Fix lỗi zoom 90–100%</li>
+            </ul>
+        </div>`;
+    }
 }
 
 /* Placeholder cho game */
@@ -275,6 +284,7 @@ setInterval(()=>{
 
 </body>
 </html>
+
 
 
 
