@@ -5,29 +5,68 @@
 <title>Trang Web Của Trí</title>
 
 <style>
-html,body{margin:0;padding:0;width:100%;height:100%;font-family:Arial,sans-serif;overflow:hidden}
-body{background:url("tri-an-pizza.jpg") no-repeat center center fixed;background-size:cover;color:white}
+html,body{
+    margin:0;padding:0;width:100%;height:100%;
+    font-family:Arial,sans-serif;overflow:hidden;
+}
+body{
+    background:url("tri-an-pizza.jpg") no-repeat center/cover fixed;
+    display:flex;justify-content:center;align-items:center;color:white;
+}
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.25);z-index:0}
-.content{position:relative;z-index:2;width:90%;max-width:600px;max-height:95vh;overflow-y:auto;padding:20px;text-align:center;margin:auto}
-button{margin-top:15px;padding:12px 25px;font-size:18px;border:none;border-radius:10px;cursor:pointer}
+.content{
+    position:relative;z-index:2;
+    width:90%;max-width:600px;
+    max-height:95vh;overflow-y:auto;
+    padding:20px;text-align:center;
+}
+button{
+    margin-top:15px;padding:12px 25px;
+    font-size:18px;border:none;border-radius:10px;
+    cursor:pointer;
+}
 .yt-btn{background:red;color:white;box-shadow:0 0 10px red}
-.next-btn,.check-btn,.reward-btn,.play-btn{background:yellow}
-.question-box{background:rgba(0,0,0,.6);padding:25px;border-radius:15px;margin-top:20px}
-.answer{margin:10px 0;padding:12px;background:rgba(255,255,255,.2);border-radius:8px;cursor:pointer;border:2px solid transparent}
-.answer.selected{border:2px solid yellow;background:rgba(255,255,150,.3)}
-.main-image{max-width:100%;max-height:55vh;border-radius:10px;margin:15px auto;display:block}
-.phone-box{margin-top:15px;font-size:22px;font-weight:bold;color:black;background:rgba(255,255,255,.85);padding:10px 20px;border-radius:10px;border:4px solid red}
-.update-box{margin-top:25px;background:rgba(0,0,0,.6);padding:15px;border-radius:15px;text-align:left}
+.next-btn,.check-btn,.reward-btn{background:yellow}
+.question-box{
+    background:rgba(0,0,0,.6);
+    padding:25px;border-radius:15px;margin-top:20px;
+}
+.answer{
+    margin:10px 0;padding:12px;
+    background:rgba(255,255,255,.2);
+    border-radius:8px;cursor:pointer;
+    border:2px solid transparent;
+}
+.answer.selected{
+    border:2px solid yellow;
+    background:rgba(255,255,150,.3);
+}
+.main-image{
+    max-width:100%;max-height:55vh;
+    border-radius:10px;margin:15px auto;display:block;
+}
+.phone-box{
+    margin-top:15px;font-size:22px;font-weight:bold;
+    color:black;background:rgba(255,255,255,.85);
+    padding:10px 20px;border-radius:10px;
+    border:4px solid red;
+}
+.update-box{
+    margin-top:25px;background:rgba(0,0,0,.6);
+    padding:15px;border-radius:15px;text-align:left;
+}
 .update-box h2{text-align:center;color:#ffd700}
-.update-box li{margin:6px 0;font-size:15px}
+#introMenu{
+    display:none;position:fixed;inset:0;
+    background:rgba(0,0,0,.8);
+    z-index:5;justify-content:center;align-items:center;
+    flex-direction:column;text-align:center;
+}
+.play-btn{
+    background:lime;font-size:22px;
+    padding:15px 40px;border-radius:15px;
+}
 #snow{position:fixed;inset:0;pointer-events:none;z-index:1}
-
-/* GAME */
-#introMenu,#profileMenu,#gameArea,#testArea{display:none}
-.stats{background:rgba(0,0,0,.6);padding:15px;border-radius:10px;margin:10px}
-.hp-bar{width:100%;height:18px;background:#555;border-radius:10px}
-.hp-fill{height:100%;background:lime;border-radius:10px;text-align:center;color:black;font-weight:bold}
-#log{height:120px;overflow-y:auto;background:rgba(255,255,255,.1);padding:10px;border-radius:10px;margin-top:10px}
 </style>
 </head>
 
@@ -35,190 +74,102 @@ button{margin-top:15px;padding:12px 25px;font-size:18px;border:none;border-radiu
 <div class="overlay"></div>
 <canvas id="snow"></canvas>
 
-<!-- ===== MAIN WEB ===== -->
 <div class="content" id="mainContent">
-<h1>Chào mừng đến trang web của Trí!</h1>
-<p>Bạn có thể học saygex chỉ 4 đô mỗi tháng.</p>
-<img src="tritangquafemboy.jpg" class="main-image">
-<div class="phone-box">☎️ 036-670-1818</div>
-<button class="yt-btn" onclick="startRegister()">ĐĂNG KÍ</button>
-<div class="update-box">
-<h2>📌 Cập nhật website</h2>
-<ul>
-<li>🎄 Hiệu ứng tuyết rơi</li>
-<li>🧠 Test 10 câu hỏi</li>
-<li>🎮 Mini Game World / Stage</li>
-</ul>
-</div>
-</div>
+    <h1>Chào mừng đến trang web của Trí!</h1>
+    <p>Bạn có thể học saygex chỉ 4 đô mỗi tháng.</p>
+    <img src="tritangquafemboy.jpg" class="main-image">
+    <div class="phone-box">☎️ 036-670-1818</div>
+    <button class="yt-btn" onclick="startRegister()">ĐĂNG KÍ</button>
 
-<!-- ===== TEST ===== -->
-<div class="content" id="testArea"></div>
-
-<!-- ===== INTRO GAME ===== -->
-<div class="content" id="introMenu">
-<h1 style="font-size:36px">🔥 Tráy Ghi Aura 🔥</h1>
-<button class="play-btn" onclick="openProfile()">PLAY</button>
-<button class="yt-btn" onclick="exitToMenu()">Thoát</button>
+    <div class="update-box">
+        <h2>📌 Cập nhật website</h2>
+        <ul>
+            <li>🎄 Hiệu ứng tuyết rơi</li>
+            <li>🧠 Test 10 câu có hình ảnh</li>
+            <li>🎮 Mini Game World/Stage (sắp hoàn thành)</li>
+        </ul>
+    </div>
 </div>
 
-<!-- ===== PROFILE ===== -->
-<div class="content" id="profileMenu">
-<h2>Profile Thầy giáo Tráy</h2>
-<p id="pStats"></p>
-<button onclick="openGame()">Vào Game</button>
-<button onclick="exitToMenu()">Thoát về menu</button>
-</div>
-
-<!-- ===== GAME ===== -->
-<div class="content" id="gameArea">
-<h2 id="stageTitle"></h2>
-<div class="stats" id="battleStats"></div>
-<div id="actions"></div>
-<div id="log"></div>
-<button onclick="nextStage()">Stage tiếp theo</button>
-<button onclick="openProfile()">Về Profile</button>
+<div id="introMenu">
+    <h1 style="font-size:36px">Tráy Ghi Aura</h1>
+    <p>Sắp ra mắt</p>
+    <button class="play-btn" onclick="alert('Game đang hoàn thiện!')">Play</button>
+    <button class="yt-btn" onclick="exitIntro()">Thoát</button>
 </div>
 
 <script>
-/* ===== TEST ===== */
-let questions=[{ask:"1+1=?",answers:["1","2","3","4"],correct:1},
-{ask:"2+2=?",answers:["3","4","5","6"],correct:1},
-{ask:"3+3=?",answers:["5","6","7","8"],correct:1},
-{ask:"4+4=?",answers:["7","8","9","10"],correct:1},
-{ask:"5+5=?",answers:["9","10","11","12"],correct:1},
-{ask:"6+6=?",answers:["11","12","13","14"],correct:1},
-{ask:"7+7=?",answers:["13","14","15","16"],correct:1},
-{ask:"8+8=?",answers:["15","16","17","18"],correct:1},
-{ask:"9+9=?",answers:["17","18","19","20"],correct:1},
-{ask:"10+10=?",answers:["19","20","21","22"],correct:1}];
-
-let qi=0,score=0,pick=-1;
+// ===== TEST + UNLOCK GAME =====
+let questions=[
+ {img:"giathinh.png",ask:"Câu 1: Đây là con gì?",answers:["A. Con mèo","B. Con chó","C. Con gà","D. Con heo"],correct:1},
+ {img:"minhtrithamquan.jpg",ask:"Câu 2: Trí thích gì nhất?",answers:["A. Ăn gì","B. Ngủ","C. Chơi game","D. Cả 3"],correct:3},
+ {ask:"Câu 3: Bạn đến trang này để làm gì?",answers:["A. Giải trí","B. Làm bài test","C. Xem web","D. Cả 3"],correct:3},
+ {img:"phong2.jpg",ask:"Câu 4: Trong hình là gì?",answers:["A. TP sĩ aura","B. Con vật","C. Đồ vật","D. Không biết"],correct:0},
+ {ask:"Câu 5: 2 + 2 = ?",answers:["A. 3","B. 4","C. 5","D. 6"],correct:1},
+ {ask:"Câu 6: Ai yêu nhi nhất?",answers:["A. tôi","B. thk ảo aura","C. ko có","D. bạn tôi"],correct:1},
+ {ask:"Câu 7: Một tuần Trí chơi game mấy lần?",answers:["A. 5","B. 6","C. 7","D. 8"],correct:2},
+ {ask:"Câu 8: TP có hình gì?",answers:["A. Vuông","B. Tam giác","C. Tròn","D. Hình Pheo.B"],correct:3},
+ {ask:"Câu 9: Loài nào biết bay?",answers:["A. Cá hồi","B. Chim","C. Khác","D. Yêu femboy"],correct:1},
+ {ask:"Câu 10: Ai nói câu 'tao không giết được mày thì tao làm chó'?",answers:["A. TP","B. MT","C. NA","D. TN"],correct:0}
+];
+let i=0,score=0,pick=-1;
 
 function startRegister(){
-mainContent.style.display="none";
-testArea.style.display="block";
-testArea.innerHTML=`<h1>Làm đúng 10/10 để mở game</h1><button onclick="loadQ()">BẮT ĐẦU</button><div id="q"></div>`;
+ const c=document.getElementById("mainContent");
+ c.innerHTML=`<h1>Hoàn thành bài test trước!</h1>
+ <button class="yt-btn" onclick="startTest()">BẮT ĐẦU TEST</button>
+ <div id="q"></div>`;
 }
-
+function startTest(){i=0;score=0;loadQ();}
 function loadQ(){
-let q=questions[qi];
-let h=`<div class="question-box"><h3>${q.ask}</h3>`;
-q.answers.forEach((a,i)=>h+=`<div class="answer" onclick="pick=${i};document.querySelectorAll('.answer').forEach(x=>x.classList.remove('selected'));event.target.classList.add('selected')">${a}</div>`);
-h+=`<button onclick="nextQ()">Tiếp</button></div>`;
-document.getElementById("q").innerHTML=h;
+ let q=questions[i];
+ let h=`<div class="question-box"><h2>${q.ask}</h2>`;
+ if(q.img)h+=`<img src="${q.img}" class="main-image">`;
+ q.answers.forEach((a,n)=>h+=
+ `<div class="answer" onclick="pick=${n};document.querySelectorAll('.answer').forEach(x=>x.classList.remove('selected'));event.target.classList.add('selected')">${a}</div>`);
+ h+=`<button class="next-btn" onclick="nextQ()">Tiếp theo</button></div>`;
+ document.getElementById("q").innerHTML=h;
 }
-
 function nextQ(){
-if(pick==-1)return alert("Chọn đáp án");
-if(pick==questions[qi].correct)score++;
-pick=-1;qi++;
-if(qi>=10)finishTest();else loadQ();
+ if(pick==-1)return alert("Chọn đáp án");
+ if(pick===questions[i].correct)score++;
+ pick=-1;i++;
+ i>=10?showResult():loadQ();
 }
-
-function finishTest(){
-if(score==10){localStorage.setItem("featureUnlocked","true");location.reload();}
-else{alert("Chưa đạt");exitToMenu();}
+function showResult(){
+ document.getElementById("mainContent").innerHTML=
+ score===10?
+ `<h1 style="color:lightgreen">✔️ Hoàn thành 10/10</h1>
+ <button class="reward-btn" onclick="unlockGame()">Mở khóa game</button>`:
+ `<h1 style="color:red">❌ Chưa đạt</h1>
+ <button class="yt-btn" onclick="location.reload()">Làm lại</button>`;
 }
-
-/* ===== GAME LOGIC ===== */
-let player={
-name:"Thầy giáo Tráy",level:1,exp:0,gold:0,
-hp:120,maxHp:120,atk:10,points:0,stage:1
-};
-
-let monster={name:"Quái 1-1",hp:40,maxHp:40,atk:6};
-
-function openProfile(){
-introMenu.style.display="none";
-profileMenu.style.display="block";
-updateProfile();
+function unlockGame(){
+ localStorage.setItem("featureUnlocked","true");
+ location.reload();
 }
-
-function updateProfile(){
-pStats.innerHTML=`HP ${player.hp}/${player.maxHp} | ATK ${player.atk} | LV ${player.level} | EXP ${player.exp} | GOLD ${player.gold}`;
-}
-
-function openGame(){
-profileMenu.style.display="none";
-gameArea.style.display="block";
-startStage();
-}
-
-function startStage(){
-monster.hp=monster.maxHp;
-player.hp=player.maxHp;
-stageTitle.innerText="Stage "+player.stage;
-log.innerHTML="";
-updateBattle();
-createActions();
-}
-
-function updateBattle(){
-battleStats.innerHTML=
-`${player.name} HP<div class="hp-bar"><div class="hp-fill" style="width:${player.hp/player.maxHp*100}%">${player.hp}</div></div>
-${monster.name} HP<div class="hp-bar"><div class="hp-fill" style="width:${monster.hp/monster.maxHp*100}%">${monster.hp}</div></div>`;
-}
-
-function createActions(){
-actions.innerHTML="";
-let btn=document.createElement("button");
-btn.innerText="Đánh";
-btn.onclick=()=>{
-monster.hp-=player.atk;
-log.innerHTML+=`<p>Bạn đánh ${player.atk}</p>`;
-if(monster.hp<=0){winStage();return;}
-player.hp-=monster.atk;
-log.innerHTML+=`<p>Quái đánh ${monster.atk}</p>`;
-if(player.hp<=0){alert("Thua");startStage();}
-updateBattle();
-};
-actions.appendChild(btn);
-}
-
-function winStage(){
-log.innerHTML+=`<p>✔️ Thắng stage</p>`;
-player.exp+=10;player.gold+=5;
-if(player.exp>=20){player.level++;player.exp=0;player.points+=3;alert("Lên level +3 điểm");}
-}
-
-function nextStage(){
-player.stage++;
-monster.maxHp+=20;
-monster.atk+=3;
-startStage();
-}
-
-/* ===== MENU ===== */
-function exitToMenu(){
-testArea.style.display="none";
-introMenu.style.display="none";
-profileMenu.style.display="none";
-gameArea.style.display="none";
-mainContent.style.display="block";
-}
-
-/* ===== GAME BUTTON ===== */
 function showGameButton(){
-if(localStorage.getItem("featureUnlocked")=="true"){
-let b=document.createElement("button");
-b.innerText="🎮 Chơi Game";
-b.className="yt-btn";
-b.style.position="fixed";b.style.left="10px";b.style.top="10px";
-b.onclick=()=>{mainContent.style.display="none";introMenu.style.display="block";}
-document.body.appendChild(b);
-}}
+ if(localStorage.getItem("featureUnlocked")==="true"){
+   if(!document.getElementById("gameBtn")){
+     let b=document.createElement("button");
+     b.id="gameBtn";b.innerText="🎮 Chơi Game";b.className="yt-btn";
+     b.style.position="fixed";b.style.left="10px";b.style.top="10px";b.onclick=()=>{
+       document.getElementById("introMenu").style.display="flex";
+       document.getElementById("mainContent").style.display="none";
+     };
+     document.body.appendChild(b);
+   }
+ }
+}
+function exitIntro(){
+ document.getElementById("introMenu").style.display="none";
+ document.getElementById("mainContent").style.display="block";
+}
 window.onload=showGameButton;
-
-/* ===== SNOW ===== */
-const c=document.getElementById("snow"),x=c.getContext("2d");
-function rs(){c.width=innerWidth;c.height=innerHeight}rs();
-let s=Array.from({length:100},()=>({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*3+1,d:Math.random()+1}));
-setInterval(()=>{x.clearRect(0,0,c.width,c.height);x.fillStyle="white";
-s.forEach(f=>{x.beginPath();x.arc(f.x,f.y,f.r,0,Math.PI*2);x.fill();f.y+=f.d;if(f.y>c.height){f.y=0;f.x=Math.random()*c.width;}})},33);
 </script>
 </body>
 </html>
+
 
 
 
