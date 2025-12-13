@@ -159,7 +159,7 @@ button {
 </div>
 
 <script>
-/* ===== TEST (GIỮ NGUYÊN) ===== */
+/* ===== TEST + PHẦN THƯỞNG ===== */
 let questions = [
  { img:"giathinh.png", ask:"Câu 1: Đây là con gì?", answers:["A. Con mèo","B. Con chó","C. Con gà","D. Con heo"], correct:1 },
  { img:"minhtrithamquan.jpg", ask:"Câu 2: Trí thích gì nhất?", answers:["A. Ăn cứt","B. Ngủ lọ","C. Chơi game femboy","D. Cả 3"], correct:3 },
@@ -181,7 +181,9 @@ function startRegister(){
  <button class="yt-btn" onclick="startTest()">BẮT ĐẦU TEST</button>
  <div id="q"></div>`;
 }
+
 function startTest(){ i=0; score=0; load(); }
+
 function load(){
  let q=questions[i];
  let h=`<div class="question-box"><h2>${q.ask}</h2>`;
@@ -190,30 +192,60 @@ function load(){
  h+=`<button class="next-btn" onclick="next()">Tiếp theo</button></div>`;
  document.getElementById("q").innerHTML=h;
 }
+
 function next(){
  if(pick==-1)return alert("Chọn đáp án");
  if(pick==questions[i].correct)score++;
  pick=-1; i++;
  if(i>=10) result(); else load();
 }
+
+/* ===== PHẦN THƯỞNG VÀ MỞ KHÓA GAME ===== */
 function result(){
  document.getElementById("mainContent").innerHTML=
  score==10?
  `<h1 style="color:lightgreen">✔️ Bạn đã vượt qua!</h1>
  <button class="reward-btn" onclick="reward(1)">Nhận phần thưởng</button>
- <div id="r"></div>`
+ <div id="r"></div>
+ <button class="yt-btn" onclick="goMenu()" style="margin-top:10px">Mở khóa tính năng</button>`
  :
  `<h1 style="color:red">❌ Bạn chưa đạt!</h1>
  <button class="reward-btn" onclick="reward(0)">Nhận quà an ủi</button>
  <div id="r"></div>`;
 }
+
 function reward(w){
  document.getElementById("r").innerHTML=
  w?`<img src="spiritfruit.webp" class="main-image">`
  :`<img src="trijumscare.jpg" class="main-image">`;
 }
 
-/* ===== SNOW ===== */
+function goMenu(){
+ localStorage.setItem("featureUnlocked","true");
+ location.reload();
+}
+
+// Khi load web kiểm tra xem có mở khóa chưa
+window.onload = function(){
+ if(localStorage.getItem("featureUnlocked")=="true"){
+     let btn = document.createElement("button");
+     btn.innerText="🎮 Chơi Game";
+     btn.style.position="fixed";
+     btn.style.left="10px";
+     btn.style.top="10px";
+     btn.style.zIndex="999";
+     btn.className="yt-btn";
+     btn.onclick = startGameFeature;
+     document.body.appendChild(btn);
+ }
+}
+
+/* Placeholder cho game */
+function startGameFeature(){
+ alert("Bạn đã mở tính năng chơi game!");
+}
+
+/* ===== HIỆU ỨNG TUYẾT ===== */
 const c=document.getElementById("snow"),x=c.getContext("2d");
 function rs(){c.width=innerWidth;c.height=innerHeight}
 rs();window.onresize=rs;
@@ -233,6 +265,7 @@ setInterval(()=>{
 
 </body>
 </html>
+
 
 
 
