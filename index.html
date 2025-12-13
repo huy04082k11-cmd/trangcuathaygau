@@ -20,6 +20,24 @@ button {margin-top:20px; padding:12px 25px; font-size:18px; border:none; border-
 .update-box { margin-top:25px; background:rgba(0,0,0,0.6); padding:15px; border-radius:15px; text-align:left; }
 .update-box h2 { text-align:center; color:#ffd700; }
 .update-box li { margin:6px 0; font-size:15px; }
+
+/* Intro menu (game) */
+#introMenu {
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:20;
+  background:rgba(0,0,0,0.85);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  text-align:center;
+}
+#introMenu h1 { font-size:40px; margin:6px 0; color:#ffd700; }
+.play-btn-game { background:lime; font-size:22px; padding:15px 40px; border-radius:15px; margin:10px; cursor:pointer; }
+
+/* Game area */
 #gameArea {display:none; position:relative; z-index:2; width:90%; max-width:1000px; max-height:95vh; margin:auto; text-align:center; background:rgba(0,0,0,0.6); border-radius:15px; padding:15px; overflow:auto;}
 #playerProfile,#shopArea,#worldList,#stageList {display:inline-block; vertical-align:top; margin-right:20px;}
 #playerProfile {width:250px; text-align:left;}
@@ -40,6 +58,7 @@ button {margin-top:20px; padding:12px 25px; font-size:18px; border:none; border-
 <div class="overlay"></div>
 <canvas id="snow"></canvas>
 
+<!-- MENU WEB (GIỮ NGUYÊN) -->
 <div class="content" id="mainContent">
     <h1>Chào mừng đến trang web của Trí!</h1>
     <p>Bạn có thể học saygex chỉ 4 đô mỗi tháng.</p>
@@ -57,6 +76,15 @@ button {margin-top:20px; padding:12px 25px; font-size:18px; border:none; border-
     </div>
 </div>
 
+<!-- INTRO MENU GAME: Tráy Ghi Aura -->
+<div id="introMenu">
+  <h1>Tráy Ghi Aura</h1>
+  <p style="margin:6px 0 14px 0;">Sẵn sàng cho cuộc phiêu lưu?</p>
+  <button class="play-btn-game" onclick="startGameFeature()">Play</button>
+  <button class="yt-btn" onclick="closeIntroMenu()">Thoát</button>
+</div>
+
+<!-- GAME AREA (GIỮ NGUYÊN LOGIC) -->
 <div id="gameArea">
     <div id="playerProfile"></div>
     <div id="shopArea"><h3>Shop / Gacha</h3><p>Chưa có item</p></div>
@@ -73,7 +101,7 @@ button {margin-top:20px; padding:12px 25px; font-size:18px; border:none; border-
 </div>
 
 <script>
-// ===== TEST + PHẦN THƯỞNG =====
+// ===== TEST + PHẦN THƯỞNG (KHÔNG THAY ĐỔI) =====
 let questions = [
  {img:"giathinh.png",ask:"Câu 1: Đây là con gì?",answers:["A. Con mèo","B. Con chó","C. Con gà","D. Con heo"],correct:1},
  {img:"minhtrithamquan.jpg",ask:"Câu 2: Trí thích gì nhất?",answers:["A. Ăn gì","B. Ngủ","C. Chơi game","D. Cả 3"],correct:3},
@@ -89,60 +117,66 @@ let questions = [
 let i=0, score=0, pick=-1;
 
 function startRegister(){
- document.getElementById("mainContent").innerHTML=`<h1>Trước khi đăng ký bạn phải hoàn thành bài test!</h1>
- <div id="q"></div>`;
- loadTest();
+  const c = document.getElementById("mainContent");
+  c.innerHTML = `<h1>Trước khi đăng ký bạn phải hoàn thành bài test!</h1>
+    <div id="q"></div>
+    <button class="yt-btn" id="startTestBtn">BẮT ĐẦU TEST</button>`;
+  i=0; score=0; pick=-1;
+  document.getElementById("startTestBtn").onclick = startTest;
 }
 
-function loadTest(){
- i=0; score=0; pick=-1;
- loadQ();
+function startTest(){
+  document.getElementById("startTestBtn").style.display = "none";
+  loadQ();
 }
 
 function loadQ(){
- let q=questions[i];
- let h=`<div class="question-box"><h2>${q.ask}</h2>`;
- if(q.img) h+=`<img src="${q.img}" class="main-image">`;
- q.answers.forEach((a,n)=>{
-   h+=`<div class="answer" onclick="pick=${n};document.querySelectorAll('.answer').forEach(x=>x.classList.remove('selected'));event.target.classList.add('selected')">${a}</div>`;
- });
- h+=`<button class="next-btn" onclick="nextQ()">Tiếp theo</button></div>`;
- document.getElementById("q").innerHTML=h;
+  let q=questions[i];
+  let qDiv = document.getElementById("q");
+  let h = `<div class="question-box"><h2>${q.ask}</h2>`;
+  if(q.img) h += `<img src="${q.img}" class="main-image">`;
+  q.answers.forEach((a,n)=>{
+    h += `<div class="answer" onclick="
+      pick=${n};
+      document.querySelectorAll('.answer').forEach(x=>x.classList.remove('selected'));
+      event.target.classList.add('selected')
+    ">${a}</div>`;
+  });
+  h += `<button class="next-btn" onclick="nextQ()">Tiếp theo</button></div>`;
+  qDiv.innerHTML = h;
 }
 
 function nextQ(){
- if(pick==-1) return alert("Chọn đáp án");
- if(pick==questions[i].correct) score++;
- pick=-1; i++;
- if(i>=questions.length) showResult(); else loadQ();
+  if(pick===-1){ alert("Chọn đáp án"); return; }
+  if(pick===questions[i].correct) score++;
+  pick=-1; i++;
+  if(i>=questions.length) showResult();
+  else loadQ();
 }
 
 function showResult(){
- const c=document.getElementById("mainContent");
- if(score===10){
-   c.innerHTML=`<h1 style="color:lightgreen">✔️ Bạn đã vượt qua 10/10!</h1>
-   <button class="reward-btn" onclick="reward(true)">Nhận phần thưởng</button>
-   <div id="r"></div>
-   <button class="yt-btn" onclick="unlockGame()">Mở khóa game</button>`;
- } else {
-   c.innerHTML=`<h1 style="color:red">❌ Bạn chưa đạt (${score}/10)</h1>
-   <button class="reward-btn" onclick="reward(false)">Nhận quà an ủi</button>
-   <div id="r"></div>
-   <button class="yt-btn" style="margin-top:15px" onclick="startRegister()">Làm lại</button>`;
- }
+  const c=document.getElementById("mainContent");
+  if(score===questions.length){
+    c.innerHTML=`<h1 style="color:lightgreen">✔️ Bạn đã vượt qua 10/10!</h1>
+      <button class="reward-btn" onclick="reward(true)">Nhận phần thưởng</button>
+      <div id="r"></div>
+      <button class="yt-btn" onclick="unlockGame()">Mở khóa game</button>`;
+  } else {
+    c.innerHTML=`<h1 style="color:red">❌ Bạn chưa đạt (${score}/${questions.length})</h1>
+      <button class="reward-btn" onclick="reward(false)">Nhận quà an ủi</button>
+      <div id="r"></div>
+      <button class="yt-btn" style="margin-top:15px" onclick="startRegister()">Làm lại</button>`;
+  }
 }
 
 function reward(win){
- document.getElementById("r").innerHTML = win
-   ? `<img src="spiritfruit.webp" class="main-image">`
-   : `<img src="trijumscare.jpg" class="main-image">`;
- if(win) localStorage.setItem("testCompleted","true");
+  document.getElementById("r").innerHTML =
+    win? `<img src="spiritfruit.webp" class="main-image">`:
+         `<img src="trijumscare.jpg" class="main-image">`;
+  if(win) localStorage.setItem("testCompleted","true");
 }
 
-function unlockGame(){
- localStorage.setItem("featureUnlocked","true");
- location.reload();
-}
+function unlockGame(){ localStorage.setItem("featureUnlocked","true"); location.reload(); }
 
 function showGameButton(){
  if(localStorage.getItem("featureUnlocked")==="true"){
@@ -150,7 +184,7 @@ function showGameButton(){
      let btn=document.createElement("button");
      btn.id="gameButton"; btn.innerText="🎮 Chơi Game"; btn.className="yt-btn";
      btn.style.position="fixed"; btn.style.left="10px"; btn.style.top="10px"; btn.style.zIndex="999";
-     btn.onclick=()=>{ document.getElementById("mainContent").style.display="none"; document.getElementById("gameArea").style.display="block"; startGameMenu(); };
+     btn.onclick=()=>{ document.getElementById("mainContent").style.display="none"; document.getElementById("introMenu").style.display="flex"; };
      document.body.appendChild(btn);
    }
  }
@@ -181,6 +215,27 @@ function loadPlayer(){
 function savePlayer(){ localStorage.setItem("playerStats", JSON.stringify(player)); }
 
 // ===== MENU GAME =====
+function startGameFeature(){
+  // nếu đang ở intro menu, ẩn intro menu trước khi vào game
+  const intro = document.getElementById("introMenu");
+  if(intro) intro.style.display = "none";
+
+  document.getElementById("mainContent").style.display="none";
+  document.getElementById("gameArea").style.display="block";
+  loadPlayer();
+  showProfile();
+  showWorlds();
+  document.getElementById("stageList").innerHTML="";
+  document.getElementById("battleContent").style.display="none";
+}
+
+function closeIntroMenu(){
+  // quay lại menu web
+  document.getElementById("introMenu").style.display="none";
+  document.getElementById("mainContent").style.display="block";
+}
+
+// --- Profile / Worlds / Stages & Battle (giữ nguyên) ---
 function startGameMenu(){
  loadPlayer();
  showProfile();
@@ -217,7 +272,6 @@ function showStages(worldIdx){
  });
 }
 
-// Các hàm battle giữ nguyên từ bản game cũ
 function startBattle(stageIdx){
  currentStage=stageIdx;
  monster=JSON.parse(JSON.stringify(worlds[currentWorld].stages[stageIdx]));
@@ -306,12 +360,13 @@ function showLevelUpOptions(){
 const c=document.getElementById("snow"),x=c.getContext("2d");
 function rs(){c.width=innerWidth;c.height=innerHeight}
 rs();window.onresize=rs;
-let s=Array.from({length:120},()=>({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*3+1,d:Math.random()+1}));
-setInterval(()=>{x.clearRect(0,0,c.width,c.height);x.fillStyle="white";s.forEach(f=>{x.beginPath();x.arc(f.x,f.y,f.r,0,Math.PI*2);x.fill();f.y+=f.d+1;if(f.y>c.height){f.y=0;f.x=Math.random()*c.width;}});},33);
+let snow=Array.from({length:120},()=>({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*3+1,d:Math.random()+1}));
+setInterval(()=>{x.clearRect(0,0,c.width,c.height);x.fillStyle="white";snow.forEach(f=>{x.beginPath();x.arc(f.x,f.y,f.r,0,Math.PI*2);x.fill();f.y+=f.d+1;if(f.y>c.height){f.y=0;f.x=Math.random()*c.width;}});},33);
 </script>
 
 </body>
 </html>
+
 
 
 
