@@ -47,7 +47,7 @@ button {margin-top:20px; padding:12px 25px; font-size:18px; border:none; border-
             <li>🎄 Hiệu ứng tuyết rơi Giáng Sinh</li>
             <li>🧠 Test 10 câu hỏi có hình ảnh</li>
             <li>🎁 Phần thưởng thắng / thua</li>
-            <li>🎮 Gacha nhiều nhân vật + phó bản</li>
+            <li>🎮 Tính năng game sắp hoàn thành</li>
         </ul>
     </div>
 </div>
@@ -129,20 +129,23 @@ function goMenu(){
 
 function showGameButton(){
  if(localStorage.getItem("featureUnlocked")=="true"){
-     let btn = document.createElement("button");
-     btn.innerText="🎮 Chơi Game";
-     btn.style.position="fixed";
-     btn.style.left="10px";
-     btn.style.top="10px";
-     btn.style.zIndex="999";
-     btn.className="yt-btn";
-     btn.onclick = startGameFeature;
-     document.body.appendChild(btn);
+     if(!document.querySelector("#gameButton")){
+         let btn = document.createElement("button");
+         btn.id="gameButton";
+         btn.innerText="🎮 Chơi Game";
+         btn.style.position="fixed";
+         btn.style.left="10px";
+         btn.style.top="10px";
+         btn.style.zIndex="999";
+         btn.className="yt-btn";
+         btn.onclick = startGameFeature;
+         document.body.appendChild(btn);
+     }
  }
 }
 window.onload = function(){ showGameButton(); }
 
-/* ===== MINI GAME GACHA + PHÓ BẢN ===== */
+// ===== MINI GAME GACHA + PHÓ BẢN =====
 let player, monster, turn;
 let monsters = [
   {name:"Quái A", hp:50, skills:[{name:"Cào", dmg:5},{name:"Cắn", dmg:12}]},
@@ -159,26 +162,36 @@ function startGameFeature(){
  document.getElementById("mainContent").style.display="none";
  document.getElementById("gameArea").style.display="block";
 
+ // reset log/actions nếu bắt đầu game mới
+ document.getElementById("log").innerHTML="";
+ document.getElementById("actions").innerHTML="";
+
  if(!loadGame()){
     player = characters[Math.floor(Math.random()*characters.length)];
+    player.hp = player.hp; // reset
     monster = monsters[Math.floor(Math.random()*monsters.length)];
+    monster.hp = monster.hp; 
     turn="player";
  }
  updateStats();
  createActions();
 
- let exitBtn = document.createElement("button");
- exitBtn.innerText="Thoát về menu";
- exitBtn.onclick = ()=>{
+ // exit button
+let existingBtn = document.querySelector("#gameArea button.exitBtn");
+if(existingBtn) existingBtn.remove();
+let exitBtn = document.createElement("button");
+exitBtn.innerText="Thoát về menu";
+exitBtn.className="exitBtn";
+exitBtn.onclick = ()=>{
      document.getElementById("gameArea").style.display="none";
      document.getElementById("mainContent").style.display="block";
- };
- document.getElementById("gameArea").appendChild(exitBtn);
+};
+document.getElementById("gameArea").appendChild(exitBtn);
 }
 
 function updateStats(){
- document.getElementById("playerStats").innerHTML = `${player.name} HP: <div class="hp-bar"><div class="hp-fill" style="width:${player.hp}%">${player.hp}</div></div> EXP: ${player.exp} Gold: ${player.gold}`;
- document.getElementById("monsterStats").innerHTML = `${monster.name} HP: <div class="hp-bar"><div class="hp-fill" style="width:${monster.hp}%">${monster.hp}</div></div>`;
+ document.getElementById("playerStats").innerHTML = `${player.name} HP: <div class="hp-bar"><div class="hp-fill" style="width:${Math.max(0,player.hp)}%">${Math.max(0,player.hp)}</div></div> EXP: ${player.exp} Gold: ${player.gold}`;
+ document.getElementById("monsterStats").innerHTML = `${monster.name} HP: <div class="hp-bar"><div class="hp-fill" style="width:${Math.max(0,monster.hp)}%">${Math.max(0,monster.hp)}</div></div>`;
 }
 
 function createActions(){
@@ -190,7 +203,7 @@ function createActions(){
    btn.innerText=s.name;
    btn.onclick=()=>{
      if(turn!="player") return;
-     monster.hp -= s.dmg;
+     monster.hp = Math.max(0, monster.hp - s.dmg);
      logDiv.innerHTML+=`<p>Bạn dùng ${s.name}, gây ${s.dmg} dmg!</p>`;
      if(monster.hp<=0){
        logDiv.innerHTML+=`<p>🎉 Bạn thắng!</p>`;
@@ -201,8 +214,8 @@ function createActions(){
      }
      turn="monster";
      saveGame();
-     setTimeout(monsterTurn,500);
      updateStats();
+     setTimeout(monsterTurn,500);
    };
    actionsDiv.appendChild(btn);
  });
@@ -213,7 +226,7 @@ function monsterTurn(){
  let logDiv=document.getElementById("log");
  let actionsDiv=document.getElementById("actions");
  let skill = monster.skills[Math.floor(Math.random()*monster.skills.length)];
- player.hp -= skill.dmg;
+ player.hp = Math.max(0, player.hp - skill.dmg);
  logDiv.innerHTML+=`<p>Quái dùng ${skill.name}, gây ${skill.dmg} dmg!</p>`;
  if(player.hp<=0){
    logDiv.innerHTML+=`<p>💀 Bạn thua!</p>`;
@@ -224,6 +237,7 @@ function monsterTurn(){
  saveGame();
 }
 
+// ===== LƯU/LOAD GAME =====
 function saveGame(){
  let gameState={player:player, monster:monster, turn:turn};
  localStorage.setItem("currentGame", JSON.stringify(gameState));
@@ -241,7 +255,7 @@ function loadGame(){
  return false;
 }
 
-/* ===== HIỆU ỨNG TUYẾT ===== */
+// ===== HIỆU ỨNG TUYẾT =====
 const c=document.getElementById("snow"),x=c.getContext("2d");
 function rs(){c.width=innerWidth;c.height=innerHeight}
 rs();window.onresize=rs;
@@ -261,6 +275,7 @@ setInterval(()=>{
 
 </body>
 </html>
+
 
 
 
