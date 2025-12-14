@@ -295,10 +295,9 @@ function createActions(){
         if(turn != "player") return;
 
         const logDiv = document.getElementById("log");
-
-        // Xóa effect cũ
         const battleMonster = document.getElementById("battleMonster");
 
+        // Xử lý skill
         if(s.name === "Bắn Tùm Lum"){
             for(let i=0;i<5;i++){
                 let effect = document.createElement("div");
@@ -357,7 +356,9 @@ function createActions(){
         setTimeout(monsterTurn,500);
     };
     actionsDiv.appendChild(btn);
-});
+  }); // <-- đóng forEach đúng
+
+} // <-- đóng createActions đúng
 
 // ===== LEVEL UP CHECK =====
 function levelUpCheck(){
@@ -371,6 +372,7 @@ function levelUpCheck(){
     alert(`🎉 Level Up! Bạn lên Level ${player.level}. Điểm skill +3`);
   }
 }
+
 
 // ===== PROFILE =====
 function openProfile(){
@@ -423,6 +425,7 @@ window.onload=()=>{initSnow();showGameButton();}
 </script>
 </body>
 </html>
+
 
 
 
