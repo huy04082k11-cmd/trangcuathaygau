@@ -4,14 +4,8 @@
 <meta charset="UTF-8">
 <title>Trang Web Của Trí - Tráy Ghi Aura</title>
 <style>
-/* ===== Reset & cơ bản ===== */
 html, body {margin:0; padding:0; width:100%; height:100%; font-family:Arial,sans-serif; overflow:hidden;}
-body {
-  background:url("tri-an-pizza.jpg") no-repeat center center fixed;
-  background-size:cover;
-  display:flex; justify-content:center; align-items:center;
-  color:white;
-}
+body {background:url("tri-an-pizza.jpg") no-repeat center center fixed; background-size:cover; display:flex; justify-content:center; align-items:center; color:white;}
 .overlay {position:fixed; inset:0; background:rgba(0,0,0,0.25); z-index:0;}
 .content {position:relative; z-index:2; width:90%; max-width:600px; max-height:95vh; overflow-y:auto; padding:20px; text-align:center;}
 button {margin-top:20px; padding:12px 25px; font-size:18px; border:none; border-radius:10px; cursor:pointer;}
@@ -48,13 +42,13 @@ button {margin-top:20px; padding:12px 25px; font-size:18px; border:none; border-
 <div class="overlay"></div>
 <canvas id="snow"></canvas>
 
-<!-- MAIN CONTENT -->
 <div class="content" id="mainContent">
   <h1>Chào mừng đến trang web của Trí!</h1>
   <p>Bạn có thể học saygex chỉ 4 đô mỗi tháng.</p>
   <img src="tritangquafemboy.jpg" class="main-image">
   <div class="phone-box">☎️ 036-670-1818</div>
   <button class="yt-btn" id="registerBtn">ĐĂNG KÍ</button>
+
   <div class="update-box">
     <h2>📌 Cập nhật website</h2>
     <ul>
@@ -69,7 +63,6 @@ button {margin-top:20px; padding:12px 25px; font-size:18px; border:none; border-
   </div>
 </div>
 
-<!-- GAME MENU -->
 <div id="gameMenu">
   <h1>🎮 Tráy Ghi Aura 🎮</h1>
   <button class="yt-btn" onclick="enterGame()">Play</button>
@@ -77,7 +70,6 @@ button {margin-top:20px; padding:12px 25px; font-size:18px; border:none; border-
   <button class="yt-btn" onclick="openProfile()">Xem Profile</button>
 </div>
 
-<!-- GAME AREA -->
 <div id="gameArea">
   <div id="shopArea"><h3>Shop / Gacha</h3><p>Chưa có item</p></div>
   <div id="worldList"></div>
@@ -99,16 +91,16 @@ button {margin-top:20px; padding:12px 25px; font-size:18px; border:none; border-
 <script>
 // ===== TEST 10 CÂU =====
 let questions=[
-  {img:"giathinh.png",ask:"Câu 1: Đây là con gì?",answers:["A. Con mèo","B. Con chó","C. Con gà","D. Con heo"],correct:1},
-  {img:"minhtrithamquan.jpg",ask:"Câu 2: Trí thích gì nhất?",answers:["A. Ăn gì","B. Ngủ","C. Chơi game","D. Cả 3"],correct:3},
-  {ask:"Câu 3: Bạn đến trang này để làm gì?",answers:["A. Giải trí","B. Làm bài test","C. Xem web","D. Cả 3"],correct:3},
-  {img:"phong2.jpg",ask:"Câu 4: Trong hình là gì?",answers:["A. TP sĩ aura","B. Con vật","C. Đồ vật","D. Không biết"],correct:0},
-  {ask:"Câu 5: 2 + 2 = ?",answers:["A. 3","B. kịch","C. 5","D. 6"],correct:1},
-  {ask:"Câu 6: Ai yêu nhi nhất?",answers:["A. tôi","B. thk ảo aura","C. ko có","D. bạn tôi"],correct:1},
-  {ask:"Câu 7: Một tuần Trí chơi game mấy lần?",answers:["A. 5","B. 6","C. 7 tỷ","D. 8"],correct:2},
-  {ask:"Câu 8: TP có hình gì?",answers:["A. Vuông","B. Tam giác","C. Tròn","D. Hình Pheo.B"],correct:3},
-  {ask:"Câu 9: Loài nào biết bay?",answers:["A. Cá hồi","B. Chim","C. Khác","D. Yêu femboy"],correct:1},
-  {ask:"Câu 10: Ai nói câu 'tao không giết được mày thì tao làm chó'?",answers:["A. TP","B. MT","C. NA","D. TN"],correct:0}
+{img:"giathinh.png",ask:"Câu 1: Đây là con gì?",answers:["A. Con mèo","B. Con chó","C. Con gà","D. Con heo"],correct:1},
+{img:"minhtrithamquan.jpg",ask:"Câu 2: Trí thích gì nhất?",answers:["A. Ăn gì","B. Ngủ","C. Chơi game","D. Cả 3"],correct:3},
+{ask:"Câu 3: Bạn đến trang này để làm gì?",answers:["A. Giải trí","B. Làm bài test","C. Xem web","D. Cả 3"],correct:3},
+{img:"phong2.jpg",ask:"Câu 4: Trong hình là gì?",answers:["A. TP sĩ aura","B. Con vật","C. Đồ vật","D. Không biết"],correct:0},
+{ask:"Câu 5: 2 + 2 = ?",answers:["A. 3","B. kịch","C. 5","D. 6"],correct:1},
+{ask:"Câu 6: Ai yêu nhi nhất?",answers:["A. tôi","B. thk ảo aura","C. ko có","D. bạn tôi"],correct:1},
+{ask:"Câu 7: Một tuần Trí chơi game mấy lần?",answers:["A. 5","B. 6","C. 7 tỷ","D. 8"],correct:2},
+{ask:"Câu 8: TP có hình gì?",answers:["A. Vuông","B. Tam giác","C. Tròn","D. Hình Pheo.B"],correct:3},
+{ask:"Câu 9: Loài nào biết bay?",answers:["A. Cá hồi","B. Chim","C. Khác","D. Yêu femboy"],correct:1},
+{ask:"Câu 10: Ai nói câu 'tao không giết được mày thì tao làm chó'?",answers:["A. TP","B. MT","C. NA","D. TN"],correct:0}
 ];
 let i=0,score=0,pick=-1;
 
@@ -116,12 +108,14 @@ let i=0,score=0,pick=-1;
 document.getElementById("registerBtn").onclick=startRegister;
 function startRegister(){
   const main=document.getElementById("mainContent");
-  main.innerHTML=`<h1>Trước khi đăng ký bạn phải hoàn thành bài test!</h1>
-  <button class="yt-btn" id="startTestBtn">BẮT ĐẦU TEST</button>
-  <div id="q"></div>`;
+  main.innerHTML=`
+    <h1>Trước khi đăng ký bạn phải hoàn thành bài test!</h1>
+    <button class="yt-btn" id="startTestBtn">BẮT ĐẦU TEST</button>
+    <div id="q"></div>
+  `;
   document.getElementById("startTestBtn").onclick=startTest;
 }
-function startTest(){i=0;score=0;load();}
+function startTest(){if(document.getElementById("startTestBtn")) document.getElementById("startTestBtn").remove();i=0;score=0;load();}
 function load(){
   let q=questions[i];
   let h=`<div class="question-box"><h2>${q.ask}</h2>`;
@@ -133,20 +127,25 @@ function load(){
 function selectAnswer(el,n){pick=n;document.querySelectorAll('.answer').forEach(x=>x.classList.remove('selected'));el.classList.add('selected');}
 function next(){
   if(pick==-1) return alert("Chọn đáp án");
-  if(pick==questions[i].correct) score++; pick=-1;i++;
+  if(pick==questions[i].correct) score++;
+  pick=-1;i++;
   if(i>=questions.length) result(); else load();
 }
 function result(){
   const main=document.getElementById("mainContent");
   if(score==questions.length){
-    main.innerHTML=`<h1 style="color:lightgreen">✔️ Bạn đã vượt qua!</h1>
-    <button class="reward-btn" onclick="reward(1)">Nhận phần thưởng</button>
-    <div id="r"></div>
-    <button class="yt-btn" onclick="goMenu()" style="margin-top:10px">Mở khóa tính năng</button>`;
+    main.innerHTML=`
+      <h1 style="color:lightgreen">✔️ Bạn đã vượt qua!</h1>
+      <button class="reward-btn" onclick="reward(1)">Nhận phần thưởng</button>
+      <div id="r"></div>
+      <button class="yt-btn" onclick="goMenu()" style="margin-top:10px">Mở khóa tính năng</button>
+    `;
   } else {
-    main.innerHTML=`<h1 style="color:red">❌ Bạn chưa đạt!</h1>
-    <button class="reward-btn" onclick="reward(0)">Nhận quà an ủi</button>
-    <div id="r"></div>`;
+    main.innerHTML=`
+      <h1 style="color:red">❌ Bạn chưa đạt!</h1>
+      <button class="reward-btn" onclick="reward(0)">Nhận quà an ủi</button>
+      <div id="r"></div>
+    `;
   }
 }
 function reward(w){document.getElementById("r").innerHTML=w?'<img src="spiritfruit.webp" class="main-image">':'<img src="trijumscare.jpg" class="main-image">';if(w) localStorage.setItem("testCompleted","true");}
@@ -163,14 +162,218 @@ function showGameButton(){
 }
 
 // ===== GAMEPLAY =====
-// player, monster, worlds...
-// ... phần này giống bản cũ, giữ nguyên logic battle, stage, skill, log, profile ...
+let player=null, monster=null, turn="player", currentWorld=0, currentStage=0;
+let worlds=[], totalWorlds=3, stagesPerWorld=5;
+let completedStages=JSON.parse(localStorage.getItem("completedStages")||"{}");
+
+// Thêm ảnh cho từng world
+let worldImages=[
+  ["goblin1.png","goblin2.png","goblin3.png","goblin4.png","goblin5.png"],
+  ["pig1.png","pig2.png","pig3.png","pig4.png","pig5.png"],
+  ["lizard1.png","lizard2.png","lizard3.png","lizard4.png","lizard5.png"]
+];
+
+// Tạo worlds & stages
+for(let w=0;w<totalWorlds;w++){
+  let stages=[];
+  for(let s=0;s<stagesPerWorld;s++){
+    stages.push({name:`Quái ${w+1}-${s+1}`, hp:30+10*w+10*s, maxHp:30+10*w+10*s, img:worldImages[w][s], skills:[{name:"Đấm",dmg:5+2*s},{name:"Rồng lửa",dmg:6+2*s}], reward:{exp:10*s*(w+1), gold:5*s*(w+1)}});
+  }
+  worlds.push({world:w+1, stages:stages});
+}
+
+// Load player
+function loadPlayer(){let saved=JSON.parse(localStorage.getItem("playerStats"));if(saved) player=saved;else player={name:"Thầy giáo Tráy",hp:120,maxHp:120,exp:0,gold:0,level:1,points:0,stats:{health:10,damage:5,speed:5},skills:[{name:"Cắn",dmg:8},{name:"Hút máu",dmg:12}]};savePlayer();}
+function savePlayer(){localStorage.setItem("playerStats",JSON.stringify(player));}
+
+// ===== SHOW WORLDS & STAGES =====
+function showWorlds(){
+  let container=document.getElementById("worldList");container.innerHTML="<h3>Worlds</h3>";
+  for(let w=0;w<worlds.length;w++){
+    let btn=document.createElement("button");btn.className="yt-btn";btn.innerText="World "+(w+1);
+    if(w>0 && !completedStages[`world${w-1}`]) btn.classList.add("locked");
+    btn.onclick=()=>{if(!btn.classList.contains("locked")) showStages(w);}
+    container.appendChild(btn);
+  }
+}
+
+function showStages(worldIdx){
+  currentWorld=worldIdx;
+  let container=document.getElementById("stageList");
+  container.innerHTML=`<h3>Stages - World ${worldIdx+1}</h3>`;
+  worlds[worldIdx].stages.forEach((stage,sIdx)=>{
+    let btn=document.createElement("button");
+    btn.innerText=stage.name;
+    if(sIdx>0 && !completedStages[`W${worldIdx}S${sIdx-1}`]) btn.disabled=true;
+    else btn.disabled=false;
+    if(completedStages[`W${worldIdx}S${sIdx}`]) btn.classList.add("completed-stage");
+    btn.onclick=()=>startBattle(sIdx);
+    container.appendChild(btn);
+  });
+}
+
+// ===== START BATTLE =====
+function startBattle(stageIdx){
+  currentStage=stageIdx;
+  monster=JSON.parse(JSON.stringify(worlds[currentWorld].stages[stageIdx]));
+  turn="player";
+  player.hp=player.maxHp;
+  document.getElementById("log").innerHTML="";
+  updateBattle();
+  createActions();
+  addExitButton();
+  // Load images
+  document.getElementById("playerImg").src="tritangquafemboy.jpg";
+  document.getElementById("monsterImg").src=monster.img;
+  showStages(currentWorld); // cập nhật stage
+}
+
+// ===== EXIT BUTTON =====
+function addExitButton(){
+  let exitBtn=document.querySelector("#gameArea button.exitBtn");if(exitBtn) exitBtn.remove();
+  let btn=document.createElement("button");
+  btn.className="exitBtn"; btn.innerText="Thoát về menu";
+  btn.onclick=()=>{document.getElementById("gameArea").style.display="none";document.getElementById("gameMenu").style.display="block";player.hp=player.maxHp;}
+  document.getElementById("gameArea").appendChild(btn);
+}
+
+// ===== UPDATE BATTLE =====
+function updateBattle(){
+  document.getElementById("battlePlayer").innerText=player.name;
+  document.getElementById("battlePlayerHP").style.width=(player.hp/player.maxHp*100)+"%";
+  document.getElementById("battlePlayerHP").innerText=`${player.hp}/${player.maxHp}`;
+  document.getElementById("battleMonster").innerText=monster.name;
+  document.getElementById("battleMonsterHP").style.width=(monster.hp/monster.maxHp*100)+"%";
+  document.getElementById("battleMonsterHP").innerText=`${monster.hp}/${monster.maxHp}`;
+}
+
+// ===== COMBAT LOG & ACTIONS =====
+function createActions(){
+  let actionsDiv=document.getElementById("actions");
+  actionsDiv.innerHTML="";
+  if(player.hp<=0||monster.hp<=0){
+    let btn=document.createElement("button");btn.innerText="Chơi lại Stage";btn.onclick=()=>startBattle(currentStage);
+    actionsDiv.appendChild(btn);
+    return;
+  }
+  player.skills.forEach(s=>{
+    let btn=document.createElement("button");btn.innerText=s.name;
+    btn.onclick=()=>{
+      if(turn!="player") return;
+      let effect=document.createElement("div");effect.className="skill-effect";effect.innerText=-s.dmg;
+      document.getElementById("battleMonster").appendChild(effect);
+      setTimeout(()=>effect.remove(),700);
+      monster.hp=Math.max(0,monster.hp-s.dmg);
+      updateBattle();
+      const logDiv=document.getElementById("log");
+      logDiv.innerHTML+=`<p style="color:green;"><b>Player</b> dùng <b>${s.name}</b> gây ${s.dmg} dame cho <b>Monster</b></p>`;
+      logDiv.scrollTop = logDiv.scrollHeight;
+      if(monster.hp<=0){
+        player.exp+=monster.reward.exp;
+        player.gold+=monster.reward.gold;
+        levelUpCheck();
+        completedStages[`W${currentWorld}S${currentStage}`]=true;
+        if(currentStage===worlds[currentWorld].stages.length-1) completedStages[`world${currentWorld}`]=true;
+        localStorage.setItem("completedStages",JSON.stringify(completedStages));
+        savePlayer();
+        createActions();
+        addNextStageButton();
+        return;
+      }
+      turn="monster";setTimeout(monsterTurn,500);
+    };
+    actionsDiv.appendChild(btn);
+  });
+}
+
+function addNextStageButton(){
+  if(currentStage<worlds[currentWorld].stages.length-1){
+    let btn=document.createElement("button");btn.innerText="→ Stage tiếp theo";
+    btn.onclick=()=>{currentStage++; startBattle(currentStage); showStages(currentWorld);};
+    document.getElementById("actions").appendChild(btn);
+  }
+}
+
+// ===== MONSTER TURN =====
+function monsterTurn(){
+  if(monster.hp<=0||player.hp<=0) return;
+  let s=monster.skills[Math.floor(Math.random()*monster.skills.length)];
+  player.hp=Math.max(0,player.hp-s.dmg);
+  let effect=document.createElement("div");effect.className="skill-effect";effect.innerText=-s.dmg;
+  document.getElementById("battlePlayer").appendChild(effect);
+  setTimeout(()=>effect.remove(),700);
+  updateBattle();
+  const logDiv=document.getElementById("log");
+  logDiv.innerHTML+=`<p style="color:red;"><b>Monster</b> dùng <b>${s.name}</b> gây ${s.dmg} dame cho <b>Player</b></p>`;
+  logDiv.scrollTop = logDiv.scrollHeight;
+  turn="player"; createActions();
+}
+
+// ===== LEVEL UP CHECK =====
+function levelUpCheck(){
+  if(player.exp>=player.level*20){
+    player.level++;
+    player.maxHp+=10;
+    player.hp=player.maxHp;
+    player.points+=3;
+    player.exp=0;
+    savePlayer();
+    alert(`🎉 Level Up! Bạn lên Level ${player.level}. Điểm skill +3`);
+  }
+}
+
+// ===== PROFILE =====
+function openProfile(){
+  const profileDiv=document.getElementById("profileMenu");
+  profileDiv.style.display="block";
+  document.getElementById("gameMenu").style.display="none";
+  document.getElementById("mainContent").style.display="none";
+  document.getElementById("gameArea").style.display="none";
+  if(!player) loadPlayer();
+  if(!player.stats) player.stats={health:10,damage:5,speed:5};
+  profileDiv.innerHTML=`
+    <h2>Profile: ${player.name}</h2>
+    <p>Level: ${player.level} | Exp: ${player.exp}</p>
+    <p>Health: ${player.stats.health}</p>
+    <p>Damage: ${player.stats.damage}</p>
+    <p>Speed: ${player.stats.speed}</p>
+    <p>Skill points: ${player.points}</p>
+    <div id="statButtons"></div>
+    <button onclick="backToMenu()">Quay lại Menu</button>
+  `;
+  updateStatButtons();
+}
+function updateStatButtons(){
+  const container=document.getElementById("statButtons");container.innerHTML="";
+  if(player.points>0){
+    ["health","damage","speed"].forEach(stat=>{
+      let btn=document.createElement("button");
+      btn.innerText=`+1 ${stat.charAt(0).toUpperCase()+stat.slice(1)}`;
+      btn.onclick=()=>{player.stats[stat]+=1;player.points-=1;savePlayer();openProfile();};
+      container.appendChild(btn);
+    });
+  }
+}
+function backToMenu(){document.getElementById("profileMenu").style.display="none";document.getElementById("gameMenu").style.display="block";}
+
+// ===== GAME MENU =====
+function openGameMenu(){document.getElementById("gameMenu").style.display="block";document.getElementById("mainContent").style.display="none";document.getElementById("gameArea").style.display="none";}
+function exitGameMenu(){document.getElementById("gameMenu").style.display="none";document.getElementById("mainContent").style.display="block";document.getElementById("gameArea").style.display="none";}
+function enterGame(){document.getElementById("gameMenu").style.display="none";document.getElementById("mainContent").style.display="none";document.getElementById("gameArea").style.display="block";loadPlayer();showWorlds();showStages(0);showGameButton();}
+
 // ===== SNOW EFFECT =====
-function initSnow(){let canvas=document.getElementById("snow"),ctx=canvas.getContext("2d");canvas.width=window.innerWidth;canvas.height=window.innerHeight;let flakes=[];for(let i=0;i<200;i++)flakes.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*4+1,d:Math.random()*1});function drawSnow(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle="white";ctx.beginPath();for(let i=0;i<flakes.length;i++){let f=flakes[i];ctx.moveTo(f.x,f.y);ctx.arc(f.x,f.y,f.r,0,Math.PI*2,true);}ctx.fill();moveSnow();requestAnimationFrame(drawSnow);}function moveSnow(){for(let i=0;i<flakes.length;i++){let f=flakes[i];f.y+=Math.pow(f.d,2)+1;if(f.y>canvas.height){f.x=Math.random()*canvas.width;f.y=0;}}}drawSnow();}
+function initSnow(){
+  let canvas=document.getElementById("snow"),ctx=canvas.getContext("2d");canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+  let flakes=[];for(let i=0;i<200;i++)flakes.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*4+1,d:Math.random()*1});
+  function drawSnow(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle="white";ctx.beginPath();for(let i=0;i<flakes.length;i++){let f=flakes[i];ctx.moveTo(f.x,f.y);ctx.arc(f.x,f.y,f.r,0,Math.PI*2,true);}ctx.fill();moveSnow();requestAnimationFrame(drawSnow);}
+  function moveSnow(){for(let i=0;i<flakes.length;i++){let f=flakes[i];f.y+=Math.pow(f.d,2)+1;if(f.y>canvas.height){f.x=Math.random()*canvas.width;f.y=0;}}}
+  drawSnow();
+}
 window.onload=()=>{initSnow();showGameButton();}
 </script>
 </body>
 </html>
+
 
 
 
