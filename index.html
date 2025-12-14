@@ -114,14 +114,19 @@ function startRegister(){
   document.getElementById("startTestBtn").onclick=startTest;
 }
 function startTest(){i=0;score=0;load();}
+
 function load(){
   let q=questions[i];
   let h=`<div class="question-box"><h2>${q.ask}</h2>`;
   if(q.img) h+=`<img src="${q.img}" class="main-image">`;
-  q.answers.forEach((a,n)=>h+=`<div class="answer" onclick="pick=${n};document.querySelectorAll('.answer').forEach(x=>x.classList.remove('selected'));event.target.classList.add('selected')">${a}</div>`);
+  q.answers.forEach((a,n)=>{
+    h+=`<div class="answer" onclick="selectAnswer(this,${n})">${a}</div>`;
+  });
   h+=`<button class="next-btn" onclick="next()">Tiếp theo</button></div>`;
   document.getElementById("q").innerHTML=h;
 }
+function selectAnswer(el,n){ pick=n; document.querySelectorAll('.answer').forEach(x=>x.classList.remove('selected')); el.classList.add('selected'); }
+
 function next(){
   if(pick==-1)return alert("Chọn đáp án");
   if(pick==questions[i].correct)score++;
@@ -141,19 +146,40 @@ function result(){
     <div id="r"></div>`;
   }
 }
-function reward(w){document.getElementById("r").innerHTML=w?`<img src="spiritfruit.webp" class="main-image">`:`<img src="trijumscare.jpg" class="main-image">`; if(w)localStorage.setItem("testCompleted","true");}
+function reward(w){
+  document.getElementById("r").innerHTML=w?`<img src="spiritfruit.webp" class="main-image">`:`<img src="trijumscare.jpg" class="main-image">`;
+  if(w)localStorage.setItem("testCompleted","true");
+}
 function goMenu(){localStorage.setItem("featureUnlocked","true"); location.reload();}
 
 // ===== GAME BUTTON =====
-function showGameButton(){if(localStorage.getItem("featureUnlocked")==="true"){if(!document.querySelector("#gameButton")){let btn=document.createElement("button");btn.id="gameButton";btn.innerText="🎮 Chơi Game";btn.style.position="fixed";btn.style.left="10px";btn.style.top="10px";btn.style.zIndex="10000";btn.className="yt-btn";btn.onclick=openGameMenu;document.body.appendChild(btn);}}}
+function showGameButton(){
+  if(localStorage.getItem("featureUnlocked")==="true"){
+    if(!document.querySelector("#gameButton")){
+      let btn=document.createElement("button");
+      btn.id="gameButton";btn.innerText="🎮 Chơi Game";btn.style.position="fixed";btn.style.left="10px";btn.style.top="10px";btn.style.zIndex="10000";btn.className="yt-btn";
+      btn.onclick=openGameMenu;document.body.appendChild(btn);
+    }
+  }
+}
 
 // ===== GAMEPLAY FULL =====
 let player=null, monster=null, turn="player", currentWorld=0, currentStage=0;
 let worlds=[], totalWorlds=3, stagesPerWorld=5;
 let completedStages=JSON.parse(localStorage.getItem("completedStages")||"{}");
-for(let w=0; w<totalWorlds; w++){let stages=[];for(let s=0;s<stagesPerWorld;s++){stages.push({name:`Quái ${w+1}-${s+1}`,hp:30+10*w+10*s,maxHp:30+10*w+10*s,skills:[{name:"Đấm",dmg:5+2*s},{name:"Rồng lửa",dmg:6+2*s}],reward:{exp:10*s*(w+1),gold:5*s*(w+1)}});}worlds.push({world:w+1,stages:stages});}
+for(let w=0; w<totalWorlds; w++){
+  let stages=[];
+  for(let s=0;s<stagesPerWorld;s++){
+    stages.push({name:`Quái ${w+1}-${s+1}`,hp:30+10*w+10*s,maxHp:30+10*w+10*s,skills:[{name:"Đấm",dmg:5+2*s},{name:"Rồng lửa",dmg:6+2*s}],reward:{exp:10*s*(w+1),gold:5*s*(w+1)}});
+  }
+  worlds.push({world:w+1,stages:stages});
+}
 
-function loadPlayer(){let saved=JSON.parse(localStorage.getItem("playerStats"));if(saved)player=saved;else player={name:"Thầy giáo Tráy",hp:120,maxHp:120,exp:0,gold:0,level:1,points:0,stats:{health:10,damage:5,speed:5},skills:[{name:"Cắn",dmg:8},{name:"Hút máu",dmg:12}]};savePlayer();}
+function loadPlayer(){
+  let saved=JSON.parse(localStorage.getItem("playerStats"));
+  if(saved) player=saved; else player={name:"Thầy giáo Tráy",hp:120,maxHp:120,exp:0,gold:0,level:1,points:0,stats:{health:10,damage:5,speed:5},skills:[{name:"Cắn",dmg:8},{name:"Hút máu",dmg:12}]};
+  savePlayer();
+}
 function savePlayer(){localStorage.setItem("playerStats",JSON.stringify(player));}
 
 function showWorlds(){
@@ -179,10 +205,16 @@ function startBattle(stageIdx){
   currentStage=stageIdx; monster=JSON.parse(JSON.stringify(worlds[currentWorld].stages[stageIdx]));
   turn="player";player.hp=player.maxHp;updateBattle();createActions();addExitButton();
 }
-function addExitButton(){let exitBtn=document.querySelector("#gameArea button.exitBtn");if(exitBtn)exitBtn.remove();
-let exitBtn2=document.createElement("button");exitBtn2.className="exitBtn";exitBtn2.innerText="Thoát về menu";
-exitBtn2.onclick=()=>{document.getElementById("gameArea").style.display="none";document.getElementById("gameMenu").style.display="block";player.hp=player.maxHp;};
-document.getElementById("gameArea").appendChild(exitBtn2);}
+function addExitButton(){
+  let exitBtn=document.querySelector("#gameArea button.exitBtn");if(exitBtn)exitBtn.remove();
+  let exitBtn2=document.createElement("button");exitBtn2.className="exitBtn";exitBtn2.innerText="Thoát về menu";
+  exitBtn2.onclick=()=>{
+    document.getElementById("gameArea").style.display="none";
+    document.getElementById("gameMenu").style.display="block";
+    player.hp=player.maxHp;
+  };
+  document.getElementById("gameArea").appendChild(exitBtn2);
+}
 function updateBattle(){
   document.getElementById("battlePlayer").innerText=player.name;
   document.getElementById("battlePlayerHP").style.width=player.hp/player.maxHp*100+"%";
@@ -192,18 +224,18 @@ function updateBattle(){
   document.getElementById("battleMonsterHP").innerText=`${monster.hp}/${monster.maxHp}`;
 }
 
-// ===== CREATE ACTIONS WITH SKILL EFFECT & AUTO UNLOCK =====
 function createActions(){
   let actionsDiv=document.getElementById("actions");actionsDiv.innerHTML="";
-  if(player.hp<=0||monster.hp<=0){let btn=document.createElement("button");btn.innerText="Chơi lại Stage";btn.onclick=()=>startBattle(currentStage);actionsDiv.appendChild(btn);return;}
+  if(player.hp<=0||monster.hp<=0){
+    let btn=document.createElement("button");btn.innerText="Chơi lại Stage";btn.onclick=()=>startBattle(currentStage);actionsDiv.appendChild(btn);return;
+  }
   player.skills.forEach(s=>{
     let btn=document.createElement("button");btn.innerText=s.name;
     btn.onclick=()=>{
       if(turn!="player") return;
       let effect=document.createElement("div");effect.className="skill-effect";effect.innerText=`-${s.dmg}`;
       document.getElementById("battleMonster").appendChild(effect);setTimeout(()=>effect.remove(),700);
-      monster.hp=Math.max(0,monster.hp-s.dmg);
-      updateBattle();
+      monster.hp=Math.max(0,monster.hp-s.dmg);updateBattle();
       if(monster.hp<=0){
         player.exp+=monster.reward.exp;player.gold+=monster.reward.gold;
         levelUpCheck();completedStages[`W${currentWorld}S${currentStage}`]=true;
@@ -212,7 +244,8 @@ function createActions(){
         savePlayer();createActions();addNextStageButton();return;
       }
       turn="monster";setTimeout(monsterTurn,500);
-    };actionsDiv.appendChild(btn);
+    };
+    actionsDiv.appendChild(btn);
   });
 }
 function addNextStageButton(){if(currentStage<worlds[currentWorld].stages.length-1){let btn=document.createElement("button");btn.innerText="→ Stage tiếp theo";btn.onclick=()=>startBattle(currentStage+1);document.getElementById("actions").appendChild(btn);}}
@@ -223,12 +256,14 @@ let effect=document.createElement("div");effect.className="skill-effect";effect.
 document.getElementById("battlePlayer").appendChild(effect);setTimeout(()=>effect.remove(),700);
 updateBattle();turn="player";createActions();}
 
-// ===== LEVEL UP CHECK =====
 function levelUpCheck(){if(player.exp>=player.level*20){player.level++;player.maxHp+=10;player.hp=player.maxHp;player.points+=3;player.exp=0;savePlayer();alert(`🎉 Level Up! Bạn lên Level ${player.level}. Điểm skill +3`);}}
 
-// ===== PROFILE HANDLER =====
 function openProfile(){
-  const profileDiv=document.getElementById("profileMenu");profileDiv.style.display="block";document.getElementById("gameMenu").style.display="none";
+  const profileDiv=document.getElementById("profileMenu");
+  profileDiv.style.display="block";
+  document.getElementById("gameMenu").style.display="none";
+  document.getElementById("mainContent").style.display="none";
+  document.getElementById("gameArea").style.display="none";
   if(!player.stats)player.stats={health:10,damage:5,speed:5};
   profileDiv.innerHTML=`
   <h2>Profile: ${player.name}</h2>
@@ -242,15 +277,21 @@ function openProfile(){
   updateStatButtons();
 }
 function updateStatButtons(){const container=document.getElementById("statButtons");container.innerHTML="";
-if(player.points>0){["health","damage","speed"].forEach(stat=>{let btn=document.createElement("button");btn.innerText=`+1 ${stat.charAt(0).toUpperCase()+stat.slice(1)}`;btn.onclick=()=>{player.stats[stat]+=1;player.points-=1;savePlayer();openProfile();};container.appendChild(btn);});}}
-function backToMenu(){document.getElementById("profileMenu").style.display="none";document.getElementById("gameMenu").style.display="block";}
+if(player.points>0){["health","damage","speed"].forEach(stat=>{
+  let btn=document.createElement("button");
+  btn.innerText=`+1 ${stat.charAt(0).toUpperCase()+stat.slice(1)}`;
+  btn.onclick=()=>{player.stats[stat]+=1;player.points-=1;savePlayer();openProfile();};
+  container.appendChild(btn);
+});}}
+function backToMenu(){
+  document.getElementById("profileMenu").style.display="none";
+  document.getElementById("gameMenu").style.display="block";
+}
 
-// ===== MENU HANDLERS =====
-function openGameMenu(){document.getElementById("gameMenu").style.display="block";document.getElementById("mainContent").style.display="none";}
+function openGameMenu(){document.getElementById("gameMenu").style.display="block";document.getElementById("mainContent").style.display="none";document.getElementById("gameArea").style.display="none";}
 function exitGameMenu(){document.getElementById("gameMenu").style.display="none";document.getElementById("mainContent").style.display="block";}
 function enterGame(){document.getElementById("gameMenu").style.display="none";document.getElementById("mainContent").style.display="none";document.getElementById("gameArea").style.display="block";loadPlayer();showWorlds();showStages(0);showGameButton();}
 
-// ===== SNOW EFFECT =====
 function initSnow(){let canvas=document.getElementById("snow"),ctx=canvas.getContext("2d");canvas.width=window.innerWidth;canvas.height=window.innerHeight;
 let flakes=[];for(let i=0;i<200;i++)flakes.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*4+1,d:Math.random()*1});
 function drawSnow(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle="white";ctx.beginPath();for(let i=0;i<flakes.length;i++){let f=flakes[i];ctx.moveTo(f.x,f.y);ctx.arc(f.x,f.y,f.r,0,Math.PI*2,true);}ctx.fill();moveSnow();requestAnimationFrame(drawSnow);}
@@ -260,6 +301,7 @@ window.onload=()=>{initSnow();showGameButton();}
 </script>
 </body>
 </html>
+
 
 
 
