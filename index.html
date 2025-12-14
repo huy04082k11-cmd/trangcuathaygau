@@ -63,8 +63,7 @@ button {margin-top:20px; padding:12px 25px; font-size:18px; border:none; border-
   </div>
 </div>
 
-<div id="mainMenu">
-  <!-- LEFT MENU -->
+<div id="mainMenu" style="display:none;">
   <div class="menu-left">
     <h1 class="game-title">THE TRÁY<br>ADVENTURE</h1>
 
@@ -72,22 +71,20 @@ button {margin-top:20px; padding:12px 25px; font-size:18px; border:none; border-
     <button onclick="openProfile()">PROFILE</button>
     <button onclick="openShop()">SHOP</button>
     <button onclick="openGacha()">GACHA</button>
-    <button onclick="exitGameMenu()">THOÁT</button>
+    <button onclick="closeMenu()">THOÁT</button>
   </div>
 
-  <!-- CENTER -->
   <div class="menu-center">
     <h2>CẢNH</h2>
     <p>COMBAT, WORLD, STAGE...</p>
   </div>
 
-  <!-- RIGHT UPDATE -->
   <div class="menu-right">
     <h3>UPDATE..</h3>
     <ul>
-      <li>🎄 Snow effect</li>
-      <li>⚔️ Combat system</li>
-      <li>🗺️ World & Stage</li>
+      <li>❄ Snow effect</li>
+      <li>⚔ Combat system</li>
+      <li>🌍 World & Stage</li>
       <li>✨ Skill animation</li>
       <li>📊 Profile stats</li>
     </ul>
@@ -397,6 +394,7 @@ window.onload=()=>{initSnow();showGameButton();}
 </script>
 </body>
 </html>
+
 
 
 
