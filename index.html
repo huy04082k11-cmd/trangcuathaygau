@@ -200,8 +200,8 @@ function loadPlayer() {
       skills: [
         { name: "Đánh", dmg: 8, unlocked: true },          // đổi tên "Cắn" → "Đánh"
         { name: "Hút máu", dmg: 12, unlocked: false },    // khóa tạm, chưa mở
-        { name: "Bắn Tùm Lum", dmg: 15, unlocked: false },// skill mới, khóa luôn
-        { name: "Bão Tuyết", dmg: 20, unlocked: false }  // skill mới, khóa luôn
+        { name: "Bắn Tùm Lum", dmg: 15, unlocked: true },// skill mới, khóa luôn
+        { name: "Bão Tuyết", dmg: 20, unlocked: true }  // skill mới, khóa luôn
       ]
     };
     savePlayer();
@@ -394,6 +394,7 @@ window.onload=()=>{initSnow();showGameButton();}
 </script>
 </body>
 </html>
+
 
 
 
