@@ -175,12 +175,19 @@ function showGameButton(){
 let player=null, monster=null, turn="player", currentWorld=0, currentStage=0;
 let worlds=[], totalWorlds=3, stagesPerWorld=5;
 let completedStages=JSON.parse(localStorage.getItem("completedStages")||"{}");
-let worldImages=[["goblin1.png","goblin2.png","goblin3.png","goblin4.png","goblin5.png"],["pig1.png","pig2.png","pig3.png","pig4.png","pig5.png"],["lizard1.png","lizard2.png","lizard3.png","lizard4.png","lizard5.png"]];
 
+// Thêm ảnh cho từng world
+let worldImages=[
+  ["goblin1.png","goblin2.png","goblin3.png","goblin4.png","goblin5.png"],
+  ["pig1.png","pig2.png","pig3.png","pig4.png","pig5.png"],
+  ["lizard1.png","lizard2.png","lizard3.png","lizard4.png","lizard5.png"]
+];
+
+// Tạo worlds & stages
 for(let w=0;w<totalWorlds;w++){
   let stages=[];
   for(let s=0;s<stagesPerWorld;s++){
-    stages.push({name:`Quái ${w+1}-${s+1}`, hp:30+10*w+10*s, maxHp:30+10*w+10*s, img:worldImages[w][s], skills:[{name:"Đấm",dmg:5+2*s},{name:"Rồng lửa",dmg:6+2*s}], reward:{exp:10*s*(w+1), gold:5*s*(w+1)}});
+    stages.push({name:`Quái ${w+1}-${s+1}`, hp:30+10*w+10*s, maxHp:30+10*w+10*s, img:worldImages[w][s], skills:[{name:"Đấm",dmg:5+2*s,cooldown:0},{name:"Rồng lửa",dmg:6+2*s,cooldown:0}], reward:{exp:10*s*(w+1), gold:5*s*(w+1)}});
   }
   worlds.push({world:w+1, stages:stages});
 }
@@ -221,7 +228,8 @@ function showStages(worldIdx){
   });
 }
 
-// ===== START BATTLE =====
+// ===== START BATTLE & FIXED COOLDOWN =====
+const SKILL_COOLDOWN = 2;
 function startBattle(stageIdx){
   currentStage=stageIdx;
   monster=JSON.parse(JSON.stringify(worlds[currentWorld].stages[stageIdx]));
@@ -242,7 +250,7 @@ function addExitButton(){
   let exitBtn=document.querySelector("#gameArea button.exitBtn");if(exitBtn) exitBtn.remove();
   let btn=document.createElement("button");
   btn.className="exitBtn"; btn.innerText="Thoát về menu";
-  btn.onclick=()=>{document.getElementById("gameArea").style.display="none";document.getElementById("gameMenu").style.display="block";player.hp=player.maxHp;savePlayer();}
+  btn.onclick=()=>{document.getElementById("gameArea").style.display="none";document.getElementById("gameMenu").style.display="block";player.hp=player.maxHp;savePlayer();updateBattle();}
   document.getElementById("gameArea").appendChild(btn);
 }
 
@@ -256,7 +264,7 @@ function updateBattle(){
   document.getElementById("battleMonsterHP").innerText=`${monster.hp}/${monster.maxHp}`;
 }
 
-// ===== COMBAT LOG & ACTIONS + FIXED SKILL COOLDOWN =====
+// ===== COMBAT LOG & ACTIONS + SKILL COOLDOWN =====
 function createActions(){
   let actionsDiv=document.getElementById("actions");
   actionsDiv.innerHTML="";
@@ -270,14 +278,13 @@ function createActions(){
     btn.disabled=s.cooldown>0;
     btn.onclick=()=>{
       if(turn!="player") return;
-      // Player tấn công
       monster.hp=Math.max(0,monster.hp-s.dmg);
       const effect=document.createElement("div");effect.className="skill-effect dmg";effect.innerText=-s.dmg;
       document.getElementById("battleMonster").appendChild(effect);
       setTimeout(()=>effect.remove(),700);
       logAction(`<b>Player</b> dùng <b>${s.name}</b> gây ${s.dmg} dame cho <b>Monster</b>`);
       turn="monster";
-      s.cooldown=2; // set cooldown skill vừa dùng
+      s.cooldown=SKILL_COOLDOWN;
       updateBattle();
       if(monster.hp<=0){
         player.exp+=monster.reward.exp;
@@ -302,16 +309,16 @@ function createActions(){
 
 function monsterTurn(){
   if(monster.hp<=0||player.hp<=0) return;
-  // Monster attack
   let s=monster.skills[Math.floor(Math.random()*monster.skills.length)];
   player.hp=Math.max(0,player.hp-s.dmg);
   let effect=document.createElement("div");effect.className="skill-effect dmg";effect.innerText=-s.dmg;
   document.getElementById("battlePlayer").appendChild(effect);
   setTimeout(()=>effect.remove(),700);
   logAction(`<b>Monster</b> dùng <b>${s.name}</b> gây ${s.dmg} dame cho <b>Player</b>`);
-  // Reduce cooldowns after monster turn
+  // Giảm cooldown tất cả skill player
   player.skills.forEach(skill=>{if(skill.cooldown>0) skill.cooldown--;});
   turn="player"; createActions();
+  updateBattle();
   saveBattleState();
 }
 
@@ -389,7 +396,7 @@ function initSnow(){
 // ===== CONFETTI =====
 function showConfetti(){for(let i=0;i<20;i++){let c=document.createElement("div");c.className="confetti";c.style.left=Math.random()*window.innerWidth+"px";c.style.top="0px";document.body.appendChild(c);setTimeout(()=>c.remove(),1000);}}
 
-// ===== SAVE & LOAD BATTLE =====
+// ===== SAVE / LOAD BATTLE =====
 function saveBattleState(){localStorage.setItem("battleState",JSON.stringify({world:currentWorld,stage:currentStage,hp:player.hp}));}
 function loadBattleState(){let s=JSON.parse(localStorage.getItem("battleState")||"{}");if(s.world!=null && s.stage!=null){currentWorld=s.world; currentStage=s.stage; player.hp=s.hp; startBattle(currentStage);}}
 
@@ -397,6 +404,8 @@ window.onload=()=>{initSnow();showGameButton();loadBattleState();}
 </script>
 </body>
 </html>
+
+
 
 
 
