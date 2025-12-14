@@ -32,8 +32,10 @@ button {margin-top:20px; padding:12px 25px; font-size:18px; border:none; border-
 #log{height:140px; overflow-y:auto; text-align:left; margin-top:10px; background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;}
 #snow {position:fixed; inset:0; pointer-events:none; z-index:1;}
 #gameMenu {display:none; text-align:center; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:9999; background:rgba(0,0,0,0.85); padding:30px; border-radius:15px;}
-.skill-effect {position:absolute; color:yellow; font-weight:bold; font-size:20px; animation:skillAnim 0.7s ease-out forwards;}
-@keyframes skillAnim {0%{opacity:1; transform:translateY(0px);}100%{opacity:0; transform:translateY(-50px);}}
+.skill-effect {position:absolute; font-weight:bold; font-size:20px; animation:skillAnim 0.7s ease-out forwards;}
+.skill-player {color:yellow;}
+.skill-monster {color:red;}
+@keyframes skillAnim {0%{opacity:1; transform:translateY(0px);}100%{opacity:0; transform:translateY(-50px);} }
 </style>
 </head>
 <body>
@@ -211,7 +213,7 @@ function startBattle(stageIdx){
   updateBattle();
   createActions();
   addExitButton();
-  showStages(currentWorld); // cập nhật stage
+  showStages(currentWorld);
 }
 
 // ===== EXIT BUTTON =====
@@ -250,7 +252,7 @@ function createActions(){
     let btn=document.createElement("button");btn.innerText=s.name;
     btn.onclick=()=>{
       if(turn!="player") return;
-      let effect=document.createElement("div");effect.className="skill-effect";effect.innerText=-s.dmg;
+      let effect=document.createElement("div");effect.className="skill-effect skill-player";effect.innerText=-s.dmg;
       document.getElementById("battleMonster").appendChild(effect);
       setTimeout(()=>effect.remove(),700);
       monster.hp=Math.max(0,monster.hp-s.dmg);
@@ -279,11 +281,7 @@ function createActions(){
 function addNextStageButton(){
   if(currentStage<worlds[currentWorld].stages.length-1){
     let btn=document.createElement("button");btn.innerText="→ Stage tiếp theo";
-    btn.onclick=()=>{
-      currentStage++;
-      startBattle(currentStage);
-      showStages(currentWorld);
-    };
+    btn.onclick=()=>{currentStage++; startBattle(currentStage); showStages(currentWorld);}
     document.getElementById("actions").appendChild(btn);
   }
 }
@@ -293,7 +291,7 @@ function monsterTurn(){
   if(monster.hp<=0||player.hp<=0) return;
   let s=monster.skills[Math.floor(Math.random()*monster.skills.length)];
   player.hp=Math.max(0,player.hp-s.dmg);
-  let effect=document.createElement("div");effect.className="skill-effect";effect.innerText=-s.dmg;
+  let effect=document.createElement("div");effect.className="skill-effect skill-monster";effect.innerText=-s.dmg;
   document.getElementById("battlePlayer").appendChild(effect);
   setTimeout(()=>effect.remove(),700);
   updateBattle();
@@ -375,6 +373,8 @@ window.onload=()=>{initSnow();showGameButton();}
 </script>
 </body>
 </html>
+
+
 
 
 
