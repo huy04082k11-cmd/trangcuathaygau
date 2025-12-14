@@ -8,7 +8,7 @@ html, body {margin:0; padding:0; width:100%; height:100%; font-family:Arial,sans
 body {background:url("tri-an-pizza.jpg") no-repeat center center fixed; background-size:cover; display:flex; justify-content:center; align-items:center; color:white;}
 .overlay {position:fixed; inset:0; background:rgba(0,0,0,0.25); z-index:0;}
 .content {position:relative; z-index:2; width:90%; max-width:600px; max-height:95vh; overflow-y:auto; padding:20px; text-align:center;}
-button {margin-top:20px; padding:12px 25px; font-size:18px; border:none; border-radius:10px; cursor:pointer;}
+button {margin:5px; padding:12px 25px; font-size:18px; border:none; border-radius:10px; cursor:pointer;}
 .yt-btn { background:red; color:white; box-shadow:0 0 10px red;}
 .next-btn, .check-btn, .reward-btn { background:yellow;}
 .question-box {background:rgba(0,0,0,0.6); padding:25px; border-radius:15px; margin-top:20px;}
@@ -35,6 +35,7 @@ button {margin-top:20px; padding:12px 25px; font-size:18px; border:none; border-
 .skill-effect {position:absolute; color:yellow; font-weight:bold; font-size:20px; animation:skillAnim 0.7s ease-out forwards;}
 @keyframes skillAnim {0%{opacity:1; transform:translateY(0px) scale(1);}50%{transform:translateY(-10px) scale(1.2);}100%{opacity:0; transform:translateY(-50px) scale(1);}}
 .monster-img, .player-img {width:120px; height:120px; object-fit:contain; margin:10px;}
+#battleMonster, #battlePlayer {position:relative; display:inline-block; min-height:50px;}
 .completed-stage {background:lime !important; border:2px solid yellow !important;}
 </style>
 </head>
@@ -104,7 +105,6 @@ let questions=[
 ];
 let i=0,score=0,pick=-1;
 
-// ===== REGISTER + TEST =====
 document.getElementById("registerBtn").onclick=startRegister;
 function startRegister(){
   const main=document.getElementById("mainContent");
@@ -115,7 +115,7 @@ function startRegister(){
   `;
   document.getElementById("startTestBtn").onclick=startTest;
 }
-function startTest(){if(document.getElementById("startTestBtn")) document.getElementById("startTestBtn").remove();i=0;score=0;load();}
+function startTest(){i=0; score=0; load();}
 function load(){
   let q=questions[i];
   let h=`<div class="question-box"><h2>${q.ask}</h2>`;
@@ -148,8 +148,15 @@ function result(){
     `;
   }
 }
-function reward(w){document.getElementById("r").innerHTML=w?'<img src="spiritfruit.webp" class="main-image">':'<img src="trijumscare.jpg" class="main-image">';if(w) localStorage.setItem("testCompleted","true");}
-function goMenu(){localStorage.setItem("featureUnlocked","true");location.reload();}
+function reward(w){
+  document.getElementById("r").innerHTML=w?'<img src="spiritfruit.webp" class="main-image">':'<img src="trijumscare.jpg" class="main-image">';
+  if(w) localStorage.setItem("testCompleted","true");
+}
+function goMenu(){
+  localStorage.setItem("featureUnlocked","true");
+  showGameButton();
+  location.reload();
+}
 
 // ===== GAME BUTTON =====
 function showGameButton(){
@@ -165,13 +172,7 @@ function showGameButton(){
 let player=null, monster=null, turn="player", currentWorld=0, currentStage=0;
 let worlds=[], totalWorlds=3, stagesPerWorld=5;
 let completedStages=JSON.parse(localStorage.getItem("completedStages")||"{}");
-
-// Thêm ảnh cho từng world
-let worldImages=[
-  ["goblin1.png","goblin2.png","goblin3.png","goblin4.png","goblin5.png"],
-  ["pig1.png","pig2.png","pig3.png","pig4.png","pig5.png"],
-  ["lizard1.png","lizard2.png","lizard3.png","lizard4.png","lizard5.png"]
-];
+let worldImages=[["goblin1.png","goblin2.png","goblin3.png","goblin4.png","goblin5.png"],["pig1.png","pig2.png","pig3.png","pig4.png","pig5.png"],["lizard1.png","lizard2.png","lizard3.png","lizard4.png","lizard5.png"]];
 
 // Tạo worlds & stages
 for(let w=0;w<totalWorlds;w++){
@@ -185,34 +186,19 @@ for(let w=0;w<totalWorlds;w++){
 // Load player
 function loadPlayer() {
   let saved = JSON.parse(localStorage.getItem("playerStats"));
-  if (saved) {
-    player = saved;
-  } else {
-    player = {
-      name: "Thầy giáo Tráy",
-      hp: 120,
-      maxHp: 120,
-      exp: 0,
-      gold: 0,
-      level: 1,
-      points: 0,
-      stats: { health: 10, damage: 5, speed: 5 },
-      skills: [
-        { name: "Đánh", dmg: 8, unlocked: true },          // đổi tên "Cắn" → "Đánh"
-        { name: "Hút máu", dmg: 12, unlocked: false },    // khóa tạm, chưa mở
-        { name: "Bắn Tùm Lum", dmg: 15, unlocked: true },// skill mới, khóa luôn
-        { name: "Bão Tuyết", dmg: 20, unlocked: true }  // skill mới, khóa luôn
-      ]
-    };
+  if (saved) { player = saved; } else {
+    player = {name: "Thầy giáo Tráy", hp:120, maxHp:120, exp:0, gold:0, level:1, points:0, stats:{health:10,damage:5,speed:5}, skills:[
+      {name:"Đánh", dmg:8, unlocked:true},
+      {name:"Hút máu", dmg:12, unlocked:false},
+      {name:"Bắn Tùm Lum", dmg:15, unlocked:true},
+      {name:"Bão Tuyết", dmg:20, unlocked:true}
+    ]};
     savePlayer();
   }
 }
+function savePlayer(){ localStorage.setItem("playerStats", JSON.stringify(player)); }
 
-function savePlayer() {
-  localStorage.setItem("playerStats", JSON.stringify(player));
-}
-
-// ===== SHOW WORLDS & STAGES =====
+// ===== WORLDS & STAGES =====
 function showWorlds(){
   let container=document.getElementById("worldList");container.innerHTML="<h3>Worlds</h3>";
   for(let w=0;w<worlds.length;w++){
@@ -222,7 +208,6 @@ function showWorlds(){
     container.appendChild(btn);
   }
 }
-
 function showStages(worldIdx){
   currentWorld=worldIdx;
   let container=document.getElementById("stageList");
@@ -231,14 +216,13 @@ function showStages(worldIdx){
     let btn=document.createElement("button");
     btn.innerText=stage.name;
     if(sIdx>0 && !completedStages[`W${worldIdx}S${sIdx-1}`]) btn.disabled=true;
-    else btn.disabled=false;
     if(completedStages[`W${worldIdx}S${sIdx}`]) btn.classList.add("completed-stage");
     btn.onclick=()=>startBattle(sIdx);
     container.appendChild(btn);
   });
 }
 
-// ===== START BATTLE =====
+// ===== BATTLE =====
 function startBattle(stageIdx){
   currentStage=stageIdx;
   monster=JSON.parse(JSON.stringify(worlds[currentWorld].stages[stageIdx]));
@@ -248,22 +232,17 @@ function startBattle(stageIdx){
   updateBattle();
   createActions();
   addExitButton();
-  // Load images
   document.getElementById("playerImg").src="tritangquafemboy.jpg";
   document.getElementById("monsterImg").src=monster.img;
-  showStages(currentWorld); // cập nhật stage
+  showStages(currentWorld);
 }
-
-// ===== EXIT BUTTON =====
 function addExitButton(){
-  let exitBtn=document.querySelector("#gameArea button.exitBtn");if(exitBtn) exitBtn.remove();
+  let exitBtn=document.querySelector("#gameArea button.exitBtn"); if(exitBtn) exitBtn.remove();
   let btn=document.createElement("button");
   btn.className="exitBtn"; btn.innerText="Thoát về menu";
   btn.onclick=()=>{document.getElementById("gameArea").style.display="none";document.getElementById("gameMenu").style.display="block";player.hp=player.maxHp;}
   document.getElementById("gameArea").appendChild(btn);
 }
-
-// ===== UPDATE BATTLE =====
 function updateBattle(){
   document.getElementById("battlePlayer").innerText=player.name;
   document.getElementById("battlePlayerHP").style.width=(player.hp/player.maxHp*100)+"%";
@@ -275,109 +254,74 @@ function updateBattle(){
 
 // ===== COMBAT LOG & ACTIONS =====
 function createActions(){
-  let actionsDiv = document.getElementById("actions");
-  actionsDiv.innerHTML = "";
-
-  if(player.hp <= 0 || monster.hp <= 0){
-    let btn = document.createElement("button");
-    btn.innerText = "Chơi lại Stage";
-    btn.onclick = () => startBattle(currentStage);
-    actionsDiv.appendChild(btn);
-    return;
+  let actionsDiv = document.getElementById("actions"); actionsDiv.innerHTML="";
+  if(player.hp<=0 || monster.hp<=0){
+    let btn=document.createElement("button"); btn.innerText="Chơi lại Stage"; btn.onclick=()=>startBattle(currentStage); actionsDiv.appendChild(btn); return;
   }
-
-  player.skills.forEach(s => {
+  player.skills.forEach(s=>{
     if(!s.unlocked) return;
-
-    let btn = document.createElement("button");
-    btn.innerText = s.name;
-    btn.onclick = () => {
-        if(turn != "player") return;
-
-        const logDiv = document.getElementById("log");
-        const battleMonster = document.getElementById("battleMonster");
-
-        // Xử lý skill
-        if(s.name === "Bắn Tùm Lum"){
-            for(let i=0;i<5;i++){
-                let effect = document.createElement("div");
-                effect.className = "skill-effect";
-                effect.innerText = `-${Math.ceil(s.dmg/5)}`;
-                effect.style.left = (i*25) + "px";
-                battleMonster.appendChild(effect);
-                setTimeout(()=>effect.remove(),700);
-            }
-            monster.hp = Math.max(0, monster.hp - s.dmg);
-            logDiv.innerHTML += `<p style="color:green;"><b>Player</b> dùng <b>${s.name}</b> gây ${s.dmg} dame</p>`;
+    let btn=document.createElement("button"); btn.innerText=s.name;
+    btn.onclick=()=>{
+      if(turn!="player") return;
+      const logDiv=document.getElementById("log");
+      const battleMonster=document.getElementById("battleMonster");
+      if(s.name==="Bắn Tùm Lum"){
+        for(let i=0;i<5;i++){
+          let effect=document.createElement("div"); effect.className="skill-effect"; effect.innerText=`-${Math.ceil(s.dmg/5)}`; effect.style.left=(i*25)+"px"; battleMonster.appendChild(effect); setTimeout(()=>effect.remove(),700);
         }
-        else if(s.name === "Bão Tuyết"){
-            let battleArea = document.getElementById("battleContent");
-            battleArea.classList.add("shake");
-            for(let i=0;i<20;i++){
-                let effect = document.createElement("div");
-                effect.className = "skill-effect";
-                effect.innerText = `-${Math.ceil(s.dmg/20)}`;
-                effect.style.left = Math.random()*400 + "px";
-                battleMonster.appendChild(effect);
-                setTimeout(()=>effect.remove(),700);
-            }
-            monster.hp = Math.max(0, monster.hp - s.dmg);
-            logDiv.innerHTML += `<p style="color:green;"><b>Player</b> dùng <b>${s.name}</b> gây ${s.dmg} dame</p>`;
-            setTimeout(()=>battleArea.classList.remove("shake"),500);
-        }
-        else { // skill bình thường
-            let effect = document.createElement("div");
-            effect.className = "skill-effect";
-            effect.innerText = `-${s.dmg}`;
-            battleMonster.appendChild(effect);
-            setTimeout(()=>effect.remove(),700);
-            monster.hp = Math.max(0, monster.hp - s.dmg);
-            logDiv.innerHTML += `<p style="color:green;"><b>Player</b> dùng <b>${s.name}</b> gây ${s.dmg} dame</p>`;
-        }
-
-        updateBattle();
-        logDiv.scrollTop = logDiv.scrollHeight;
-
-        if(monster.hp <=0){
-            player.exp += monster.reward.exp;
-            player.gold += monster.reward.gold;
-            levelUpCheck();
-            completedStages[`W${currentWorld}S${currentStage}`] = true;
-            if(currentStage === worlds[currentWorld].stages.length-1)
-                completedStages[`world${currentWorld}`] = true;
-            localStorage.setItem("completedStages", JSON.stringify(completedStages));
-            savePlayer();
-            createActions();
-            addNextStageButton();
-            return;
-        }
-
-        turn = "monster";
-        setTimeout(monsterTurn,500);
+      } else if(s.name==="Bão Tuyết"){
+        let battleArea=document.getElementById("battleContent"); battleArea.classList.add("shake");
+        for(let i=0;i<20;i++){ let effect=document.createElement("div"); effect.className="skill-effect"; effect.innerText=`-${Math.ceil(s.dmg/20)}`; effect.style.left=Math.random()*400+"px"; battleMonster.appendChild(effect); setTimeout(()=>effect.remove(),700);}
+        setTimeout(()=>battleArea.classList.remove("shake"),500);
+      } else {
+        let effect=document.createElement("div"); effect.className="skill-effect"; effect.innerText=`-${s.dmg}`; battleMonster.appendChild(effect); setTimeout(()=>effect.remove(),700);
+      }
+      monster.hp=Math.max(0, monster.hp-s.dmg);
+      logDiv.innerHTML+=`<p style="color:green;"><b>Player</b> dùng <b>${s.name}</b> gây ${s.dmg} dame</p>`;
+      updateBattle(); logDiv.scrollTop=logDiv.scrollHeight;
+      if(monster.hp<=0){
+        player.exp+=monster.reward.exp; player.gold+=monster.reward.gold;
+        levelUpCheck(); completedStages[`W${currentWorld}S${currentStage}`]=true;
+        if(currentStage===worlds[currentWorld].stages.length-1) completedStages[`world${currentWorld}`]=true;
+        localStorage.setItem("completedStages", JSON.stringify(completedStages)); savePlayer();
+        createActions(); addNextStageButton(); return;
+      }
+      turn="monster"; setTimeout(monsterTurn,500);
     };
     actionsDiv.appendChild(btn);
-  }); // <-- đóng forEach đúng
+  });
+}
 
-} // <-- đóng createActions đúng
-
-// ===== LEVEL UP CHECK =====
+// ===== LEVEL UP =====
 function levelUpCheck(){
   if(player.exp>=player.level*20){
-    player.level++;
-    player.maxHp+=10;
-    player.hp=player.maxHp;
-    player.points+=3;
-    player.exp=0;
-    savePlayer();
+    player.level++; player.maxHp+=10; player.hp=player.maxHp; player.points+=3; player.exp=0; savePlayer();
     alert(`🎉 Level Up! Bạn lên Level ${player.level}. Điểm skill +3`);
   }
 }
 
+// ===== MONSTER TURN =====
+function monsterTurn(){
+  let dmg=Math.floor(Math.random()*5+3); player.hp=Math.max(0,player.hp-dmg);
+  document.getElementById("log").innerHTML+=`<p style="color:red;"><b>Monster</b> gây ${dmg} dame</p>`;
+  updateBattle(); document.getElementById("log").scrollTop=document.getElementById("log").scrollHeight;
+  if(player.hp<=0){ createActions(); return; }
+  turn="player"; createActions();
+}
+
+// ===== NEXT STAGE BUTTON =====
+function addNextStageButton(){
+  if(currentStage+1<worlds[currentWorld].stages.length){
+    let actionsDiv=document.getElementById("actions");
+    let btn=document.createElement("button"); btn.innerText="→ Stage tiếp theo"; btn.className="next-btn";
+    btn.onclick=()=>startBattle(currentStage+1);
+    actionsDiv.appendChild(btn);
+  }
+}
 
 // ===== PROFILE =====
 function openProfile(){
-  const profileDiv=document.getElementById("profileMenu");
-  profileDiv.style.display="block";
+  const profileDiv=document.getElementById("profileMenu"); profileDiv.style.display="block";
   document.getElementById("gameMenu").style.display="none";
   document.getElementById("mainContent").style.display="none";
   document.getElementById("gameArea").style.display="none";
@@ -396,35 +340,37 @@ function openProfile(){
   updateStatButtons();
 }
 function updateStatButtons(){
-  const container=document.getElementById("statButtons");container.innerHTML="";
+  const container=document.getElementById("statButtons"); container.innerHTML="";
   if(player.points>0){
     ["health","damage","speed"].forEach(stat=>{
-      let btn=document.createElement("button");
-      btn.innerText=`+1 ${stat.charAt(0).toUpperCase()+stat.slice(1)}`;
-      btn.onclick=()=>{player.stats[stat]+=1;player.points-=1;savePlayer();openProfile();};
+      let btn=document.createElement("button"); btn.innerText=`+1 ${stat.charAt(0).toUpperCase()+stat.slice(1)}`;
+      btn.onclick=()=>{player.stats[stat]+=1; player.points-=1; savePlayer(); openProfile();}
       container.appendChild(btn);
     });
   }
 }
-function backToMenu(){document.getElementById("profileMenu").style.display="none";document.getElementById("gameMenu").style.display="block";}
+function backToMenu(){document.getElementById("profileMenu").style.display="none"; document.getElementById("gameMenu").style.display="block";}
 
 // ===== GAME MENU =====
-function openGameMenu(){document.getElementById("gameMenu").style.display="block";document.getElementById("mainContent").style.display="none";document.getElementById("gameArea").style.display="none";}
-function exitGameMenu(){document.getElementById("gameMenu").style.display="none";document.getElementById("mainContent").style.display="block";document.getElementById("gameArea").style.display="none";}
-function enterGame(){document.getElementById("gameMenu").style.display="none";document.getElementById("mainContent").style.display="none";document.getElementById("gameArea").style.display="block";loadPlayer();showWorlds();showStages(0);showGameButton();}
+function openGameMenu(){document.getElementById("gameMenu").style.display="block"; document.getElementById("mainContent").style.display="none"; document.getElementById("gameArea").style.display="none";}
+function exitGameMenu(){document.getElementById("gameMenu").style.display="none"; document.getElementById("mainContent").style.display="block"; document.getElementById("gameArea").style.display="none";}
+function enterGame(){document.getElementById("gameMenu").style.display="none"; document.getElementById("mainContent").style.display="none"; document.getElementById("gameArea").style.display="block"; loadPlayer(); showWorlds(); showStages(0); showGameButton();}
 
 // ===== SNOW EFFECT =====
 function initSnow(){
   let canvas=document.getElementById("snow"),ctx=canvas.getContext("2d");canvas.width=window.innerWidth;canvas.height=window.innerHeight;
-  let flakes=[];for(let i=0;i<200;i++)flakes.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*4+1,d:Math.random()*1});
-  function drawSnow(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle="white";ctx.beginPath();for(let i=0;i<flakes.length;i++){let f=flakes[i];ctx.moveTo(f.x,f.y);ctx.arc(f.x,f.y,f.r,0,Math.PI*2,true);}ctx.fill();moveSnow();requestAnimationFrame(drawSnow);}
-  function moveSnow(){for(let i=0;i<flakes.length;i++){let f=flakes[i];f.y+=Math.pow(f.d,2)+1;if(f.y>canvas.height){f.x=Math.random()*canvas.width;f.y=0;}}}
+  let flakes=[];for(let i=0;i<150;i++) flakes.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*4+1,d:Math.random()*1});
+  function drawSnow(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle="white";ctx.beginPath();
+    for(let i=0;i<flakes.length;i++){let f=flakes[i];ctx.moveTo(f.x,f.y);ctx.arc(f.x,f.y,f.r,0,Math.PI*2,true);}ctx.fill(); moveSnow(); requestAnimationFrame(drawSnow);}
+  function moveSnow(){for(let i=0;i<flakes.length;i++){let f=flakes[i];f.y+=Math.pow(f.d,2)+1;if(f.y>canvas.height){f.x=Math.random()*canvas.width; f.y=0;}}}
   drawSnow();
 }
 window.onload=()=>{initSnow();showGameButton();}
 </script>
 </body>
 </html>
+
+
 
 
 
