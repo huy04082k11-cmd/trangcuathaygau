@@ -61,7 +61,7 @@ button {margin-top:20px; padding:12px 25px; font-size:18px; border:none; border-
       <li>🧠 Test 10 câu hỏi có hình ảnh</li>
       <li>🎁 Phần thưởng thắng / thua</li>
       <li>🎮 Game Mini World/Stage + Level Up + Auto Unlock Stage</li>
-      <li>✨ Skill effect animation & cooldown</li>
+      <li>✨ Skill effect animation & cooldown (Fixed!)</li>
       <li>📊 Profile riêng + chỉ số Health/Damage/Speed + skill points</li>
       <li>📝 Combat log trong gameplay</li>
       <li>🛒 Mini-Shop / Gacha</li>
@@ -95,7 +95,6 @@ button {margin-top:20px; padding:12px 25px; font-size:18px; border:none; border-
 </div>
 
 <div id="profileMenu"></div>
-
 <audio id="bgMusic" loop src="bg-music.mp3"></audio>
 
 <script>
@@ -228,7 +227,7 @@ function showStages(worldIdx){
   });
 }
 
-// ===== START BATTLE & FIXED COOLDOWN =====
+// ===== START BATTLE =====
 const SKILL_COOLDOWN = 2;
 function startBattle(stageIdx){
   currentStage=stageIdx;
@@ -264,7 +263,7 @@ function updateBattle(){
   document.getElementById("battleMonsterHP").innerText=`${monster.hp}/${monster.maxHp}`;
 }
 
-// ===== COMBAT LOG & ACTIONS + SKILL COOLDOWN =====
+// ===== COMBAT LOG & ACTIONS =====
 function createActions(){
   let actionsDiv=document.getElementById("actions");
   actionsDiv.innerHTML="";
@@ -272,58 +271,62 @@ function createActions(){
     let btn=document.createElement("button");btn.innerText="Chơi lại Stage";btn.onclick=()=>startBattle(currentStage);
     actionsDiv.appendChild(btn); return;
   }
+
   player.skills.forEach(s=>{
     let btn=document.createElement("button");
     btn.innerText=s.name + (s.cooldown>0?` (${s.cooldown})`:"");
     btn.disabled=s.cooldown>0;
     btn.onclick=()=>{
       if(turn!="player") return;
+      // Dùng skill
       monster.hp=Math.max(0,monster.hp-s.dmg);
-      const effect=document.createElement("div");effect.className="skill-effect dmg";effect.innerText=-s.dmg;
-      document.getElementById("battleMonster").appendChild(effect);
-      setTimeout(()=>effect.remove(),700);
+      showSkillEffect("monster",-s.dmg);
       logAction(`<b>Player</b> dùng <b>${s.name}</b> gây ${s.dmg} dame cho <b>Monster</b>`);
-      turn="monster";
       s.cooldown=SKILL_COOLDOWN;
-      updateBattle();
-      if(monster.hp<=0){
-        player.exp+=monster.reward.exp;
-        player.gold+=monster.reward.gold;
-        levelUpCheck();
-        completedStages[`W${currentWorld}S${currentStage}`]=true;
-        if(currentStage===worlds[currentWorld].stages.length-1) completedStages[`world${currentWorld}`]=true;
-        localStorage.setItem("completedStages",JSON.stringify(completedStages));
-        savePlayer();
-        createActions();
-        addNextStageButton();
-        showConfetti();
-        return;
-      }
+      turn="monster";
+      updateBattle(); saveBattleState();
+      if(monster.hp<=0){endBattle(); return;}
       setTimeout(monsterTurn,500);
-      createActions();
-      saveBattleState();
     };
     actionsDiv.appendChild(btn);
   });
 }
 
+// ===== MONSTER TURN =====
 function monsterTurn(){
   if(monster.hp<=0||player.hp<=0) return;
   let s=monster.skills[Math.floor(Math.random()*monster.skills.length)];
   player.hp=Math.max(0,player.hp-s.dmg);
-  let effect=document.createElement("div");effect.className="skill-effect dmg";effect.innerText=-s.dmg;
-  document.getElementById("battlePlayer").appendChild(effect);
-  setTimeout(()=>effect.remove(),700);
+  showSkillEffect("player",-s.dmg);
   logAction(`<b>Monster</b> dùng <b>${s.name}</b> gây ${s.dmg} dame cho <b>Player</b>`);
-  // Giảm cooldown tất cả skill player
+  // Giảm cooldown skill player 1
   player.skills.forEach(skill=>{if(skill.cooldown>0) skill.cooldown--;});
-  turn="player"; createActions();
+  turn="player";
   updateBattle();
   saveBattleState();
+  createActions();
 }
 
-function logAction(msg){const logDiv=document.getElementById("log");logDiv.innerHTML+=`<p style="color:${msg.includes("Player")?"green":"red"};">${msg}</p>`;logDiv.scrollTop=logDiv.scrollHeight;}
+// ===== SHOW SKILL EFFECT =====
+function showSkillEffect(target,value){
+  const effect=document.createElement("div");
+  effect.className="skill-effect "+(value<0?"dmg":"heal");
+  effect.innerText=value;
+  document.getElementById(target==="player"?"battlePlayer":"battleMonster").appendChild(effect);
+  setTimeout(()=>effect.remove(),700);
+}
 
+// ===== END BATTLE =====
+function endBattle(){
+  player.exp+=monster.reward.exp; player.gold+=monster.reward.gold;
+  levelUpCheck();
+  completedStages[`W${currentWorld}S${currentStage}`]=true;
+  if(currentStage===worlds[currentWorld].stages.length-1) completedStages[`world${currentWorld}`]=true;
+  localStorage.setItem("completedStages",JSON.stringify(completedStages));
+  savePlayer(); createActions(); addNextStageButton(); showConfetti();
+}
+
+// ===== NEXT STAGE BUTTON =====
 function addNextStageButton(){
   if(currentStage<worlds[currentWorld].stages.length-1){
     let btn=document.createElement("button");btn.innerText="→ Stage tiếp theo";
@@ -335,12 +338,7 @@ function addNextStageButton(){
 // ===== LEVEL UP =====
 function levelUpCheck(){
   if(player.exp>=player.level*20){
-    player.level++;
-    player.maxHp+=10;
-    player.hp=player.maxHp;
-    player.points+=3;
-    player.exp=0;
-    savePlayer();
+    player.level++; player.maxHp+=10; player.hp=player.maxHp; player.points+=3; player.exp=0; savePlayer();
     alert(`🎉 Level Up! Bạn lên Level ${player.level}. Điểm skill +3`);
   }
 }
@@ -385,13 +383,7 @@ function exitGameMenu(){document.getElementById("gameMenu").style.display="none"
 function enterGame(){document.getElementById("gameMenu").style.display="none";document.getElementById("mainContent").style.display="none";document.getElementById("gameArea").style.display="block";loadPlayer();showWorlds();showStages(0);showGameButton();document.getElementById("bgMusic").play();}
 
 // ===== SNOW =====
-function initSnow(){
-  let canvas=document.getElementById("snow"),ctx=canvas.getContext("2d");canvas.width=window.innerWidth;canvas.height=window.innerHeight;
-  let flakes=[];for(let i=0;i<200;i++)flakes.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*4+1,d:Math.random()*1});
-  function drawSnow(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle="white";ctx.beginPath();for(let i=0;i<flakes.length;i++){let f=flakes[i];ctx.moveTo(f.x,f.y);ctx.arc(f.x,f.y,f.r,0,Math.PI*2,true);}ctx.fill();moveSnow();requestAnimationFrame(drawSnow);}
-  function moveSnow(){for(let i=0;i<flakes.length;i++){let f=flakes[i];f.y+=Math.pow(f.d,2)+1;if(f.y>canvas.height){f.x=Math.random()*canvas.width;f.y=0;}}}
-  drawSnow();
-}
+function initSnow(){let canvas=document.getElementById("snow"),ctx=canvas.getContext("2d");canvas.width=window.innerWidth;canvas.height=window.innerHeight;let flakes=[];for(let i=0;i<200;i++)flakes.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*4+1,d:Math.random()*1});function drawSnow(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle="white";ctx.beginPath();for(let i=0;i<flakes.length;i++){let f=flakes[i];ctx.moveTo(f.x,f.y);ctx.arc(f.x,f.y,f.r,0,Math.PI*2,true);}ctx.fill();moveSnow();requestAnimationFrame(drawSnow);}function moveSnow(){for(let i=0;i<flakes.length;i++){let f=flakes[i];f.y+=Math.pow(f.d,2)+1;if(f.y>canvas.height){f.x=Math.random()*canvas.width;f.y=0;}}}drawSnow();}
 
 // ===== CONFETTI =====
 function showConfetti(){for(let i=0;i<20;i++){let c=document.createElement("div");c.className="confetti";c.style.left=Math.random()*window.innerWidth+"px";c.style.top="0px";document.body.appendChild(c);setTimeout(()=>c.remove(),1000);}}
@@ -400,10 +392,13 @@ function showConfetti(){for(let i=0;i<20;i++){let c=document.createElement("div"
 function saveBattleState(){localStorage.setItem("battleState",JSON.stringify({world:currentWorld,stage:currentStage,hp:player.hp}));}
 function loadBattleState(){let s=JSON.parse(localStorage.getItem("battleState")||"{}");if(s.world!=null && s.stage!=null){currentWorld=s.world; currentStage=s.stage; player.hp=s.hp; startBattle(currentStage);}}
 
+// ===== INIT =====
 window.onload=()=>{initSnow();showGameButton();loadBattleState();}
 </script>
 </body>
 </html>
+
+
 
 
 
