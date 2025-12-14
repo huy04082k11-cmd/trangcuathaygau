@@ -292,43 +292,72 @@ function createActions(){
     let btn = document.createElement("button");
     btn.innerText = s.name;
     btn.onclick = () => {
-      if(turn != "player") return;
+        if(turn != "player") return;
 
-      let effect = document.createElement("div");
-      effect.className = "skill-effect";
-      effect.innerText = `-${s.dmg}`;
-      document.getElementById("battleMonster").appendChild(effect);
-      setTimeout(()=>effect.remove(),700);
+        const logDiv = document.getElementById("log");
 
-      monster.hp = Math.max(0, monster.hp - s.dmg);
-      updateBattle();
+        // Xóa effect cũ
+        const battleMonster = document.getElementById("battleMonster");
 
-      const logDiv = document.getElementById("log");
-      logDiv.innerHTML += `<p style="color:green;"><b>Player</b> dùng <b>${s.name}</b> gây ${s.dmg} dame cho <b>Monster</b></p>`;
-      logDiv.scrollTop = logDiv.scrollHeight;
+        if(s.name === "Bắn Tùm Lum"){
+            for(let i=0;i<5;i++){
+                let effect = document.createElement("div");
+                effect.className = "skill-effect";
+                effect.innerText = `-${Math.ceil(s.dmg/5)}`;
+                effect.style.left = (i*25) + "px";
+                battleMonster.appendChild(effect);
+                setTimeout(()=>effect.remove(),700);
+            }
+            monster.hp = Math.max(0, monster.hp - s.dmg);
+            logDiv.innerHTML += `<p style="color:green;"><b>Player</b> dùng <b>${s.name}</b> gây ${s.dmg} dame</p>`;
+        }
+        else if(s.name === "Bão Tuyết"){
+            let battleArea = document.getElementById("battleContent");
+            battleArea.classList.add("shake");
+            for(let i=0;i<20;i++){
+                let effect = document.createElement("div");
+                effect.className = "skill-effect";
+                effect.innerText = `-${Math.ceil(s.dmg/20)}`;
+                effect.style.left = Math.random()*400 + "px";
+                battleMonster.appendChild(effect);
+                setTimeout(()=>effect.remove(),700);
+            }
+            monster.hp = Math.max(0, monster.hp - s.dmg);
+            logDiv.innerHTML += `<p style="color:green;"><b>Player</b> dùng <b>${s.name}</b> gây ${s.dmg} dame</p>`;
+            setTimeout(()=>battleArea.classList.remove("shake"),500);
+        }
+        else { // skill bình thường
+            let effect = document.createElement("div");
+            effect.className = "skill-effect";
+            effect.innerText = `-${s.dmg}`;
+            battleMonster.appendChild(effect);
+            setTimeout(()=>effect.remove(),700);
+            monster.hp = Math.max(0, monster.hp - s.dmg);
+            logDiv.innerHTML += `<p style="color:green;"><b>Player</b> dùng <b>${s.name}</b> gây ${s.dmg} dame</p>`;
+        }
 
-      if(monster.hp <= 0){
-        player.exp += monster.reward.exp;
-        player.gold += monster.reward.gold;
-        levelUpCheck();
+        updateBattle();
+        logDiv.scrollTop = logDiv.scrollHeight;
 
-        completedStages[`W${currentWorld}S${currentStage}`] = true;
-        if(currentStage === worlds[currentWorld].stages.length-1)
-          completedStages[`world${currentWorld}`] = true;
-        localStorage.setItem("completedStages", JSON.stringify(completedStages));
-        savePlayer();
+        if(monster.hp <=0){
+            player.exp += monster.reward.exp;
+            player.gold += monster.reward.gold;
+            levelUpCheck();
+            completedStages[`W${currentWorld}S${currentStage}`] = true;
+            if(currentStage === worlds[currentWorld].stages.length-1)
+                completedStages[`world${currentWorld}`] = true;
+            localStorage.setItem("completedStages", JSON.stringify(completedStages));
+            savePlayer();
+            createActions();
+            addNextStageButton();
+            return;
+        }
 
-        createActions();
-        addNextStageButton();
-        return;
-      }
-
-      turn = "monster";
-      setTimeout(monsterTurn, 500);
+        turn = "monster";
+        setTimeout(monsterTurn,500);
     };
     actionsDiv.appendChild(btn);
-  });
-}
+});
 
 // ===== LEVEL UP CHECK =====
 function levelUpCheck(){
@@ -394,6 +423,7 @@ window.onload=()=>{initSnow();showGameButton();}
 </script>
 </body>
 </html>
+
 
 
 
